@@ -1,0 +1,45 @@
+.ck.ck-editor{
+    z-index: 0;
+}
+.select2-selection .react-select__menu {
+    background-color: #FFFFFF !important;
+}
+
+.theme-dark-bg{
+    background-color: #2a3042 !important;
+}
+// .theme-dark-bg{
+//     <<<<<<< HEAD
+//         background-color: $sidebar-dark-bg !important;
+//     }
+
+/* Style for the sorting icons */
+.sorting-icon {
+    font-size: 10px; /* Size of the icon */
+    color: #999; /* Default color */
+    margin-left: 5px;
+    transition: color 0.3s ease;
+    display: block;
+  }
+  
+  /* Active sorting icons */
+  .shorter{display: inline-block; position: absolute;    text-align: center;    line-height: 12px;    margin-top: 1px;}
+    .sorting-icon.asc {
+    color: #ddd; /* Blue for ascending */
+    transform: rotateX(190deg);
+  }
+  
+  .sorting-icon.desc {
+    color: #ddd; /* Red for descending */
+    transform: rotateY(190deg);
+  }
+  
+  .sorting-icon.inactive {
+    color: #000; /* Inactive icons */
+    font-size: 10px;
+  }
+
+
+
+
+  
