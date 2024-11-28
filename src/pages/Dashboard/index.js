@@ -9,30 +9,37 @@ import "flatpickr/dist/themes/material_blue.css";
 import { withTranslation } from "react-i18next";
 
 const Dashboard = props => {
-    
+
     //meta title
     document.title = "Dashboard | Quench";
+   
     const [username, setusername] = useState("Admin");
+  
     useEffect(() => {
         if (localStorage.getItem("vendoruser")) {
-            //   const obj = JSON.parse(localStorage.getItem("vendoruser"));
-            //   setusername(obj.user.username);
+            const obj = JSON.parse(localStorage.getItem("vendoruser"));
+
+            setusername(obj.username);
 
         }
     }, [props.success]);
+
+ 
 
     return (
         <React.Fragment>
             <div className="page-content">
                 <Container fluid>
-                   
+
 
 
                     <div className="alert-success alert alert-success fade show">
-                        <h4 className="alert-heading">Welcome to Quench </h4>
+                        <h4 className="alert-heading">Welcome to Quench {username}</h4>
+                      
                     </div>
                 </Container>
             </div>
+           
         </React.Fragment>
     );
 };

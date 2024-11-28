@@ -10,10 +10,6 @@ function* loginUser({ payload: { user } }) {
     const response = yield call(axios.post, `${process.env.REACT_APP_API}session/login`, user);
    
     yield put(loginSuccess(response.data));
-
-    // localStorage.setItem('vendorusertoken', JSON.stringify(response.data.token));
-    // localStorage.setItem('vendoruser', JSON.stringify(response.data));
-    // navigate('/dashboard');
   } catch (error) {
     const errorMessage =
       error.response?.data?.message || "";
@@ -26,10 +22,6 @@ function* loginUser({ payload: { user } }) {
 //verify code
 function* verifyCode({ payload: { verifycode } }) {
   try {
-
-    // const response = yield call(postFakeForgetPwd, "/fake-forget-pwd", {
-    //   email: user.email,
-    // })
     const response = yield call(axios.post, `${process.env.REACT_APP_API}session/verify/otp`, verifycode);
     if (response.data.status === false) {
     
@@ -51,10 +43,6 @@ function* verifyCode({ payload: { verifycode } }) {
 
 function* resetCode({ payload: { resetcode } }) {
   try {
-
-    // const response = yield call(postFakeForgetPwd, "/fake-forget-pwd", {
-    //   email: user.email,
-    // })
     const response = yield call(axios.post, `${process.env.REACT_APP_API}session/resend/otp`, resetcode);
     yield put(resetcodePasswordSuccess(response.data));
 

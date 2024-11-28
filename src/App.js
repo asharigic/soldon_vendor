@@ -9,7 +9,7 @@ import { authProtectedRoutes, publicRoutes } from "./routes";
 // Import all middleware
 import Authmiddleware from "./routes/route";
 
-
+import Header from './components/Header/Header';
 import NonAuthLayout from "./components/NonAuthLayout";
 
 
@@ -39,6 +39,7 @@ const App = () => {
             path={route.path}
             element={
               <Authmiddleware>
+                <Header/>
                 {route.component}
               </Authmiddleware>}
             key={idx}
