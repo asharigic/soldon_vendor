@@ -39,6 +39,9 @@ const Header = () => {
                     <li>
                         <Link onClick={() => setModalShow(true)}>Logout</Link>
                     </li>
+                    <li>
+                        <Link to="/settings">Setting</Link>
+                    </li>
                 </ul>
             </nav>
             <Modal isOpen={ModalShow} toggle={toggle1} backdrop="static">
