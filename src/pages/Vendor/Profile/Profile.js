@@ -12,7 +12,7 @@ const Profile = (props) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { profileerror, profile, profilesuccess, loading, } = useSelector((state) => state.ProfileData);
-    console.log(profile.user_profile,"profile")
+
     const [profileimage, setprofileimage] = useState('')
     const [modal1, setModal1] = useState(false);
     const [isLoading, setLoading] = useState(true)
@@ -36,14 +36,14 @@ const Profile = (props) => {
         initialValues: {
             firstname: profile ? profile.firstname : "",
             lastname: profile ? profile.lastname : "",
-            address1: "",
-            address2: "",
-            city: "",
-            state: "",
-            country: "",
-            postcode: "",
+            address1: profile ? profile?.user_profile?.address1 : "",
+            address2: profile ? profile?.user_profile?.address2 : "",
+            city: profile ? profile?.user_profile?.city : "",
+            state: profile ? profile?.user_profile?.state : "",
+            country: profile ? profile?.user_profile?.country : "",
+            postcode: profile ? profile?.user_profile?.postcode : "",
             profileimage: "",
-            phonenumber: ""
+            phonenumber: profile ? profile?.user_profile?.phonenumber : "",
 
         },
         validationSchema: yup.object().shape({
