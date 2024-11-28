@@ -14,8 +14,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     // Retrieve the token from localStorage (or your preferred storage method)
-    const token = localStorage.getItem('authUsertoken'); // Or use Redux, Context API, etc.
-
+    const token = localStorage.getItem('vendorusertoken'); // Or use Redux, Context API, etc.
+    
     if (token) {
       // Attach the token to the Authorization header
       config.headers['Authorization'] = `Bearer ${JSON.parse(token)}`;

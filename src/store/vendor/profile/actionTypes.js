@@ -1,0 +1,13 @@
+
+//Show Profile
+
+export const SHOW_PROFILE = "SHOW_PROFILE"
+export const SHOW_PROFILE_SUCCESS = "SHOW_PROFILE_SUCCESS"
+export const SHOW_PROFILE_FAIL = "SHOW_PROFILE_FAIL"
+
+//Edit Profile
+
+
+export const EDIT_PROFILE = "EDIT_PROFILE"
+export const EDIT_PROFILE_SUCCESS = "EDIT_PROFILE_SUCCESS"
+export const EDIT_PROFILE_FAIL = "EDIT_PROFILE_FAIL"

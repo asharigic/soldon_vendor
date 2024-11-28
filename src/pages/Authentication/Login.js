@@ -24,10 +24,9 @@ const Login = props => {
   document.title = "Login | Quench";
   const { loginError, user, success, forgetError, verifycode, resetcode } = useSelector((state) => state.Login);
 
-
   const [ModalShow, setModalShow] = useState(false);
   const [counter, setCounter] = useState(0);
-  const [countdown, setCountdown] = useState(1 * 60);
+  const [countdown, setCountdown] = useState(3 * 60);
   const [OTP, setOTP] = useState(new Array(4).fill(""));
   const [username, setusername] = useState('');
   const [error, setError] = useState('');
@@ -47,7 +46,25 @@ const Login = props => {
 
     }
   }, [props.success]);
+  useEffect(() => {
+    let interval;
 
+    if (countdown > 0 && !isResendEnabled) {
+      interval = setInterval(() => {
+        setCountdown((prev) => {
+          const newCountdown = prev - 1;
+          // Save countdown to localStorage
+
+          return newCountdown;
+        });
+      }, 1000);
+    } else if (countdown === 0) {
+      setIsResendEnabled(true); // Enable resend when countdown reaches 0
+
+    }
+
+    return () => clearInterval(interval); // Cleanup the interval when countdown changes
+  }, [countdown, isResendEnabled]);
   useEffect(() => {
     let timer;
 
@@ -84,19 +101,30 @@ const Login = props => {
     }),
     onSubmit: (values) => {
       dispatch(loginUser(values));
+
+      // toggle()
+
+
+
     }
   });
 
   function handleChange(e, index) {
     const value = e.target.value;
+
+    // Allow only digits and ensure the input is not more than 1 character
     if (!/^\d*$/.test(value) || value.length > 1) return;
+
+    // Update the OTP state
     const newOTP = [...OTP.map((data, indx) => (indx === index ? value : data))];
     setOTP(newOTP);
+    // setOTP([...OTP.map((data, indx) => (indx === index ? e.target.value : data))]);
     if (value && index < OTP.length - 1) {
       document.getElementById(`otp-input-${index + 1}`).focus();
     }
   }
   const handleKeyDown = (e, index) => {
+    // Focus the previous input if Backspace is pressed and the current input is empty
     if (e.key === 'Backspace' && !OTP[index] && index > 0) {
       document.getElementById(`otp-input-${index - 1}`).focus();
     }
@@ -108,16 +136,21 @@ const Login = props => {
 
       }
       else {
+
         let userdata = {
+
           "code": OTP.join(""),
           "user_id": userId,
           "device_name": "web"
 
         }
         dispatch(verifycodePassword(userdata));
+
+        // toggleModal1()
       }
 
     } catch (error) {
+
       if (error.name === 'HTTPError') {
         const errorJson = await error.response.json();
         setError(errorJson.message)
@@ -142,25 +175,29 @@ const Login = props => {
     }
   };
   useEffect(() => {
+    // Show modal only if login is successful and no login error
     if (success === true && !loginError) {
-      if (user.user && user.user.vendor_setting.is_2fa_enabled === "0") {
+      if (user?.user && user?.user?.vendor_setting?.is_2fa_enabled === "0") {
         setModalShow(false);
         localStorage.setItem('vendorusertoken', JSON.stringify(user.token));
         localStorage.setItem('vendoruser', JSON.stringify(user.user));
         navigate('/dashboard')
       }
       else {
+
         setusername(user.message);
         setUserId(user.user_id);
-        setCounter(1 * 60); // Set countdown to 3 minutes 
-        setCountdown(1 * 60);
+        setCounter(3 * 60); // Set countdown to 3 minutes 
+        setCountdown(3 * 60);
         setModalShow(true); // Open modal on successful login
       }
 
     }
   }, [success, loginError, user]);
   useEffect(() => {
-    if (verifycode === null) {
+
+    if (verifycode === null || success === false) {
+
     }
     else {
       localStorage.setItem('vendorusertoken', JSON.stringify(verifycode.token));
@@ -172,8 +209,10 @@ const Login = props => {
   }, [verifycode]);
   const handleToggle1 = () => {
     setIsResendEnabled(false);
-    setCountdown(1 * 60);
+    setCountdown(3 * 60);
+
     setresendModal(false)
+
   }
   return (
     <React.Fragment>
@@ -202,11 +241,16 @@ const Login = props => {
                         return false;
                       }}
                     >
+                 
                       {loginError && (
-                        <Alert color="danger" className="text-center">
-                          These credentials do not match.
-                        </Alert>
+                       
+                          < Alert color="danger" className="text-center">
+                            These credentials do not match.
+                          </Alert>
                       )}
+
+
+                      {/* Username Field */}
                       <div className="mb-3">
                         <Label className="form-label">Username</Label>
                         <Input
@@ -227,6 +271,8 @@ const Login = props => {
                           <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
                         ) : null}
                       </div>
+
+                      {/* Password Field */}
                       <div className="mb-3">
                         <Label className="form-label">Password</Label>
                         <div className="login-password">
@@ -256,11 +302,15 @@ const Login = props => {
                           </button>
                         </div>
                       </div>
+
+                      {/* Login Button */}
                       <div className="mt-3 d-grid">
                         <button className="btn btn-primary btn-block" type="submit">
                           Log In
                         </button>
                       </div>
+
+                      {/* Registration Button */}
                       <div className="mt-3 d-grid">
                         <button
                           className="btn btn-primary btn-block"
@@ -270,6 +320,8 @@ const Login = props => {
                           Registration
                         </button>
                       </div>
+
+                      {/* Forgot Password Link */}
                       <div className="mt-4 text-center">
                         <Link to="/forgot-password" className="text-muted">
                           <i className="mdi mdi-lock me-1" />
@@ -317,7 +369,10 @@ const Login = props => {
               <Alert color="danger" className="text-center">
                 {forgetError}
               </Alert>
+
+
             )}
+
             <button onClick={() => verifyOTP()} className='otp-button btn btn-primary dz-xs-flex m-r5'>
               Verify
             </button>
@@ -339,11 +394,14 @@ const Login = props => {
                       Resend OTP in {formatTime(countdown)}
                     </a>
                 }
+
+
               </p>
             </div>
           </div>
         </ModalBody>
       </Modal>
+
       <Modal isOpen={verifyModal} toggle={toggle1} backdrop="static">
         <ModalHeader>Success</ModalHeader>
         <ModalBody>
@@ -363,7 +421,7 @@ const Login = props => {
         </ModalBody>
       </Modal>
 
-    </React.Fragment>
+    </React.Fragment >
   );
 };
 

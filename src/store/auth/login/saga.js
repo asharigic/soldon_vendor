@@ -55,12 +55,11 @@ function* resetCode({ payload: { resetcode } }) {
   }
 }
 
-function* logoutUser({ payload: { history } }) {
+function* logoutUser({ payload: { navigate } }) {
   try {
-    localStorage.removeItem("authUsertoken");
-    localStorage.removeItem("authUser");
-    localStorage.removeItem("profileImage");
-    history('/login');
+    localStorage.removeItem("vendorusertoken");
+    localStorage.removeItem("vendoruser");
+    navigate('/login');
   } catch (error) {
     yield put(apiError(error));
   }

@@ -33,10 +33,10 @@ export const loginError = user => {
   }
 }
 
-export const logoutUser = history => {
+export const logoutUser = () => {
   return {
     type: LOGOUT_USER,
-    payload: { history },
+    payload: "",
   }
 }
 

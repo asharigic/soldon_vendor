@@ -2,17 +2,22 @@ import React,{useState} from 'react';
 import { Link } from 'react-router-dom';  // For navigation with React Router
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
-
+import {  useDispatch } from "react-redux";
+import { logoutUser } from '../../store/actions';
 import './Header.css'
 const Header = () => {
     const [ModalShow, setModalShow] = useState(false);
     const navigate = useNavigate();
+    // const history = useNavigate();
+
+    const dispatch = useDispatch()
     const toggle1 = () => setModalShow(!ModalShow);
     const handlelogout = () => {
 
         localStorage.removeItem("vendoruser")
         localStorage.removeItem("vendorusertoken")
-        navigate("/login")
+        dispatch(logoutUser());
+        navigate("/")
     }
     return (
         <header className="header">
@@ -27,7 +32,7 @@ const Header = () => {
                         <Link to="/">Home</Link>
                     </li>
                     <li>
-                        <Link to="/about">Profile</Link>
+                        <Link to="/profile">Profile</Link>
                     </li>
                     <li>
                         <Link onClick={() => setModalShow(true)}>Logout</Link>
