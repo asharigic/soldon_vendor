@@ -36,8 +36,14 @@ function* onupdateProfile({ payload: user }) {
   try {
 
     const response = yield call(axiosInstance.post, `${process.env.REACT_APP_API}vendor/profile/update`, user);
+    console.log(response.data.status, "response.message")
+    if (response.data.status === true) {
+      yield put(editProfileSuccess(response));
+    }
+    else {
+      yield put(editProfileFail(response.data.message));
+    }
 
-    yield put(editProfileSuccess(response));
 
 
   } catch (error) {

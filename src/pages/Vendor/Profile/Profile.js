@@ -12,7 +12,7 @@ const Profile = (props) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { profileerror, profile, profilesuccess, loading, } = useSelector((state) => state.ProfileData);
-
+    console.log(profileerror, "profileerror")
     const [profileimage, setprofileimage] = useState('')
     const [modal1, setModal1] = useState(false);
     const [isLoading, setLoading] = useState(true)
@@ -54,6 +54,7 @@ const Profile = (props) => {
             state: yup.string().required("Please Enter State"),
             country: yup.string().required("Please Enter Country"),
             postcode: yup.string().required("Please Enter Postcode"),
+            phonenumber: yup.string().required("Please Enter Phonenumber"),
 
         }),
         onSubmit: (values) => {
@@ -67,7 +68,8 @@ const Profile = (props) => {
                 "state": values.state,
                 "country": values.country,
                 "postcode": values.postcode,
-                "profileimage": profileimage ? profileimage.split(',')[1] : ""
+                "profileimage": profileimage ? profileimage : ""
+
             }
 
             dispatch(editProfile(payload));
@@ -264,9 +266,17 @@ const Profile = (props) => {
                                                         onChange={validationType.handleChange}
                                                         onBlur={validationType.handleBlur}
                                                         value={validationType.values.phonenumber || ""}
+                                                        invalid={
+                                                            validationType.touched.phonenumber &&
+                                                                validationType.errors.phonenumber ? true : false
+                                                        }
 
                                                     />
-
+                                                    {validationType.touched.phonenumber && validationType.errors.phonenumber ? (
+                                                        <FormFeedback type="invalid">
+                                                            {validationType.errors.phonenumber}
+                                                        </FormFeedback>
+                                                    ) : null}
                                                 </Col>
                                                 <Col md={6}>
                                                     <Label className="form-label">Product Image</Label>
@@ -280,9 +290,11 @@ const Profile = (props) => {
 
                                                     <div className="avatar-lg">
                                                         <div className="avatar-title bg-light rounded-circle">
-                                                            <img src={profileimage ? (
-                                                                profileimage.startsWith('data:image') ?
-                                                                    profileimage : profileimage) : ''}
+                                                            <img src={
+                                                                profile?.user_profile?.profileimage ?
+                                                                    process.env.REACT_APP_LOCAL_IMAGE +
+                                                                    profile?.user_profile?.profileimage :
+                                                                    profileimage ? profileimage : ''}
                                                                 id="profileimage"
                                                                 alt=""
                                                                 className="avatar-md h-auto rounded-circle"
