@@ -12,7 +12,7 @@ const Profile = (props) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { profileerror, profile, profilesuccess, loading, } = useSelector((state) => state.ProfileData);
-    console.log(profileerror, "profileerror")
+
     const [profileimage, setprofileimage] = useState('')
     const [modal1, setModal1] = useState(false);
     const [isLoading, setLoading] = useState(true)
@@ -54,7 +54,10 @@ const Profile = (props) => {
             state: yup.string().required("Please Enter State"),
             country: yup.string().required("Please Enter Country"),
             postcode: yup.string().required("Please Enter Postcode"),
-            phonenumber: yup.string().required("Please Enter Phonenumber"),
+            phonenumber: yup.string()
+                .matches(/^[0-9]+$/, "Phone number must be only digits")  // Optional: match only numbers
+                .length(10, "Phone number must be exactly 10 digits")
+                .required("Please Enter Phonenumber"),
 
         }),
         onSubmit: (values) => {
@@ -262,7 +265,7 @@ const Profile = (props) => {
                                                     <Input
                                                         name="phonenumber"
                                                         placeholder="Enter PhoneNumber"
-                                                        type="text"
+                                                        type="number"
                                                         onChange={validationType.handleChange}
                                                         onBlur={validationType.handleBlur}
                                                         value={validationType.values.phonenumber || ""}

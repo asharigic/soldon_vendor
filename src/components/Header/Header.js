@@ -1,9 +1,10 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';  // For navigation with React Router
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
-import {  useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logoutUser } from '../../store/actions';
+import logo from '../../assets/images/logo.png'
 import './Header.css'
 const Header = () => {
     const [ModalShow, setModalShow] = useState(false);
@@ -24,7 +25,8 @@ const Header = () => {
             <nav className="navbar">
                 <div className="logo">
                     <Link to="/">
-                        <h1>MyApp</h1>  {/* This is your logo */}
+                        <img src={logo} width={100} />
+
                     </Link>
                 </div>
                 <ul className="nav-links">
