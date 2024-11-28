@@ -4,10 +4,10 @@ import { Navigate } from "react-router-dom";
 // Authentication related pages
 import Login from "../pages/Authentication/Login";
 import Register from "../pages/Authentication/Register";
-
+import Dashboard from "../pages/Dashboard/index";
 const authProtectedRoutes = [
-  
-  { path: "/", exact: true, component: <Navigate to="/login" /> },
+  { path: "/dashboard", component: <Dashboard /> },
+  { path: "/", exact: true, component: <Navigate to="/Dashboard" /> },
 ];
 
 const publicRoutes = [

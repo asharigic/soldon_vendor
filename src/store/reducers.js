@@ -6,7 +6,7 @@ import Login from "./auth/login/reducer";
 import account from "./auth/register/reducer";
 const rootReducer = combineReducers({
   Layout,
-  Login,
+  Login:Login,
   Registration:account,
 });
 

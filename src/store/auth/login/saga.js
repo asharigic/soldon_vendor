@@ -1,26 +1,70 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Login Redux States
-import { LOGIN_USER, LOGOUT_USER } from "./actionTypes";
-import { apiError, loginSuccess, logoutUserSuccess } from "./actions";
+import { LOGIN_USER, VERIFY_CODE ,LOGOUT_USER,RESET_CODE} from "./actionTypes";
+import { apiError, loginSuccess,verifycodePasswordSuccess ,verifycodePasswordError,resetcodePasswordSuccess, resetcodePasswordError ,loginError} from "./actions";
 import axios from "axios";
-function* loginUser({ payload: { user, navigate } }) {
+function* loginUser({ payload: { user } }) {
 
   try {
     const response = yield call(axios.post, `${process.env.REACT_APP_API}session/login`, user);
-    
+   
     yield put(loginSuccess(response.data));
-  
-    localStorage.setItem('authUsertoken', JSON.stringify(response.data.token));
-    localStorage.setItem('authUser', JSON.stringify(response.data));
-    navigate('/dashboard');
+
+    // localStorage.setItem('vendorusertoken', JSON.stringify(response.data.token));
+    // localStorage.setItem('vendoruser', JSON.stringify(response.data));
+    // navigate('/dashboard');
   } catch (error) {
     const errorMessage =
       error.response?.data?.message || "";
- 
-    yield put(apiError(errorMessage));
+
+    yield put(loginError(errorMessage));
   }
-  
+
+}
+
+//verify code
+function* verifyCode({ payload: { verifycode } }) {
+  try {
+
+    // const response = yield call(postFakeForgetPwd, "/fake-forget-pwd", {
+    //   email: user.email,
+    // })
+    const response = yield call(axios.post, `${process.env.REACT_APP_API}session/verify/otp`, verifycode);
+    if (response.data.status === false) {
+    
+      yield put(verifycodePasswordError(response.data.message));
+    }
+    else {
+      yield put(verifycodePasswordSuccess(response.data));
+    }
+
+
+  } catch (error) {
+    const errorMessage = error.response?.data?.message || error.message || "An error occurred while fetching terms.";
+
+    // Dispatch failure action
+    yield put(verifycodePasswordError(errorMessage));
+
+  }
+}
+
+function* resetCode({ payload: { resetcode } }) {
+  try {
+
+    // const response = yield call(postFakeForgetPwd, "/fake-forget-pwd", {
+    //   email: user.email,
+    // })
+    const response = yield call(axios.post, `${process.env.REACT_APP_API}session/resend/otp`, resetcode);
+    yield put(resetcodePasswordSuccess(response.data));
+
+  } catch (error) {
+    const errorMessage = error.response?.data?.message || error.message || "An error occurred while fetching terms.";
+
+    // Dispatch failure action
+    yield put(resetcodePasswordError(errorMessage));
+
+  }
 }
 
 function* logoutUser({ payload: { history } }) {
@@ -39,6 +83,8 @@ function* logoutUser({ payload: { history } }) {
 function* authSaga() {
   yield takeEvery(LOGIN_USER, loginUser);
   yield takeEvery(LOGOUT_USER, logoutUser);
+  yield takeEvery(VERIFY_CODE, verifyCode);
+  yield takeEvery(RESET_CODE, resetCode);
 }
 
 export default authSaga;
