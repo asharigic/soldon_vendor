@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProductsList } from '../../../store/vendor/products/actions';
 import { Table } from 'react-bootstrap';
 import bgimg1 from '../../../assets/images/no-img.jpg';
+import { Link } from 'react-router-dom';
 const ProductList = () => {
     document.title = "Products | Quench";
     const { products, pagination, productloading, successproduct, error } = useSelector((state) => state.products);
@@ -45,7 +46,7 @@ const ProductList = () => {
                                             <td>{element.subtitle ? element.subtitle :"_"}</td>
                                             <td>{element.price ? element.price :"_"}</td>
                                             <td>{element.status ? element.status :"_"}</td>
-                                            <td>Action</td>
+                                            <td> <Link to={`/edit-product/${element.id}`} style={{ cursor: 'default' }}>Edit</Link> <Link to="#" style={{ cursor: 'default' }} >Delete</Link></td>
                                         </tr>
                                     )
                                 })

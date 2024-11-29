@@ -25,7 +25,7 @@ import { getTermDropDownList, addNewTerm } from '../../../store/master/terms/act
 import * as Yup from "yup";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import {  showProduct, editProduct } from "../../../store/vendor/products/actions";
+import { showProduct, editProduct } from "../../../store/vendor/products/actions";
 //Import Breadcrumb
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -489,7 +489,7 @@ const EditProduct = props => {
     <Fragment>
       <div className="page-content">
         <Container fluid>
-         
+
           <Row>
             <Col xs="12">
               <Form
@@ -563,24 +563,18 @@ const EditProduct = props => {
                           <Label className="form-label">Product Image</Label>
 
                           <div className="text-center">
-                            <div className="position-relative d-inline-block">
-                              <div className="position-absolute bottom-0 end-0">
-                                <Label htmlFor="productimage" className="mb-0" id="projectImageInput">
-                                  <div className="avatar-xs">
-                                    <div className="avatar-title bg-light border rounded-circle text-muted cursor-pointer shadow font-size-16">
-                                      <i className="bx bxs-image-alt"></i>
-                                    </div>
-                                  </div>
-                                </Label>
-                                <UncontrolledTooltip placement="right" target="projectImageInput">
-                                  Select Image
-                                </UncontrolledTooltip>
-                                <input className="form-control d-none" id="productimage" type="file" accept="image/png, image/gif, image/jpeg" onChange={handleAcceptedProductImage} />
-                              </div>
+                            
+                                <Input className="form-control"
+                                  id="formFileLg"
+                                  type="file"
+                                  accept="image/png, image/jpeg"
+                                  onChange={handleAcceptedProductImage} />
+                                
+                             
                               <div className="avatar-lg">
                                 <div className="avatar-title bg-light rounded-circle">
-                                  <img src={productimage ? (productimage.startsWith('data:image') ? productimage : productimage) : ''} id="productimage" alt="" className="avatar-md h-auto rounded-circle" />
-                                </div>
+                                  <img src={productimage ? (productimage.startsWith('data:image') ? productimage : productimage) : ''} id="productimage" alt="" className="avatar-md h-auto rounded-circle" width={50}/>
+                            
                               </div>
                             </div>
 
@@ -913,7 +907,7 @@ const EditProduct = props => {
                     </Row>
                     <div className="d-flex flex-wrap gap-2">
                       <Button type="submit" color="primary"> Save Changes  </Button>
-                      <Button type="button" color="secondary" onClick={() => navigate("/products")}> Cancel</Button>
+                      <Button type="button" color="secondary" onClick={() => navigate("/productlist")}> Cancel</Button>
                     </div>
                   </CardBody>
                 </Card>
@@ -929,7 +923,7 @@ const EditProduct = props => {
           toggle={toggleModal1}
           title={successproduct ? "Updated" : "Alert"}
           message={successproduct ? "Product Updated Successfully." : error}
-          redirectTo={successproduct ? "/products" : toggleModal1} // Different navigation for this page
+          redirectTo={successproduct ? "/productlist" : toggleModal1} // Different navigation for this page
           buttonText="Okay"
         />
       }
