@@ -12,6 +12,9 @@ import Messages from "../pages/Vendor/Messages/Messages";
 import ForgotPassword from "../pages/Authentication/ForgetPassword";
 import PasswordverificationCode from "../pages/Authentication/PasswordverificationCode";
 import ResetPassword from "../pages/Authentication/ResetPassword";
+
+//Product
+import ProductList from "../pages/Vendor/Product/ProductList";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/", exact: true, component: <Navigate to="/Dashboard" /> },
@@ -19,6 +22,8 @@ const authProtectedRoutes = [
   { path: "/settings", component: <Settings /> },
   { path: "/notifications", component: <NoticationsList /> },
   { path: "/messages", component: <Messages /> },
+  { path: "/productlist", component: <ProductList /> },
+  
 ];
 
 const publicRoutes = [

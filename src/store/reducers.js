@@ -9,6 +9,7 @@ import settingsReducer from "./vendor/settings/reducer";
 import notificationsReducer from "./vendor/notifications/reducer";
 import messagesReducer from "./vendor/messages/reducer";
 import forgetPasswordRedure from "./auth/forgetpwd/reducer";
+import ProductsReducer from "./vendor/products/reducer";
 
 const rootReducer = combineReducers({
   Layout,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   SettingsData: settingsReducer,
   NotificationsData: notificationsReducer,
   MessagesData: messagesReducer,
-  ForgotData:forgetPasswordRedure
+  ForgotData:forgetPasswordRedure,
+  products:ProductsReducer
 });
 
 export default rootReducer;

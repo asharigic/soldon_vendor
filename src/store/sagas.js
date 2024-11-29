@@ -9,6 +9,7 @@ import settingsSaga from "./vendor/settings/saga";
 import notificationsSaga from "./vendor/notifications/saga";
 import messagesSaga from "./vendor/messages/saga";
 import forgetPasswordSaga from "./auth/forgetpwd/saga";
+import ProductSaga from "./vendor/products/saga";
 export default function* rootSaga() {
   yield all([
     //public
@@ -19,6 +20,7 @@ export default function* rootSaga() {
     fork(settingsSaga),
     fork(notificationsSaga),
     fork(messagesSaga),
-    fork(forgetPasswordSaga)
+    fork(forgetPasswordSaga),
+    fork(ProductSaga)
   ]);
 }

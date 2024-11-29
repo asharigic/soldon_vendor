@@ -46,6 +46,9 @@ const Header = () => {
                         <Link to="/messages">Messages</Link>
                     </li>
                     <li>
+                        <Link to="/productlist">Products</Link>
+                    </li>
+                    <li>
                         <Link onClick={() => setModalShow(true)}>Logout</Link>
                     </li>
                 </ul>
