@@ -29,7 +29,7 @@ const authProtectedRoutes = [
   { path: "/productlist", component: <ProductList /> },
   { path: '/add-product', component: <AddProduct /> },
   { path: "/edit-product/:id", component: <EditProduct /> },
-  { path: "/favourite", component: <FavouriteList /> },
+  { path: "/favourites", component: <FavouriteList /> },
 ];
 
 const publicRoutes = [

@@ -49,7 +49,7 @@ const Header = () => {
                         <Link to="/productlist">Products</Link>
                     </li>
                     <li>
-                        <Link to="/favourite">Favourite</Link>
+                        <Link to="/favourites">Favourites</Link>
                     </li>
                     <li>
                         <Link onClick={() => setModalShow(true)}>Logout</Link>
