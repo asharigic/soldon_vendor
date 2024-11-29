@@ -14,6 +14,8 @@ import termsSaga from "./master/terms/saga";
 import attributesSaga from "./master/attributes/saga";
 import TagsSaga from "./master/tags/saga";
 import CategoriesSaga from "./master/categories/saga";
+import favouriteSaga from "./vendor/favourite/saga";
+
 export default function* rootSaga() {
   yield all([
     //public
@@ -30,5 +32,6 @@ export default function* rootSaga() {
     fork(attributesSaga),
     fork(TagsSaga),
     fork(CategoriesSaga),
+    fork(favouriteSaga),
   ]);
 }

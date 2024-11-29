@@ -14,6 +14,8 @@ import termsReducer from "./master/terms/reducer";
 import attributesReducer from "./master/attributes/reducer";
 import TagsReducer from "./master/tags/reducer";
 import CategoriesReducer from "./master/categories/reducer";
+import favouriteReducer from "./vendor/favourite/reducer";
+
 const rootReducer = combineReducers({
   Layout,
   Login: Login,
@@ -28,6 +30,7 @@ const rootReducer = combineReducers({
   attributes: attributesReducer,
   tags: TagsReducer,
   categories: CategoriesReducer,
+  FavouriteData: favouriteReducer,
 });
 
 export default rootReducer;
