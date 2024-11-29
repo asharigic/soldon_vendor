@@ -452,10 +452,10 @@ const Messages = (props) => {
                                                                                         display: "flex",
                                                                                         flexDirection: "column",
                                                                                         maxWidth: "70%",
-                                                                                        backgroundColor: isSender ? "#f0f0f0" : "#0084ff",
+                                                                                        backgroundColor: "#f0f0f0",
                                                                                         padding: "10px",
                                                                                         borderRadius: "10px",
-                                                                                        color: isSender ? "black" : "white",
+                                                                                        color: "black",
                                                                                     }}
                                                                                 >
                                                                                     <div
