@@ -8,6 +8,7 @@ import Dashboard from "../pages/Dashboard/index";
 import Profile from "../pages/Vendor/Profile/Profile";
 import Settings from "../pages/Vendor/Settings/Settings";
 import NoticationsList from "../pages/Vendor/Notifications/NoticationsList";
+import Messages from "../pages/Vendor/Messages/Messages";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -15,6 +16,7 @@ const authProtectedRoutes = [
   { path: "/profile", component: <Profile /> },
   { path: "/settings", component: <Settings /> },
   { path: "/notifications", component: <NoticationsList /> },
+  { path: "/messages", component: <Messages /> },
 ];
 
 const publicRoutes = [

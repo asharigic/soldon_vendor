@@ -4,18 +4,17 @@ import { useNavigate } from 'react-router-dom';
 import { getNotificationsList } from '../../../store/vendor/notifications/actions';
 import Spinners from '../../../components/Common/Spinner';
 
-const NoticationsList = (props) => {
+const NotificationsList = (props) => {
     document.title = "Notifications | Quench";
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { notifications, notificationserror, notificationsloading, notificationssuccess, notificationsupdate } = useSelector((state) => state.NotificationsData);
+    const { notifications, notificationsloading } = useSelector((state) => state.NotificationsData);
     const [isLoading, setLoading] = useState(notificationsloading);
 
     useEffect(() => {
         if (!localStorage.getItem("vendoruser")) {
-            navigate('/login')
-        }
-        else {
+            navigate('/login');
+        } else {
             dispatch(getNotificationsList());
             setLoading(false);
         }
@@ -27,7 +26,16 @@ const NoticationsList = (props) => {
             {notificationsloading ? (
                 <Spinners setLoading={setLoading} />
             ) : (
-                <div style={{ margin: "20px", padding: "10px", border: "1px solid #ddd", borderRadius: "8px", backgroundColor: "#f9f9f9" }}>
+                <div
+                    style={{
+                        maxHeight: "500px", // Set your desired height
+                        overflowY: "auto", // Enable vertical scroll
+                        padding: "10px",
+                        border: "1px solid #ddd", // Optional styling
+                        borderRadius: "5px", // Optional styling
+                        backgroundColor: "#fff", // Optional styling
+                    }}
+                >
                     {notifications?.data?.length > 0 ? (
                         notifications?.data?.map((notification) => (
                             <div
@@ -35,29 +43,49 @@ const NoticationsList = (props) => {
                                 style={{
                                     display: "flex",
                                     flexDirection: "column",
-                                    borderBottom: "1px solid #eee",
                                     padding: "15px 10px",
                                     marginBottom: "10px",
+                                    backgroundColor: "#f0efef",
+                                    border: "1px solid black",
+                                    borderRadius: "5px", // Optional styling
                                 }}
                             >
                                 <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
-                                    <img
-                                        src={notification.sent_by_image}
-                                        alt={notification.sent_by_name}
-                                        style={{
-                                            width: "50px",
-                                            height: "50px",
-                                            borderRadius: "50%",
-                                            marginRight: "15px",
-                                        }}
-                                    />
-                                    <div>
+                                    {notification.sent_by_image === "" ? (
+                                        <div
+                                            className="avatar-md rounded-circle img-thumbnail"
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                width: "50px",
+                                                height: "50px",
+                                                borderRadius: "50%",
+                                                backgroundColor: "var(--bs-primary-subtle)",
+                                                color: "var(--bs-primary)",
+                                                fontSize: "30px",
+                                            }}
+                                        >
+                                            <span>
+                                                {notification.sent_by_name?.charAt(0).toUpperCase() || ""}
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <img
+                                            src={`${process.env.REACT_APP_URL}` + notification.sent_by_image}
+                                            style={{
+                                                width: "50px",
+                                                height: "50px",
+                                                borderRadius: "50%",
+                                                marginRight: "15px",
+                                            }}
+                                        />
+                                    )}
+                                    <div style={{ marginLeft: "10px" }}>
                                         <h3 style={{ fontSize: "16px", fontWeight: "bold", margin: 0 }}>{notification.sent_by_name}</h3>
                                         <p style={{ fontSize: "12px", color: "#888", margin: "5px 0" }}>{notification.sent_at}</p>
+                                        <span>{notification.content.replace(/<[^>]*>/g, "")}</span>
                                     </div>
-                                </div>
-                                <div style={{ fontSize: "14px", color: "#333" }}>
-                                    <p>{notification.content}</p>
                                 </div>
                             </div>
                         ))
@@ -69,7 +97,7 @@ const NoticationsList = (props) => {
                 </div>
             )}
         </Fragment>
-    )
-}
+    );
+};
 
-export default NoticationsList;
+export default NotificationsList;

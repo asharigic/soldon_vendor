@@ -7,13 +7,16 @@ import account from "./auth/register/reducer";
 import profileReducer from "./vendor/profile/reducer";
 import settingsReducer from "./vendor/settings/reducer";
 import notificationsReducer from "./vendor/notifications/reducer";
+import messagesReducer from "./vendor/messages/reducer";
+
 const rootReducer = combineReducers({
   Layout,
   Login: Login,
   Registration: account,
   ProfileData: profileReducer,
   SettingsData: settingsReducer,
-  NotificationsData: notificationsReducer
+  NotificationsData: notificationsReducer,
+  MessagesData: messagesReducer
 });
 
 export default rootReducer;
