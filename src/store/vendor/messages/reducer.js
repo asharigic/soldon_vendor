@@ -2,7 +2,10 @@
 import {
     GET_MESSAGES_LIST,
     GET_MESSAGES_LIST_SUCCESS,
-    GET_MESSAGES_LIST_FAIL
+    GET_MESSAGES_LIST_FAIL,
+    SEND_MESSAGE,
+    SEND_MESSAGE_SUCCESS,
+    SEND_MESSAGE_FAIL
 } from './actionTypes';
 
 const INIT_STATE = {
@@ -10,7 +13,8 @@ const INIT_STATE = {
     messageserror: null,
     messagesloading: false,
     messagessuccess: false,
-    messagesupdate: null
+    messagesupdate: null,
+    showmessage: null
 };
 
 const messagesReducer = (state = INIT_STATE, action) => {
@@ -37,6 +41,29 @@ const messagesReducer = (state = INIT_STATE, action) => {
                 messagesloading: false,
                 messagessuccess: false,
                 messageserror: action.payload,
+            };
+
+        //Send Message
+        case SEND_MESSAGE:
+            return {
+                ...state,
+                messagesloading: true,
+            };
+
+        case SEND_MESSAGE_SUCCESS:
+            return {
+                ...state,
+                messagesloading: false,
+                showmessage: action.payload.message,
+                messagessuccess: true
+            };
+
+        case SEND_MESSAGE_FAIL:
+            return {
+                ...state,
+                messagesloading: false,
+                messagessuccess: false,
+                errormessage: action.payload,
             };
 
         default:
