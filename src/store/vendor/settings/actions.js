@@ -13,9 +13,9 @@ export const getSettings = () => ({
   type: GET_SETTINGS,
 });
 
-export const getSettingsSuccess = (profile) => ({
+export const getSettingsSuccess = (settings) => ({
   type: GET_SETTINGS_SUCCESS,
-  payload: profile,
+  payload: settings,
 });
 
 export const getSettingsFail = (error) => ({

@@ -6,12 +6,14 @@ import Login from "./auth/login/reducer";
 import account from "./auth/register/reducer";
 import profileReducer from "./vendor/profile/reducer";
 import settingsReducer from "./vendor/settings/reducer";
+import notificationsReducer from "./vendor/notifications/reducer";
 const rootReducer = combineReducers({
   Layout,
-  Login:Login,
-  Registration:account,
-  ProfileData:profileReducer,
-  SettingsData:settingsReducer
+  Login: Login,
+  Registration: account,
+  ProfileData: profileReducer,
+  SettingsData: settingsReducer,
+  NotificationsData: notificationsReducer
 });
 
 export default rootReducer;

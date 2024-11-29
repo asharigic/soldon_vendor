@@ -12,7 +12,6 @@ const INIT_STATE = {
   settings: [],
   settingserror: null,
   settingsloading: false,
-  settingsloading: false,
   settingssuccess: false,
   settingsupdate: null
 };

@@ -37,10 +37,13 @@ const Header = () => {
                         <Link to="/profile">Profile</Link>
                     </li>
                     <li>
-                        <Link onClick={() => setModalShow(true)}>Logout</Link>
+                        <Link to="/settings">Settings</Link>
                     </li>
                     <li>
-                        <Link to="/settings">Setting</Link>
+                        <Link to="/notifications">Notifications</Link>
+                    </li>
+                    <li>
+                        <Link onClick={() => setModalShow(true)}>Logout</Link>
                     </li>
                 </ul>
             </nav>
