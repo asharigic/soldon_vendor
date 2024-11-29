@@ -7,7 +7,6 @@ import bgimg1 from '../../../assets/images/no-img.jpg';
 const ProductList = () => {
     document.title = "Products | Quench";
     const { products, pagination, productloading, successproduct, error } = useSelector((state) => state.products);
-    console.log(products?.data, "products")
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);
 

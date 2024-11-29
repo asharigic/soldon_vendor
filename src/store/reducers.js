@@ -10,7 +10,10 @@ import notificationsReducer from "./vendor/notifications/reducer";
 import messagesReducer from "./vendor/messages/reducer";
 import forgetPasswordRedure from "./auth/forgetpwd/reducer";
 import ProductsReducer from "./vendor/products/reducer";
-
+import termsReducer from "./master/terms/reducer";
+import attributesReducer from "./master/attributes/reducer";
+import TagsReducer from "./master/tags/reducer";
+import CategoriesReducer from "./master/categories/reducer";
 const rootReducer = combineReducers({
   Layout,
   Login: Login,
@@ -20,7 +23,11 @@ const rootReducer = combineReducers({
   NotificationsData: notificationsReducer,
   MessagesData: messagesReducer,
   ForgotData:forgetPasswordRedure,
-  products:ProductsReducer
+  products:ProductsReducer,
+  terms: termsReducer,
+  attributes: attributesReducer,
+  tags: TagsReducer,
+  categories: CategoriesReducer,
 });
 
 export default rootReducer;

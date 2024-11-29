@@ -15,6 +15,8 @@ import ResetPassword from "../pages/Authentication/ResetPassword";
 
 //Product
 import ProductList from "../pages/Vendor/Product/ProductList";
+import AddProduct from "../pages/Vendor/Product/AddProduct";
+import EditProduct from "../pages/Vendor/Product/EditProduct";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/", exact: true, component: <Navigate to="/Dashboard" /> },
@@ -23,7 +25,8 @@ const authProtectedRoutes = [
   { path: "/notifications", component: <NoticationsList /> },
   { path: "/messages", component: <Messages /> },
   { path: "/productlist", component: <ProductList /> },
-  
+  { path: '/add-product', component: <AddProduct /> },
+  { path: "/edit-product/:id", component: <EditProduct /> },
 ];
 
 const publicRoutes = [

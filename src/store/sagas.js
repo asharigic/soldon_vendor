@@ -10,6 +10,10 @@ import notificationsSaga from "./vendor/notifications/saga";
 import messagesSaga from "./vendor/messages/saga";
 import forgetPasswordSaga from "./auth/forgetpwd/saga";
 import ProductSaga from "./vendor/products/saga";
+import termsSaga from "./master/terms/saga";
+import attributesSaga from "./master/attributes/saga";
+import TagsSaga from "./master/tags/saga";
+import CategoriesSaga from "./master/categories/saga";
 export default function* rootSaga() {
   yield all([
     //public
@@ -21,6 +25,10 @@ export default function* rootSaga() {
     fork(notificationsSaga),
     fork(messagesSaga),
     fork(forgetPasswordSaga),
-    fork(ProductSaga)
+    fork(ProductSaga),
+    fork(termsSaga),
+    fork(attributesSaga),
+    fork(TagsSaga),
+    fork(CategoriesSaga),
   ]);
 }
