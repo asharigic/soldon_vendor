@@ -8,6 +8,7 @@ import profileReducer from "./vendor/profile/reducer";
 import settingsReducer from "./vendor/settings/reducer";
 import notificationsReducer from "./vendor/notifications/reducer";
 import messagesReducer from "./vendor/messages/reducer";
+import forgetPasswordRedure from "./auth/forgetpwd/reducer";
 
 const rootReducer = combineReducers({
   Layout,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   ProfileData: profileReducer,
   SettingsData: settingsReducer,
   NotificationsData: notificationsReducer,
-  MessagesData: messagesReducer
+  MessagesData: messagesReducer,
+  ForgotData:forgetPasswordRedure
 });
 
 export default rootReducer;

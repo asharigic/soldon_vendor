@@ -4,6 +4,7 @@
 
 export * from "./auth/login/actions";
 export * from "./auth/register/actions";
+export * from "./auth/forgetpwd/actions";
 export const changeLayoutMode = (layoutModeType) => {
     return {
       type: 'CHANGE_LAYOUT_MODE',

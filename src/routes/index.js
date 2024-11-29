@@ -9,7 +9,9 @@ import Profile from "../pages/Vendor/Profile/Profile";
 import Settings from "../pages/Vendor/Settings/Settings";
 import NoticationsList from "../pages/Vendor/Notifications/NoticationsList";
 import Messages from "../pages/Vendor/Messages/Messages";
-
+import ForgotPassword from "../pages/Authentication/ForgetPassword";
+import PasswordverificationCode from "../pages/Authentication/PasswordverificationCode";
+import ResetPassword from "../pages/Authentication/ResetPassword";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/", exact: true, component: <Navigate to="/Dashboard" /> },
@@ -22,6 +24,13 @@ const authProtectedRoutes = [
 const publicRoutes = [
   { path: "/login", component: <Login /> },
   { path: "/register", component: <Register /> },
+  {path:'/forgot-password',component:<ForgotPassword/>},
+  {path:'/verification-code',component:<PasswordverificationCode/>},
+  {path:'/reset-password',component:<ResetPassword/>}
+  
+
+  
+  
   
 ];
 
