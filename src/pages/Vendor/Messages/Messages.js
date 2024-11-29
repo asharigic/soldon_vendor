@@ -91,6 +91,26 @@ const Messages = (props) => {
         }
     };
 
+    //search recent user
+    const searchUsers = () => {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById("search-user");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("recent-list");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("a")[0];
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+                // setSearchResultNotFound(false);
+            } else {
+                li[i].style.display = "none";
+                // setSearchResultNotFound(true);
+            }
+        }
+    };
+
     const toggleSearch = () => {
         setsearch_Menu(!search_Menu);
     };
@@ -195,10 +215,10 @@ const Messages = (props) => {
             <div className="page-content">
                 <Container fluid>
                     <Breadcrumb title="Admin" breadcrumbItem="Messages" />
-                    <Row>
+                    <Row style={{ margin: "auto" }}>
                         <Col lg="12">
-                            <div className="d-lg-flex">
-                                <div className="chat-leftsidebar me-lg-4">
+                            <div className="d-lg-flex g-5">
+                                <div className="col-lg-4 chat-leftsidebar" style={{ marginRight: "20px" }}>
                                     <div >
                                         <div className="py-4 border-bottom">
                                             <div className="d-flex">
@@ -244,7 +264,7 @@ const Messages = (props) => {
                                         <div className="search-box chat-search-box py-4">
                                             <div className="position-relative">
                                                 <Input
-                                                    // onKeyUp={searchUsers}
+                                                    onKeyUp={searchUsers}
                                                     id="search-user"
                                                     type="text"
                                                     className="form-control"
@@ -346,7 +366,7 @@ const Messages = (props) => {
                                     </div>
                                 </div>
 
-                                <div className="w-100 user-chat">
+                                <div className="col-lg-8 user-chat">
                                     <Card>
                                         <div className="p-4 border-bottom ">
                                             <Row>
@@ -361,7 +381,11 @@ const Messages = (props) => {
                                                                 toggle={toggleRefresh}
                                                             >
                                                                 <DropdownToggle className="btn nav-btn" tag="a">
-                                                                    {messagesloading ? <i className="bx bx-loader bx-spin" /> : <i className="bx bx-revision" />}
+                                                                    {messagesloading ? 
+                                                                        "Loader"// <i className="bx bx-loader bx-spin" /> 
+                                                                        : 
+                                                                        "Refresh"// <i className="bx bx-revision" />
+                                                                    }
                                                                 </DropdownToggle>
                                                             </Dropdown>
                                                         </li>
@@ -404,7 +428,7 @@ const Messages = (props) => {
 
                                         <div>
                                             <div className="chat-conversation p-3">
-                                                <SimpleBar ref={scrollRef} style={{ height: "300px", width: "200px" }}>
+                                                <SimpleBar ref={scrollRef} style={{ height: "300px", width: "100%" }}>
                                                     {isLoading ? (
                                                         <Spinners setLoading={setLoading} />
                                                     ) : (
@@ -452,7 +476,7 @@ const Messages = (props) => {
                                                                                                 fontWeight: "bold",
                                                                                             }}
                                                                                         >
-                                                                                            {userMsg.sender === userID ? message.sender : "You"}
+                                                                                            {userMsg.receiver === userID ? message.sender : "You"}
                                                                                         </div>
                                                                                         <p>{userMsg.message}</p>
                                                                                         {userMsg.images && (
@@ -465,6 +489,50 @@ const Messages = (props) => {
                                                                                             </p>
                                                                                         )}
                                                                                     </div>
+
+                                                                                    {/* User Details Modal/Popup */}
+                                                                                    <Modal isOpen={showUserDetail}
+                                                                                        role="dialog"
+                                                                                        autoFocus={true} c
+                                                                                        entered data-toggle="modal"
+                                                                                        style={{
+                                                                                            maxWidth: '300px',
+                                                                                        }}
+                                                                                        toggle={() => { setShowUserDetail(!showUserDetail); }}
+                                                                                    >
+                                                                                        <div>
+                                                                                            <ModalHeader className="border-bottom-0" toggle={() => { setShowUserDetail(!showUserDetail); }}></ModalHeader>
+                                                                                        </div>
+                                                                                        <ModalBody>
+                                                                                            <div className="text-center mb-4">
+                                                                                                <div className="avatar-md mx-auto mb-4">
+                                                                                                    {userDetailID === userID ? (
+                                                                                                        <img src={userProfileImage} className="avatar-title bg-light  rounded-circle text-primary h1" alt="" style={{ height: "40%", width: "40%",borderRadius: "50%" }} />
+                                                                                                    ) : (
+                                                                                                        message?.sender_profileimage === "" ? (
+                                                                                                        <div className="avatar-title bg-light  rounded-circle text-primary h1">
+                                                                                                            <span className="avatar-title rounded-circle bg-primary-subtle text-primary">
+                                                                                                                {message?.sender?.charAt(0).toUpperCase() || ""}
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                    ) : (
+                                                                                                        <img src={message?.sender_profileimage} className="avatar-title bg-light  rounded-circle text-primary h1" alt="" style={{ height: "40%", width: "40%",borderRadius: "50%" }} />
+                                                                                                    ))
+                                                                                                    }
+                                                                                                </div>
+
+                                                                                                <Row className="justify-content-center">
+                                                                                                    <Col xl={10}>
+                                                                                                        <h3 className="text-primary">{userDetailID === userID ? userName : message.sender}</h3>
+                                                                                                        <h6 className="text-secondary">{userDetailID === userID ? userPhone : message?.user_phone}</h6>
+                                                                                                        <h6 className="text-secondary">{userDetailID === userID ? userEmail : message?.user_email}</h6>
+                                                                                                        <p className="text-muted font-size-14 mb-4">
+                                                                                                        </p>
+                                                                                                    </Col>
+                                                                                                </Row>
+                                                                                            </div>
+                                                                                        </ModalBody>
+                                                                                    </Modal>
                                                                                 </div>
                                                                             </li>
                                                                         );
