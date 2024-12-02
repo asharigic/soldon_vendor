@@ -63,8 +63,9 @@ const Header = () => {
                     <button onClick={() => handlelogout()} className='otp-button btn btn-primary dz-xs-flex m-r5'>
                         Save
                     </button>
-                    <button onClick={() => setModalShow(false)} className='otp-button btn btn-primary dz-xs-flex m-r5'>
-                        cancle
+                    &nbsp;
+                    <button onClick={() => setModalShow(false)} className='otp-button btn btn-secondary dz-xs-flex m-r5'>
+                        Cancle
                     </button>
                 </ModalBody>
             </Modal>

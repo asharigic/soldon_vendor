@@ -175,7 +175,7 @@ const Login = props => {
     }
   };
   useEffect(() => {
-    // Show modal only if login is successful and no login error
+   
     if (success === true && !loginError) {
       if (user?.user && user?.user?.vendor_setting?.is_2fa_enabled === "0") {
         setModalShow(false);

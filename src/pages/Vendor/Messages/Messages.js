@@ -44,9 +44,9 @@ const Messages = (props) => {
         } else {
             const obj = JSON.parse(localStorage.getItem("vendoruser"));
             setUserID(obj.id);
-            setUserName(obj.username);
-            setUserPhone(obj.user_profile.phonenumber);
-            setUserEmail(obj.email);
+            setUserName(obj?.username);
+            setUserPhone(obj?.user_profile?.phonenumber);
+            setUserEmail(obj?.email);
             setUserProfileImage(`${process.env.REACT_APP_URL}` + obj.profile_image);
 
             dispatch(getMessagesList());
