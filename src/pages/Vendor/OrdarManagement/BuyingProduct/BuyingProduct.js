@@ -3,12 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getBuyingList } from '../../../../store/vendor/buyingproduct/action';
 import DataTable from '../../../../components/Common/DataTable';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Badge } from 'react-bootstrap';
 import bgimg1 from '../../../../assets/images/no-img.jpg';
 import Spinners from '../../../../components/Common/Spinner';
-// import DeleteModal from '../../../components/Common/DeleteModal';
-
 const ProjectStatus = ({ status }) => {
     switch (status) {
         case "pending":
@@ -30,17 +28,15 @@ const ProjectStatus = ({ status }) => {
     }
 };
 const BuyingListPage = () => {
-    document.title = "Products | Quench";
+    document.title = "Buying | Quench";
     const { buyingproducts, buyingproductloading } = useSelector((state) => state.BuyingProduct);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const [totalItems, setTotalItems] = useState(0);
     const [pageSize, setPageSize] = useState(15); // Default page size
     const [currentPage, setCurrentPage] = useState(1);
-    const [productList, setProductList] = useState([]);
-    // const [deleteModal, setDeleteModal] = useState(false);
     const [searchValue, setSearchValue] = useState('');
+    const [ViewModal, setViewModal] = useState({ id: '', value: false });
 
 
     useEffect(() => {
@@ -83,7 +79,7 @@ const BuyingListPage = () => {
                 header: "Image",
                 accessorKey: "image",
                 cell: (cellProps) => {
-                    console.log(cellProps.row.cart_item.product.image,"cellProps.row.image")
+
                     const imageSrc = cellProps?.row?.cart_item?.product?.image || bgimg1; // Fallback URL
                     return (
                         <img
@@ -151,13 +147,9 @@ const BuyingListPage = () => {
                 accessorKey: "action",
                 cell: (cellProps) => (
                     <div>
-                        <Link to={`/edit-product/${cellProps.row.id}`} style={{ cursor: 'pointer' }}>View Order</Link>
-                        &nbsp;
-                        {/* <Link to="#" onClick={() => {
-                            // setDeleteModal(true);
-                            setProductList(cellProps.row);
-                        }} style={{ cursor: 'pointer' }}>Delete</Link> */}
-                    </div>
+                        <Link onClick={() => setViewModal({ id: cellProps.row.id, value: true })}>View Order</Link>
+
+                    </div >
                 ),
                 enableColumnFilter: false,
                 enableSorting: false,
@@ -165,15 +157,6 @@ const BuyingListPage = () => {
         ],
         [currentPage, pageSize] // Recalculate when pageSize or currentPage changes
     );
-    // const handleDeleteTag = () => {
-    //     if (productList && productList.id) {
-    //         dispatch(onDeleteClick(productList.id));
-    //         setDeleteModal(false);
-    //         setProductList([]);
-    //         dispatch(getProductsList({ page: currentPage, limit: pageSize }));
-
-    //     }
-    // };
     const handleSearch = () => {
         var userData = {
 
@@ -188,15 +171,10 @@ const BuyingListPage = () => {
     }
     return (
         <div>
-            {/* <DeleteModal
-                show={deleteModal}
-                onDeleteClick={handleDeleteTag}
-                onCloseClick={() => setDeleteModal(false)}
-            /> */}
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ textAlign: 'center' }}>
                 <h5>Buying Order List</h5>
-                {/* <button onClick={() => navigate('/add-product')}>Add Product</button> */}
+
             </div>
             {isLoading ? <Spinners setLoading={setIsLoading} />
                 :
@@ -214,7 +192,11 @@ const BuyingListPage = () => {
                     handleSearch={handleSearch}
                 />
             }
-
+            {
+                ViewModal ?
+                    <><h1>{console.log(ViewModal.id)}</h1></>
+                    : ""
+            }
         </div>
     );
 };
