@@ -18,12 +18,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { resetforgotcodePassword } from "../../store/actions";
 
 // import images
-import logo from "../../assets/images/logo.svg";
-import logoLightPng from "../../assets/images/logo.png";
+
+import logo from "../../assets/images/QUENCHED-02-01-100x33.png";
 
 const ResetPassword = () => {
 
-    const { loading, forgetpasswordError, forgetpasswordSuccessMsg,resetforgotcode } = useSelector((state) => state.ForgotData);
+    const { loading, forgetpasswordError, forgetpasswordSuccessMsg, resetforgotcode } = useSelector((state) => state.ForgotData);
 
     //meta title
     document.title = "ResetPassword | Quench";
@@ -72,10 +72,18 @@ const ResetPassword = () => {
                         <Col md={8} lg={6} xl={5}>
                             <Card className="overflow-hidden" >
                                 <div className="theme-dark-bg" >
-                                   
+
                                 </div>
                                 <CardBody className="pt-0">
-                                    
+                                    <div className="text-center mt-2">
+                                        <Link to="/" className="logo-light-element">
+                                            <div className="avatar-md profile-user-wid mb-4">
+                                                <span className="avatar-title rounded-circle bg-light ">
+                                                    <img src={logo} width={100} />
+                                                </span>
+                                            </div>
+                                        </Link>
+                                    </div>
                                     <div className="p-2">
                                         <Form
                                             className="form-horizontal login-form"

@@ -9,21 +9,22 @@ import {
   Label,
   Input,
   Row,
-  Button
+  Button,
+
 } from "reactstrap"
-import logoLightPng from "../../assets/images/logo.png";
+import logo from "../../assets/images/QUENCHED-02-01-100x33.png";
 import { useDispatch, useSelector } from "react-redux";
 import CommonModal from "../../components/Common/CommonModal";
 import withRouter from "../../components/Common/withRouter";
 import { verifyforgotcodePassword, userForgetPassword } from "../../store/actions";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 const PasswordverificationCode = (props) => {
 
   //meta title
   document.title = "Verification | Quench";
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, forgetpasswordError, forgetpasswordSuccessMsg ,verifyforgotcode} = useSelector((state) => state.ForgotData);
+  const { loading, forgetpasswordError, forgetpasswordSuccessMsg, verifyforgotcode } = useSelector((state) => state.ForgotData);
 
   const [modal1, setModal1] = useState(false);
   const toggleModal1 = () => setModal1(!modal1);
@@ -122,7 +123,7 @@ const PasswordverificationCode = (props) => {
 
 
   const handleToggle = () => {
-    console.log(forgetpasswordSuccessMsg,"for")
+    console.log(forgetpasswordSuccessMsg, "for")
     if (verifyforgotcode) {
       console.log(verifyforgotcode, "verifycode")
       if (verifyforgotcode.status === true) {
@@ -150,21 +151,20 @@ const PasswordverificationCode = (props) => {
               <Card>
                 <div className="theme-dark-bg" >
                   <Row>
-                    <Col className="col-7">
-                      <div className="text-white p-4">
-                        <h5 className="text-white">Welcome Back !</h5>
-                        <p>Sign in to continue to Quench.</p>
-                      </div>
-                    </Col>
-                    <Col className="col-5 align-self-end">
-                      <div className="logo-lg" style={{ textAlign: "center", marginBottom: "35px" }}>
-                        <img src={logoLightPng} alt="" height="40" />
-                      </div>
-                    </Col>
+
                   </Row>
                 </div>
                 <CardBody>
                   <div className="p-2">
+                    <div className="text-center mt-2">
+                      <Link to="/" className="logo-light-element">
+                        <div className="avatar-md profile-user-wid mb-4">
+                          <span className="avatar-title rounded-circle bg-light ">
+                            <img src={logo} width={100} />
+                          </span>
+                        </div>
+                      </Link>
+                    </div>
                     <div className="text-center">
                       <div className="avatar-md mx-auto">
                         <div className="avatar-title rounded-circle bg-light">
@@ -259,7 +259,7 @@ const PasswordverificationCode = (props) => {
 
         </Container>
         {/* verifycode.code */}
-       
+
         {!loading &&
           < CommonModal
             isOpen={modal1}

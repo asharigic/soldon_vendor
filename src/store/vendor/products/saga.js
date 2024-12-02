@@ -37,7 +37,7 @@ function* fetchProducts({ payload: { seachproduct, page } }) {
       `${process.env.REACT_APP_API}vendor/product/showall`,
       seachproduct
     );
-    console.log(response.data, "response.dat")
+ 
     yield put(getProductsListSuccess(response.data.products));
   } catch (error) {
     yield put(getProductsListFail(error.message));
@@ -98,7 +98,7 @@ function* editProduct({ payload: { id, product } }) {
 //Delete product
 function* deleteProduct({ payload: { product } }) {
   try {
-    const response = yield call(axiosInstance.post, `${process.env.REACT_APP_API}vendor/product/destroy/${product}`);
+    const response = yield call(axiosInstance.delete, `${process.env.REACT_APP_API}vendor/product/destroy/${product}`);
     yield put(deleteProductSuccess(response.data));
 
   } catch (error) {

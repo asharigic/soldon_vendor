@@ -236,25 +236,25 @@ const EditProduct = props => {
       description: showproducts && showproducts.product ? showproducts.product.description : "",
       status: showproducts && showproducts.product ? showproducts.product.status : "",
       stock_status: showproducts && showproducts.product ? showproducts.product.stock_status : "",
-      sealed: showproducts && showproducts.product ? showproducts.product.info.sealed : "",
+      sealed: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.sealed : "",
       image: productimage ? productimage : "",
       images: "",
-      productcondition: showproducts && showproducts.product ? showproducts.product.info.productcondition : "new",
-      packaging_condition: showproducts && showproducts.product ? showproducts.product.info.packaging_condition : "gradeA",
+      productcondition: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.productcondition : "new",
+      packaging_condition: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.packaging_condition : "gradeA",
       term_id: showproducts?.product?.terms ? showproducts.product.terms.map(term => term.id) : [],
       category_id: showproducts?.product?.categories ? showproducts.product.categories.map(term => term.id) : [],
       tags_id: showproducts?.product?.tags ? showproducts.product.tags.map(tags => tags.id) : [],
 
-      manufacturer: showproducts && showproducts.product ? showproducts.product.info.manufacturer : "",
-      model: showproducts && showproducts.product ? showproducts.product.info.model : "",
-      variation: showproducts && showproducts.product ? showproducts.product.info.variation : "",
-      ean: showproducts && showproducts.product ? showproducts.product.info.ean : "",
-      upc: showproducts && showproducts.product ? showproducts.product.info.upc : "",
-      weight: showproducts && showproducts.product ? showproducts.product.info.weight : "",
-      length: showproducts && showproducts.product ? showproducts.product.info.length : "",
-      width: showproducts && showproducts.product ? showproducts.product.info.width : "",
-      height: showproducts && showproducts.product ? showproducts.product.info.height : "",
-      additional_condition: showproducts && showproducts.product ? showproducts.product.info.additional_condition : "",
+      manufacturer: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.manufacturer : "",
+      model: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.model : "",
+      variation: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.variation : "",
+      ean: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.ean : "",
+      upc: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.upc : "",
+      weight: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info===null ?"":showproducts.product.info.weight : "",
+      length: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.length : "",
+      width: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.width : "",
+      height: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.height : "",
+      additional_condition: showproducts && showproducts.product ?showproducts.product.info===null ?"": showproducts.product.info.additional_condition : "",
     },
     validationSchema: yup.object().shape({
       productname: yup.string().required('Please Enter Your Product Name'),
@@ -548,17 +548,7 @@ const EditProduct = props => {
                             <span className="text-danger">{metaData.errors.status}</span>
                           ) : null}
                         </div>
-                        {/* <div className="mb-3">
-                        <div>
-                          <Label htmlFor="productimage" className="form-label">Product Image</Label>
-                        
-                          <img className="img-drop-area" height={productimage ? 50 : 0}
-                            src={productimage ? (productimage.startsWith('data:image') ? productimage : productimage) : bgimg1} // Fallback to a default image if no image
-                            alt='' />
-
-                          <Input className="form-control" id="productimage" type="file" accept="image/png, image/jpeg" onChange={handleAcceptedProductImage} />
-                          </div>
-                        </div> */}
+                      
                         <div className="mb-3">
                           <Label className="form-label">Product Image</Label>
 
@@ -640,27 +630,7 @@ const EditProduct = props => {
                             onChange={metaData.handleChange}
                           />
                         </div>
-                        {/* <div className="mb-3">
-                          <Label htmlFor="description">
-                            Product Description <span className="errorsymbol">*</span>
-                          </Label>
-                          <Input
-                            tag="textarea"
-                            className="mb-3"
-                            id="description"
-                            name="description"
-                            rows={5}
-                            placeholder="Product Description"
-                            value={metaData.values.description}
-                            onChange={metaData.handleChange}
-                            invalid={
-                              metaData.touched.description && metaData.errors.description ? true : false
-                            }
-                          />
-                          {metaData.errors.description && metaData.touched.description ? (
-                            <span className="text-danger">{metaData.errors.description}</span>
-                          ) : null}
-                        </div> */}
+                     
                         <div className="mb-3">
 
                           <Label htmlFor="description">

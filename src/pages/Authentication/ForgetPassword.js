@@ -17,7 +17,7 @@ import {
 
 // import images
 import { useNavigate } from "react-router-dom";
-import logoLightPng from "../../assets/images/logo.png";
+import logo from '../../assets/images/QUENCHED-02-01-100x33.png';
 import { userForgetPassword } from "../../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import CommonModal from "../../components/Common/CommonModal";
@@ -28,8 +28,8 @@ const ForgotPassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, forgetpasswordError, forgetpasswordSuccessMsg  } = useSelector((state) => state.ForgotData);
-  
+  const { loading, forgetpasswordError, forgetpasswordSuccessMsg } = useSelector((state) => state.ForgotData);
+
   const [modal1, setModal1] = useState(false);
   const toggleModal1 = () => setModal1(!modal1);
   const validation = useFormik({
@@ -48,7 +48,7 @@ const ForgotPassword = () => {
     }
   });
   const handleToggle = () => {
-  
+
     localStorage.setItem('emailverification', validation.values.email)
     navigate("/verification-code");
     toggleModal1();
@@ -63,21 +63,19 @@ const ForgotPassword = () => {
 
                 <div className="theme-dark-bg" >
                   <Row>
-                    <Col className="col-7">
-                      <div className="text-white p-4">
-                        <h5 className="text-white">Welcome Back !</h5>
-                        <p>Sign in to continue to Quench.</p>
-                      </div>
-                    </Col>
-                    <Col className="col-5 align-self-end">
-                      <div className="logo-lg" style={{ textAlign: "center", marginBottom: "35px" }}>
-                        <img src={logoLightPng} alt="" height="40" />
-                      </div>
-                    </Col>
+
                   </Row>
                 </div>
                 <CardBody className="pt-0">
-
+                  <div className="text-center mt-2">
+                    <Link to="/" className="logo-light-element">
+                      <div className="avatar-md profile-user-wid mb-4">
+                        <span className="avatar-title rounded-circle bg-light ">
+                          <img src={logo} width={100} />
+                        </span>
+                      </div>
+                    </Link>
+                  </div>
 
                   <div className="p-2">
                     <div
@@ -142,7 +140,7 @@ const ForgotPassword = () => {
           < CommonModal
             isOpen={modal1}
             // toggle={toggleModal1}
-            toggle={forgetpasswordSuccessMsg ? handleToggle: toggleModal1}
+            toggle={forgetpasswordSuccessMsg ? handleToggle : toggleModal1}
             title={forgetpasswordSuccessMsg ? "Success" : "Alert"}
             message={forgetpasswordSuccessMsg ? 'We have emailed your password reset code.' : forgetpasswordError}
             redirectTo={forgetpasswordSuccessMsg ? "/verification-code" : toggleModal1} // Different navigation for this page

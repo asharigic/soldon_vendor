@@ -17,7 +17,7 @@ import { useFormik } from "formik";
 // actions
 import { loginUser, verifycodePassword, resetcodePassword } from "../../store/actions";
 
-
+import logo from '../../assets/images/QUENCHED-02-01-100x33.png'
 const Login = props => {
 
   //meta title
@@ -225,10 +225,12 @@ const Login = props => {
                   <Row></Row>
                 </div>
                 <CardBody className="pt-0">
-                  <div>
+                  <div className="text-center mt-2">
                     <Link to="/" className="logo-light-element">
                       <div className="avatar-md profile-user-wid mb-4">
-                        <span className="avatar-title rounded-circle bg-light"></span>
+                        <span className="avatar-title rounded-circle bg-light ">
+                          <img src={logo} width={100}/>
+                        </span>
                       </div>
                     </Link>
                   </div>
