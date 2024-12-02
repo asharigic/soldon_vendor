@@ -57,7 +57,7 @@ const FavouriteList = (props) => {
                     />
                   </td>
                   <td className="td">{item.product_name}</td>
-                  <td className="td">{item.product_price}</td>
+                  <td className="td">{item.product_price ? <span><i className="bx bx-pound"></i>{item.product_price}</span> : "_"}</td>
                   <td className="td">{item.product_stock_status}</td>
                   <td className="td">
                     <div className="button-container">

@@ -382,9 +382,9 @@ const Messages = (props) => {
                                                             >
                                                                 <DropdownToggle className="btn nav-btn" tag="a">
                                                                     {messagesloading ? 
-                                                                        "Loader"// <i className="bx bx-loader bx-spin" /> 
+                                                                        <i className="bx bx-loader bx-spin" /> 
                                                                         : 
-                                                                        "Refresh"// <i className="bx bx-revision" />
+                                                                        <i className="bx bx-revision" />
                                                                     }
                                                                 </DropdownToggle>
                                                             </Dropdown>
