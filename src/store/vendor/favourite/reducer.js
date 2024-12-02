@@ -2,7 +2,9 @@
 import {
     GET_FAVOURITE_LIST,
     GET_FAVOURITE_LIST_SUCCESS,
-    GET_FAVOURITE_LIST_FAIL
+    GET_FAVOURITE_LIST_FAIL,
+    DELETE_FAVOURITE_PRODUCT_SUCCESS,
+    DELETE_FAVOURITE_PRODUCT_FAIL
 } from './actionTypes';
 
 const INIT_STATE = {
@@ -37,6 +39,21 @@ const favouriteReducer = (state = INIT_STATE, action) => {
                 favouriteloading: false,
                 favouritesuccess: false,
                 favouriteerror: action.payload,
+            };
+
+        //Delete Favourite Product
+        case DELETE_FAVOURITE_PRODUCT_SUCCESS:
+            return {
+                ...state,
+                favouritesuccess: true,
+                favouriteproduct: [action.payload, ...state.favouriteproduct]
+            };
+
+        case DELETE_FAVOURITE_PRODUCT_FAIL:
+            return {
+                ...state,
+                error: action.payload,
+                favouritesuccess: false,
             };
 
         default:
