@@ -19,6 +19,8 @@ import AddProduct from "../pages/Vendor/Product/AddProduct";
 import EditProduct from "../pages/Vendor/Product/EditProduct";
 import FavouriteList from "../pages/Vendor/Favourite/FavouriteList";
 
+//Ordar Management
+import BuyingListPage from "../pages/Vendor/OrdarManagement/BuyingProduct/BuyingProduct";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/", exact: true, component: <Navigate to="/Dashboard" /> },
@@ -30,6 +32,7 @@ const authProtectedRoutes = [
   { path: '/add-product', component: <AddProduct /> },
   { path: "/edit-product/:id", component: <EditProduct /> },
   { path: "/favourites", component: <FavouriteList /> },
+  { path: "/buying-list", component: <BuyingListPage /> },
 ];
 
 const publicRoutes = [

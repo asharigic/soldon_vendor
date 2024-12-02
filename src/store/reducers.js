@@ -15,7 +15,7 @@ import attributesReducer from "./master/attributes/reducer";
 import TagsReducer from "./master/tags/reducer";
 import CategoriesReducer from "./master/categories/reducer";
 import favouriteReducer from "./vendor/favourite/reducer";
-
+import BuyingProductsReducer from "./vendor/buyingproduct/reducer";
 const rootReducer = combineReducers({
   Layout,
   Login: Login,
@@ -31,6 +31,7 @@ const rootReducer = combineReducers({
   tags: TagsReducer,
   categories: CategoriesReducer,
   FavouriteData: favouriteReducer,
+  BuyingProduct:BuyingProductsReducer
 });
 
 export default rootReducer;
