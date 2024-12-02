@@ -236,25 +236,25 @@ const EditProduct = props => {
       description: showproducts && showproducts.product ? showproducts.product.description : "",
       status: showproducts && showproducts.product ? showproducts.product.status : "",
       stock_status: showproducts && showproducts.product ? showproducts.product.stock_status : "",
-      sealed: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.sealed : "",
+      sealed: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.sealed : "",
       image: productimage ? productimage : "",
       images: "",
-      productcondition: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.productcondition : "new",
-      packaging_condition: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.packaging_condition : "gradeA",
-      term_id: showproducts?.product?.terms ? showproducts.product.terms.map(term => term.id) : [],
-      category_id: showproducts?.product?.categories ? showproducts.product.categories.map(term => term.id) : [],
-      tags_id: showproducts?.product?.tags ? showproducts.product.tags.map(tags => tags.id) : [],
+      productcondition: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.productcondition : "new",
+      packaging_condition: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.packaging_condition : "gradeA",
+      term_id: showproducts?.product?.terms ? showproducts.product.terms.length === 0 ? "" : showproducts.product.terms.map(term => term.id) : [],
+      category_id: showproducts?.product?.categories ? showproducts.product.categories.length === 0 ? "" : showproducts.product.categories.map(category => category.id) : [],
+      tags_id: showproducts?.product?.tags ? showproducts.product.tags.length === 0 ? "" : showproducts.product.tags.map(tags => tags.id) : [],
 
-      manufacturer: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.manufacturer : "",
-      model: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.model : "",
-      variation: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.variation : "",
-      ean: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.ean : "",
-      upc: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.upc : "",
-      weight: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info===null ?"":showproducts.product.info.weight : "",
-      length: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.length : "",
-      width: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.width : "",
-      height: showproducts && showproducts.product ? showproducts.product.info===null ?"":showproducts.product.info.height : "",
-      additional_condition: showproducts && showproducts.product ?showproducts.product.info===null ?"": showproducts.product.info.additional_condition : "",
+      manufacturer: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.manufacturer : "",
+      model: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.model : "",
+      variation: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.variation : "",
+      ean: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.ean : "",
+      upc: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.upc : "",
+      weight: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info === null ? "" : showproducts.product.info.weight : "",
+      length: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.length : "",
+      width: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.width : "",
+      height: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.height : "",
+      additional_condition: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.additional_condition : "",
     },
     validationSchema: yup.object().shape({
       productname: yup.string().required('Please Enter Your Product Name'),
@@ -312,6 +312,7 @@ const EditProduct = props => {
           ids: selectedTagId ? selectedTagId : '',
         },
       }
+      console.log(product, "selectedCategoryId")
 
       dispatch(editProduct(props.router.params.id, product));
       toggleModal1();
@@ -548,23 +549,23 @@ const EditProduct = props => {
                             <span className="text-danger">{metaData.errors.status}</span>
                           ) : null}
                         </div>
-                      
+
                         <div className="mb-3">
                           <Label className="form-label">Product Image</Label>
 
                           <div className="text-center">
-                            
-                                <Input className="form-control"
-                                  id="formFileLg"
-                                  type="file"
-                                  accept="image/png, image/jpeg"
-                                  onChange={handleAcceptedProductImage} />
-                                
-                             
-                              <div className="avatar-lg">
-                                <div className="avatar-title bg-light rounded-circle">
-                                  <img src={productimage ? (productimage.startsWith('data:image') ? productimage : productimage) : ''} id="productimage" alt="" className="avatar-md h-auto rounded-circle" width={50}/>
-                            
+
+                            <Input className="form-control"
+                              id="formFileLg"
+                              type="file"
+                              accept="image/png, image/jpeg"
+                              onChange={handleAcceptedProductImage} />
+
+
+                            <div className="avatar-lg">
+                              <div className="avatar-title bg-light rounded-circle">
+                                <img src={productimage ? (productimage.startsWith('data:image') ? productimage : productimage) : ''} id="productimage" alt="" className="avatar-md h-auto rounded-circle" width={50} />
+
                               </div>
                             </div>
 
@@ -630,7 +631,7 @@ const EditProduct = props => {
                             onChange={metaData.handleChange}
                           />
                         </div>
-                     
+
                         <div className="mb-3">
 
                           <Label htmlFor="description">

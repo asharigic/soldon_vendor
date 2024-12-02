@@ -7,7 +7,7 @@ import axios from "axios";
 function* loginUser({ payload: { user } }) {
 
   try {
-    const response = yield call(axios.post, `${process.env.REACT_APP_API}session/login`, user);
+    const response = yield call(axios.post, `${process.env.REACT_APP_API}vendor/session/login`, user);
    
     yield put(loginSuccess(response.data));
   } catch (error) {

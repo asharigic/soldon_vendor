@@ -1,83 +1,220 @@
-import React, {  useEffect, useState } from 'react';
-import Spinners from '../../../components/Common/Spinner';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductsList, deleteProduct as onDeleteClick } from '../../../store/vendor/products/actions';
-import { Table } from 'react-bootstrap';
+import { getProductsList, deleteProduct as onDeleteClick, approveProduct } from '../../../store/vendor/products/actions';
+import DataTable from '../../../components/Common/DataTable';
+import { Link, useNavigate } from 'react-router-dom';
+import { Badge } from 'react-bootstrap';
 import bgimg1 from '../../../assets/images/no-img.jpg';
-import { Link } from 'react-router-dom';
+import Spinners from '../../../components/Common/Spinner';
 import DeleteModal from '../../../components/Common/DeleteModal';
-const ProductList = () => {
+
+const ProjectStatus = ({ status }) => {
+    switch (status) {
+        case "pending":
+            return <Badge className="bg-warning"> Pending </Badge>;
+
+        case "approved":
+            return <Badge className="bg-success"> Approved </Badge>;
+
+        case "draft":
+            return <Badge className="bg-danger"> Draft </Badge>;
+        case "published":
+            return <Badge className="bg-success"> Published </Badge>;
+        case "expired":
+            return <Badge className="badge-soft-secondary"> Expired</Badge>;
+
+
+        default:
+            return <Badge className="bg-success"> {status} </Badge>;
+    }
+};
+const ProductListPage = () => {
     document.title = "Products | Quench";
     const { products, productloading } = useSelector((state) => state.products);
-   
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
+    const [totalItems, setTotalItems] = useState(0);
+    const [pageSize, setPageSize] = useState(15); // Default page size
+    const [currentPage, setCurrentPage] = useState(1);
     const [productList, setProductList] = useState([]);
     const [deleteModal, setDeleteModal] = useState(false);
-    useEffect(() => {
-        dispatch(getProductsList());
-    }, []);
+    const [searchValue, setSearchValue] = useState('');
 
+
+    useEffect(() => {
+        const page = currentPage || 1;
+        const limit = pageSize || 15;
+        const payload = {
+            per_page: limit,
+            search: searchValue,
+        };
+        dispatch(getProductsList(payload, page));// Dispatch action to fetch products list
+    }, [currentPage, pageSize, dispatch]);
+
+    useEffect(() => {
+        if (products?.meta) {
+            setTotalItems(products.meta.total); // Update total items count for pagination
+        }
+    }, [products]);
+
+    // Dynamic column definition
+    const columns = useMemo(
+        () => [
+            {
+                header: "No.",
+                accessorKey: "id",
+                cell: (cellProps) => {
+
+                    const rowIndex = cellProps.rowIndex;
+                    if (rowIndex === undefined || isNaN(rowIndex)) {
+                        return "-";
+                    }
+                    const globalIndex = (currentPage - 1) * pageSize + rowIndex + 1;
+                    return globalIndex;
+                },
+                enableColumnFilter: false,
+                enableSorting: false,
+
+            },
+
+            {
+                header: "Image",
+                accessorKey: "image",
+                cell: (cellProps) => {
+                    const imageSrc = cellProps.row.image || bgimg1; // Fallback URL
+                    return (
+                        <img
+                            className="img-drop-area"
+                            height={50}
+                            width={50}
+                            src={imageSrc}
+                            alt="Product"
+                        />
+                    );
+                },
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Product Name",
+                accessorKey: "productname",
+                cell: ({ row }) => {
+                    return row.productname
+                        ? row.productname.charAt(0).toUpperCase() + row.productname.slice(1).toLowerCase()
+                        : "_";
+                },
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Subtitle",
+                accessorKey: "subtitle",
+                cell: (cellProps) => cellProps.row.subtitle || "_",
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Price",
+                accessorKey: "price",
+                cell: (cellProps) => (cellProps.row.price ? <span><i className="bx bx-pound"></i>{cellProps.row.price}</span> : "_"),
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Status",
+                accessorKey: "status",
+                cell: ({ row }) => {
+                    const status = row.status;
+                    const capitalizedStatus = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+                    return (
+                        <>
+                            {
+                                status === 'pending' ?
+                                    <Link to="#"
+
+                                    >{capitalizedStatus ? <ProjectStatus status={row.status} /> : "_"}</Link >
+                                    :
+                                    <Link to="#" style={{ cursor: 'default' }}>{capitalizedStatus ? <ProjectStatus status={row.status} /> : "_"}</Link>
+                            }
+
+                        </>
+                    );
+                },
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Action",
+                accessorKey: "action",
+                cell: (cellProps) => (
+                    <div>
+                        <Link to={`/edit-product/${cellProps.row.id}`} style={{ cursor: 'pointer' }}>Edit</Link>
+                        &nbsp;
+                        <Link to="#" onClick={() => {
+                            setDeleteModal(true);
+                            setProductList(cellProps.row);
+                        }} style={{ cursor: 'pointer' }}>Delete</Link>
+                    </div>
+                ),
+                enableColumnFilter: false,
+                enableSorting: false,
+            },
+        ],
+        [currentPage, pageSize] // Recalculate when pageSize or currentPage changes
+    );
     const handleDeleteTag = () => {
         if (productList && productList.id) {
             dispatch(onDeleteClick(productList.id));
             setDeleteModal(false);
             setProductList([]);
-            dispatch(getProductsList());
+            dispatch(getProductsList({ page: currentPage, limit: pageSize }));
+
         }
     };
-    if (isLoading || productloading) {
-        return <Spinners setLoading={setIsLoading} />;  // Display loading state while data is being fetched
+    const handleSearch = () => {
+        var userData = {
+
+            search: searchValue,
+            per_page: pageSize
+        }
+        console.log(pageSize, "currentPage")
+        dispatch(getProductsList(userData, currentPage === currentPage ? 1 : currentPage));
     };
+    if (isLoading || productloading) {
+        return <Spinners setLoading={setIsLoading} />;
+    }
     return (
-        <>
-            <div>
+        <div>
             <DeleteModal
                 show={deleteModal}
                 onDeleteClick={handleDeleteTag}
                 onCloseClick={() => setDeleteModal(false)}
             />
-                <Table responsive="sm">
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Product Image</th>
-                            <th>Product Name</th>
-                            <th>Product Subtile</th>
-                            <th>Product Price</th>
-                            <th>Product Status</th>
-                            <th>Action</th>
 
-                        </tr>
-                    </thead>
-                    {isLoading ? <Spinners setLoading={setIsLoading} />
-                        :
-                        <tbody>
-                            {
-                                products?.data.map((element, index) => {
-                                    return (
-                                        <tr>
-                                            <td>{index + 1}</td>
-                                            <td><img src={element.image ? element.image : bgimg1} width={50} alt='product_image'/></td>
-                                            <td>{element.productname ? element.productname : "_"}</td>
-                                            <td>{element.subtitle ? element.subtitle : "_"}</td>
-                                            <td>{element.price ? element.price : "_"}</td>
-                                            <td>{element.status ? element.status : "_"}</td>
-                                            <td> <Link to={`/edit-product/${element.id}`} style={{ cursor: 'default' }}>Edit</Link> <Link to="#" onClick={() => {
-
-                                                setDeleteModal(true);
-                                                setProductList(element);
-                                            }} style={{ cursor: 'default' }} >Delete</Link></td>
-                                        </tr>
-                                    )
-                                })
-                            }
-
-                        </tbody>
-                    }
-                </Table>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h1>Product List</h1>
+                <button onClick={() => navigate('/add-product')}>Add Product</button>
             </div>
-        </>
-    )
-}
-export default ProductList;
+            {isLoading ? <Spinners setLoading={setIsLoading} />
+                :
+
+                <DataTable
+                    data={products?.data || []}
+                    columns={columns} // Passing dynamic columns to DataTable
+                    pageSize={pageSize}
+                    totalItems={totalItems}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    setPageSize={setPageSize}
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue}
+                    handleSearch={handleSearch}
+                />
+            }
+
+        </div>
+    );
+};
+
+export default ProductListPage;

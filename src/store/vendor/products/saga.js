@@ -33,12 +33,13 @@ function* fetchProducts({ payload: { seachproduct, page } }) {
   try {
     const response = yield call(
       axiosInstance.post,
-      // `${process.env.REACT_APP_API}vendor/product/showall?page=${page}`, 
-      `${process.env.REACT_APP_API}vendor/product/showall`,
+
+      `${process.env.REACT_APP_API}vendor/product/showall?page=${page}`,
       seachproduct
     );
- 
+
     yield put(getProductsListSuccess(response.data.products));
+
   } catch (error) {
     yield put(getProductsListFail(error.message));
   }
@@ -73,7 +74,7 @@ function* addNewProduct({ payload: { product } }) {
 function* showProduct(id) {
   try {
     const response = yield call(axiosInstance.get, `${process.env.REACT_APP_API}vendor/product/show/${id.payload.id}`);
-    console.log(response,"responeshow")
+    console.log(response, "responeshow")
     if (response && response.data) {
       yield put(showProductSuccess(response.data));
     } else {
