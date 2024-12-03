@@ -239,7 +239,7 @@ const SellingListPage = () => {
                                     Product id: <span className="text-primary">#{showbuyingproducts?.products?.order?.uuid}</span>
                                 </p>
                                 <p className="mb-4">
-                                    Billing Name: <span className="text-primary">Neal Matthews</span>
+                                    Billing Name: <span className="text-primary">{showbuyingproducts?.products?.order?.user_name}</span>
                                 </p>
 
                                 <div className="table-responsive">
