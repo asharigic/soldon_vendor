@@ -20,6 +20,8 @@
     list-style-type: none;
     padding: 0;
     display: flex;
+    align-items: center;
+    margin-bottom: 0;
   }
   
   .nav-links li {
@@ -31,6 +33,14 @@
     text-decoration: none;
     font-size: 18px;
   }
+
+  .nav-links .dropdown-menu a {
+    color: #212529;
+  
+  }
+
+  .navbar{}
+
   
   .nav-links a:hover {
     color: #f0a500;

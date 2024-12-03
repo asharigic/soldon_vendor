@@ -6,6 +6,7 @@ import Login from "../pages/Authentication/Login";
 import Register from "../pages/Authentication/Register";
 import Dashboard from "../pages/Dashboard/index";
 import Profile from "../pages/Vendor/Profile/Profile";
+import ChangePassword from "../pages/Vendor/Profile/ChangePassword";
 import Settings from "../pages/Vendor/Settings/Settings";
 import NoticationsList from "../pages/Vendor/Notifications/NoticationsList";
 import Messages from "../pages/Vendor/Messages/Messages";
@@ -26,6 +27,7 @@ const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/", exact: true, component: <Navigate to="/Dashboard" /> },
   { path: "/profile", component: <Profile /> },
+  { path: "/changepassword", component: <ChangePassword /> },
   { path: "/settings", component: <Settings /> },
   { path: "/notifications", component: <NoticationsList /> },
   { path: "/messages", component: <Messages /> },

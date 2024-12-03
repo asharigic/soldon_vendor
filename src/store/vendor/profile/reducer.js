@@ -7,6 +7,9 @@ import {
   EDIT_PROFILE,
   EDIT_PROFILE_SUCCESS,
   EDIT_PROFILE_FAIL,
+  CHANGE_PASSWORD,
+  CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PASSWORD_FAIL,
 } from './actionTypes';
 
 const INIT_STATE = {
@@ -15,7 +18,7 @@ const INIT_STATE = {
   profileloading: false,
   loading: false,
   profilesuccess: false,
-  profileupdate:null
+  profileupdate: null
 };
 
 const profileReducer = (state = INIT_STATE, action) => {
@@ -57,6 +60,25 @@ const profileReducer = (state = INIT_STATE, action) => {
       };
 
     case EDIT_PROFILE_FAIL:
+      return {
+        ...state,
+        profileloading: false,
+        error: action.payload,
+        profilesuccess: false,
+      };
+    //password changes condition
+    case CHANGE_PASSWORD:
+      return { ...state, profileloading: true };
+
+    case CHANGE_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        profileloading: false,
+        password: action.payload.profile,   // Store the fetched terms
+        profilesuccess: true
+      };
+
+    case CHANGE_PASSWORD_FAIL:
       return {
         ...state,
         profileloading: false,

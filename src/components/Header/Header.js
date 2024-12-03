@@ -4,13 +4,15 @@ import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutUser } from '../../store/actions';
-import logo from '../../assets/images/logo.png'
+import logo from '../../assets/images/logo.png';
+import { Dropdown } from 'react-bootstrap';
+
 import './Header.css'
 const Header = () => {
     const [ModalShow, setModalShow] = useState(false);
     const navigate = useNavigate();
-    // const history = useNavigate();
-
+    var userDetails = JSON.parse(localStorage.getItem('vendoruser'))
+    const [isOpen, setIsOpen] = useState(false);
     const dispatch = useDispatch()
     const toggle1 = () => setModalShow(!ModalShow);
     const handlelogout = () => {
@@ -34,12 +36,6 @@ const Header = () => {
                         <Link to="/">Home</Link>
                     </li>
                     <li>
-                        <Link to="/profile">Profile</Link>
-                    </li>
-                    <li>
-                        <Link to="/settings">Settings</Link>
-                    </li>
-                    <li>
                         <Link to="/notifications">Notifications</Link>
                     </li>
                     <li>
@@ -58,7 +54,17 @@ const Header = () => {
                         <Link to="/selling-list">Selling</Link>
                     </li>
                     <li>
-                        <Link onClick={() => setModalShow(true)}>Logout</Link>
+                        <Dropdown show={isOpen} onToggle={() => setIsOpen(!isOpen)}>
+                            <Dropdown.Toggle as="li" onClick={() => setIsOpen(!isOpen)} style={{ cursor: 'pointer', padding: '10px' }}>
+                                <span>{userDetails.username}</span>
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item onClick={() => navigate('/profile')}> <Link to="/profile">Profile</Link></Dropdown.Item>
+                                <Dropdown.Item onClick={()=> navigate('/changepassword')}>Change Password</Dropdown.Item>
+                                <Dropdown.Item onClick={() => navigate('/settings')}>Settings</Dropdown.Item>
+                                <Dropdown.Item onClick={() => setModalShow(true)}>Logout</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </li>
                 </ul>
             </nav>
@@ -71,7 +77,7 @@ const Header = () => {
                     </button>
                     &nbsp;
                     <button onClick={() => setModalShow(false)} className='otp-button btn btn-secondary dz-xs-flex m-r5'>
-                    Cancel
+                        Cancel
                     </button>
                 </ModalBody>
             </Modal>

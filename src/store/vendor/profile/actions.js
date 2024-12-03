@@ -6,6 +6,9 @@ import {
   EDIT_PROFILE,
   EDIT_PROFILE_SUCCESS,
   EDIT_PROFILE_FAIL,
+  CHANGE_PASSWORD,
+  CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PASSWORD_FAIL,
 } from "./actionTypes"
 
 
@@ -40,5 +43,23 @@ export const editProfileSuccess = user => ({
 
 export const editProfileFail = error => ({
   type: EDIT_PROFILE_FAIL,
+  payload: error,
+})
+
+//CHANGE PASSWORD
+export const changepassword = (password) => {
+  return {
+    type: CHANGE_PASSWORD,
+    payload: password,
+  }
+}
+
+export const changepasswordSuccess = password => ({
+  type: CHANGE_PASSWORD_SUCCESS,
+  payload: password,
+})
+
+export const changepasswordFail = error => ({
+  type: CHANGE_PASSWORD_FAIL,
   payload: error,
 })
