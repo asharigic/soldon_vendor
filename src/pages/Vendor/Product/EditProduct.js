@@ -238,7 +238,7 @@ const EditProduct = props => {
       status: showproducts && showproducts.product ? showproducts.product.status : "",
       stock_status: showproducts && showproducts.product ? showproducts.product.stock_status : "",
       sealed: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.sealed : "",
-      image: productimage ? productimage : "",
+      image: "",
       images: "",
       productcondition: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.productcondition : "new",
       packaging_condition: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.packaging_condition : "gradeA",
