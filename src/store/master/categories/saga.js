@@ -12,11 +12,11 @@ import {
   addCategorySuccess,
   addCategoryFail,
 } from "./actions";
-
+import axiosInstance from '../../axiosInstance';
 //Get Category Drop Down
 function* fetchDropDownCategories() {
   try {
-    const response = yield call(axios.get, `${process.env.REACT_APP_API}public/category/categories-list`);
+    const response = yield call(axiosInstance.get, `${process.env.REACT_APP_API}public/category/categories-list`);
     yield put(getCategoryDropDownListSuccess(response.data));
   } catch (error) {
     yield put(getCategoryDropDownListFail(error.message));
@@ -26,7 +26,7 @@ function* fetchDropDownCategories() {
 //Add Category
 function* addNewCategory({ payload: { category } }) {
   try {
-    const response = yield call(axios.post, `${process.env.REACT_APP_API}public/category/create`, category);
+    const response = yield call(axiosInstance.post, `${process.env.REACT_APP_API}public/category/create`, category);
     yield put(addCategorySuccess(response.data));
   } catch (error) {
     yield put(addCategoryFail(error.response.data.message));

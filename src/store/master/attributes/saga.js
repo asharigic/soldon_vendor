@@ -12,11 +12,11 @@ import {
   addAttributeSuccess,
   addAttributeFail,
 } from './actions';
-import { toast } from 'react-toastify';
+import axiosInstance from '../../axiosInstance';
 
 function* fetchDropDownAttributes() {
   try {
-    const response = yield call(axios.get, `${process.env.REACT_APP_API}public/attribute/attributes-list`);
+    const response = yield call(axiosInstance.get, `${process.env.REACT_APP_API}public/attribute/attributes-list`);
     yield put(getAttributeDropDownSuccess(response.data));
   } catch (error) {
     yield put(getAttributeDropDownFail(error.message));
@@ -26,7 +26,7 @@ function* fetchDropDownAttributes() {
 //add new attributes
 function* onAddNewAttribute({ payload: { attribute } }) {
   try {
-    const response = yield call(axios.post, `${process.env.REACT_APP_API}public/attribute/create`, attribute);
+    const response = yield call(axiosInstance.post, `${process.env.REACT_APP_API}public/attribute/create`, attribute);
     yield put(addAttributeSuccess(response));
   } catch (error) {
     const errorMessage = error.response?.data?.message || error.message || "An error occurred while fetching terms.";

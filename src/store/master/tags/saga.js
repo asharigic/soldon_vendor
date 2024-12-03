@@ -15,11 +15,11 @@ import {
   addTagFail,
 } from "./actions";
 
-
+import axiosInstance from '../../axiosInstance';
 //Get Tags Drop Down
 function* fetchDropDownTags() {
   try {
-    const response = yield call(axios.get, `${process.env.REACT_APP_API}public/tag/tags-list`);
+    const response = yield call(axiosInstance.get, `${process.env.REACT_APP_API}public/tag/tags-list`);
     yield put(getTagDropDownListSuccess(response.data));
   } catch (error) {
     yield put(getTagDropDownListFail(error.message));
@@ -29,7 +29,7 @@ function* fetchDropDownTags() {
 //Add Tag
 function* addNewTag({ payload: { tag } }) {
   try {
-    const response = yield call(axios.post, `${process.env.REACT_APP_API}public/tag/create`, tag);
+    const response = yield call(axiosInstance.post, `${process.env.REACT_APP_API}public/tag/create`, tag);
     yield put(addTagSuccess(response.data));
   } catch (error) {
     yield put(addTagFail(error.response.data.message));

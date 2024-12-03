@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { Fragment, useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductsList, deleteProduct as onDeleteClick, approveProduct } from '../../../store/vendor/products/actions';
 import DataTable from '../../../components/Common/DataTable';
@@ -7,6 +7,8 @@ import { Badge } from 'react-bootstrap';
 import bgimg1 from '../../../assets/images/no-img.jpg';
 import Spinners from '../../../components/Common/Spinner';
 import DeleteModal from '../../../components/Common/DeleteModal';
+import { BsPencilFill } from "react-icons/bs";
+import { AiFillDelete } from "react-icons/ai";
 
 const ProjectStatus = ({ status }) => {
     switch (status) {
@@ -149,12 +151,13 @@ const ProductListPage = () => {
                 accessorKey: "action",
                 cell: (cellProps) => (
                     <div>
-                        <Link to={`/edit-product/${cellProps.row.id}`} style={{ cursor: 'pointer' }}>Edit</Link>
+                        <button className="btn  btn-sm btn-primary rounded-0" onClick={() => navigate(`/edit-product/${cellProps.row.id}`)} style={{ cursor: 'pointer' }}> <BsPencilFill /></button>
                         &nbsp;
-                        <Link to="#" onClick={() => {
-                            setDeleteModal(true);
-                            setProductList(cellProps.row);
-                        }} style={{ cursor: 'pointer' }}>Delete</Link>
+                        <button className="btn  btn-sm btn-danger rounded-0"
+                            onClick={() => {
+                                setDeleteModal(true);
+                                setProductList(cellProps.row);
+                            }} style={{ cursor: 'pointer' }}><AiFillDelete /></button>
                     </div>
                 ),
                 enableColumnFilter: false,
@@ -185,35 +188,37 @@ const ProductListPage = () => {
         return <Spinners setLoading={setIsLoading} />;
     }
     return (
-        <div>
-            <DeleteModal
-                show={deleteModal}
-                onDeleteClick={handleDeleteTag}
-                onCloseClick={() => setDeleteModal(false)}
-            />
+        <Fragment>
+            <div className="container">
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1>Product List</h1>
-                <button onClick={() => navigate('/add-product')}>Add Product</button>
-            </div>
-            {isLoading ? <Spinners setLoading={setIsLoading} />
-                :
-
-                <DataTable
-                    data={products?.data || []}
-                    columns={columns} // Passing dynamic columns to DataTable
-                    pageSize={pageSize}
-                    totalItems={totalItems}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    setPageSize={setPageSize}
-                    searchValue={searchValue}
-                    setSearchValue={setSearchValue}
-                    handleSearch={handleSearch}
+                <DeleteModal
+                    show={deleteModal}
+                    onDeleteClick={handleDeleteTag}
+                    onCloseClick={() => setDeleteModal(false)}
                 />
-            }
+                <h1 className="heading">Product List</h1>
 
-        </div>
+                <button className='btn btn-dark' onClick={() => navigate('/add-product')}>Add Product</button>
+
+                {isLoading ? <Spinners setLoading={setIsLoading} />
+                    :
+
+                    <DataTable
+                        data={products?.data || []}
+                        columns={columns} // Passing dynamic columns to DataTable
+                        pageSize={pageSize}
+                        totalItems={totalItems}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                        setPageSize={setPageSize}
+                        searchValue={searchValue}
+                        setSearchValue={setSearchValue}
+                        handleSearch={handleSearch}
+                    />
+                }
+
+            </div>
+        </Fragment>
     );
 };
 
