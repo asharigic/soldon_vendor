@@ -74,7 +74,7 @@ function* addNewProduct({ payload: { product } }) {
 function* showProduct(id) {
   try {
     const response = yield call(axiosInstance.get, `${process.env.REACT_APP_API}vendor/product/show/${id.payload.id}`);
-    console.log(response, "responeshow")
+   
     if (response && response.data) {
       yield put(showProductSuccess(response.data));
     } else {
