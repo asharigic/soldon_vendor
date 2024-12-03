@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { Fragment, useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { AiTwotoneEye } from "react-icons/ai";
 import { getBuyingList, showBuyingProduct } from '../../../../store/vendor/buyingproduct/action';
 import DataTable from '../../../../components/Common/DataTable';
 import { Link } from 'react-router-dom';
@@ -125,6 +125,7 @@ const BuyingListPage = () => {
                 cell: ({ row }) => {
                     const status = row.status;
                     const capitalizedStatus = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+
                     return (
                         <>
                             {
@@ -133,7 +134,7 @@ const BuyingListPage = () => {
 
                                     >{capitalizedStatus ? <ProjectStatus status={row.status} /> : "_"}</Link >
                                     :
-                                    <Link to="#" style={{ cursor: 'default' }}>{capitalizedStatus ? <ProjectStatus status={row.status} /> : "_"}</Link>
+                                    <Link to="#" style={{ cursor: 'default' }}>{capitalizedStatus ? <ProjectStatus status={capitalizedStatus} /> : "_"}</Link>
                             }
 
                         </>
@@ -146,9 +147,12 @@ const BuyingListPage = () => {
                 header: "Action",
                 accessorKey: "action",
                 cell: (cellProps) => (
-                    <div>
-                        {/* <Link onClick={() => setViewModal(true)}>View Order</Link> */}
-                        <Link onClick={() => handleVieworderdetail(cellProps.row.id)}>View Order</Link>
+
+                    <div className='text-center'>
+                        <button className="btn  btn-sm btn-primary rounded-0" onClick={() => handleVieworderdetail(cellProps.row.id)} style={{ cursor: 'pointer' }}> <AiTwotoneEye /></button>
+                        &nbsp;
+
+
                     </div >
                 ),
                 enableColumnFilter: false,
@@ -178,121 +182,120 @@ const BuyingListPage = () => {
         return <Spinners setLoading={setIsLoading} />;
     }
     return (
-        <div>
+        <Fragment>
+            <div className="container">
+                <h1 className="heading">Buying Order List</h1>
 
-            <div style={{ textAlign: 'center' }}>
-                <h5>Buying Order List</h5>
+                {isLoading ? <Spinners setLoading={setIsLoading} />
+                    :
 
-            </div>
-            {isLoading ? <Spinners setLoading={setIsLoading} />
-                :
+                    <DataTable
+                        data={buyingproducts?.data || []}
+                        columns={columns} // Passing dynamic columns to DataTable
+                        pageSize={pageSize}
+                        totalItems={totalItems}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                        setPageSize={setPageSize}
+                        searchValue={searchValue}
+                        setSearchValue={setSearchValue}
+                        handleSearch={handleSearch}
+                    />
+                }
+                {ViewModal && (
 
-                <DataTable
-                    data={buyingproducts?.data || []}
-                    columns={columns} // Passing dynamic columns to DataTable
-                    pageSize={pageSize}
-                    totalItems={totalItems}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    setPageSize={setPageSize}
-                    searchValue={searchValue}
-                    setSearchValue={setSearchValue}
-                    handleSearch={handleSearch}
-                />
-            }
-            {ViewModal && (
-
-                isLoading ? (
-                    <div className="loading-container" >
-                        <p style={{ color: 'red' }}>Loading...</p> {/* Loading state UI */}
-                    </div>
-                ) : (
-                    <Modal
-                        show={ViewModal}
-                        onHide={() => setViewModal(false)}
-                        role="dialog"
-                        autoFocus={true}
-                        centered={true}
-                        className="exampleModal"
-                        tabIndex="-1"
-
-                    >
-                       
-                        <div className="modal-content">
-                            <Modal.Header closeButton>Order Details</Modal.Header>
-                            <Modal.Body>
-                                <p className="mb-2">
-                                    Product id: <span className="text-primary">#{showbuyingproducts?.products?.order?.uuid}</span>
-                                </p>
-                                <p className="mb-4">
-                                    Billing Name: <span className="text-primary">{showbuyingproducts?.products?.order?.user_name}</span>
-                                </p>
-
-                                <div className="table-responsive">
-                                    <Table className="table align-middle table-nowrap">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Product</th>
-                                                <th scope="col">Product Name</th>
-                                                <th scope="col">Price</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row">
-                                                    <div>
-                                                        <img src={showbuyingproducts?.products?.order?.cart_item?.product?.image ? showbuyingproducts?.products?.order?.cart_item?.product?.image : bgimg1} alt="" className="avatar-sm" width={50} />
-                                                    </div>
-                                                </th>
-                                                <td>
-                                                    <div>
-                                                        <h5 className="text-truncate font-size-14">{showbuyingproducts?.products?.order?.cart_item?.product?.productname}</h5>
-
-                                                    </div>
-                                                </td>
-                                                <td>$ {showbuyingproducts?.products?.order?.cart_item?.product?.price}</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td colSpan="2">
-                                                    <h6 className="m-0 text-right">Sub Total:</h6>
-                                                </td>
-                                                <td>
-                                                    $ {showbuyingproducts?.products?.order?.subtotal}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan="2">
-                                                    <h6 className="m-0 text-right">Fees:</h6>
-                                                </td>
-                                                <td>
-                                                    ${showbuyingproducts?.products?.order?.fees}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan="2">
-                                                    <h6 className="m-0 text-right">Total:</h6>
-                                                </td>
-                                                <td>
-                                                    $  {showbuyingproducts?.products?.order?.total}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button type="button" color="secondary" onClick={() => setViewModal(false)}>
-                                    Close
-                                </Button>
-                            </Modal.Footer>
+                    isLoading ? (
+                        <div className="loading-container" >
+                            <p style={{ color: 'red' }}>Loading...</p> {/* Loading state UI */}
                         </div>
+                    ) : (
+                        <Modal
+                            show={ViewModal}
+                            onHide={() => setViewModal(false)}
+                            role="dialog"
+                            autoFocus={true}
+                            centered={true}
+                            className="exampleModal"
+                            tabIndex="-1"
 
-                    </Modal>
+                        >
+
+                            <div className="modal-content">
+                                <Modal.Header closeButton><h4>Order Details</h4></Modal.Header>
+                                <Modal.Body>
+                                    <h6 className="mb-2">
+                                        Product id: <span className="text-primary">#{showbuyingproducts?.products?.order?.uuid}</span>
+                                    </h6>
+                                    <h6 className="mb-4">
+                                        Billing Name: <span className="text-primary">{showbuyingproducts?.products?.order?.user_name}</span>
+                                    </h6>
+
+                                    <div className="table-responsive">
+                                        <Table className="table align-middle table-nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Product</th>
+                                                    <th scope="col">Product Name</th>
+                                                    <th scope="col">Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <div>
+                                                            <img src={showbuyingproducts?.products?.order?.cart_item?.product?.image ? showbuyingproducts?.products?.order?.cart_item?.product?.image : bgimg1} alt="" className="avatar-sm" width={50} />
+                                                        </div>
+                                                    </th>
+                                                    <td>
+                                                        <div>
+                                                            <h5 className="text-truncate font-size-14">{showbuyingproducts?.products?.order?.cart_item?.product?.productname}</h5>
+
+                                                        </div>
+                                                    </td>
+                                                    <td>$ {showbuyingproducts?.products?.order?.cart_item?.product?.price}</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colSpan="2">
+                                                        <h6 className="m-0 text-right">Sub Total:</h6>
+                                                    </td>
+                                                    <td>
+                                                        $ {showbuyingproducts?.products?.order?.subtotal}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan="2">
+                                                        <h6 className="m-0 text-right">Fees:</h6>
+                                                    </td>
+                                                    <td>
+                                                        ${showbuyingproducts?.products?.order?.fees}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan="2">
+                                                        <h6 className="m-0 text-right">Total:</h6>
+                                                    </td>
+                                                    <td>
+                                                        $  {showbuyingproducts?.products?.order?.total}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </Table>
+                                    </div>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button type="button" color="secondary" onClick={() => setViewModal(false)}>
+                                        Close
+                                    </Button>
+                                </Modal.Footer>
+                            </div>
+
+                        </Modal>
+                    )
                 )
-            )
-            }
-        </div >
+                }
+            </div >
+        </Fragment>
     );
 };
 

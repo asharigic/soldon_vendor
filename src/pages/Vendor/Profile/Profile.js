@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Row, Col, Card, CardBody, Button, Label, Input, UncontrolledTooltip, FormFeedback, Form } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
@@ -94,8 +94,9 @@ const Profile = (props) => {
     };
 
     return (
-        <React.Fragment>
-            <div className="page-content">
+        <Fragment>
+            <div className="container">
+                <h1 className="heading">User Profile</h1>
                 <Row>
                     {loading ?
                         <Spinners setLoading={setLoading} />
@@ -112,198 +113,217 @@ const Profile = (props) => {
                                         <div className="mb-3">
                                             <Row>
                                                 <Col md={6}>
-                                                    <Label className="form-label">Firstname
-                                                        <span className="errorsymbol">*</span></Label>
-                                                    <Input
-                                                        name="firstname"
-                                                        placeholder="Enter Firstname"
-                                                        type="text"
-                                                        onChange={validationType.handleChange}
-                                                        onBlur={validationType.handleBlur}
-                                                        value={validationType.values.firstname || ""}
-                                                        invalid={
-                                                            validationType.touched.firstname &&
-                                                                validationType.errors.firstname ? true : false
-                                                        }
-                                                    />
-                                                    {validationType.touched.firstname && validationType.errors.firstname ? (
-                                                        <FormFeedback type="invalid">{validationType.errors.firstname}</FormFeedback>
-                                                    ) : null}
+                                                    <div className="mb-3">
+                                                        <Label className="form-label">First Name
+                                                            <span className="errorsymbol">*</span></Label>
+                                                        <Input
+                                                            name="firstname"
+                                                            placeholder="Enter Firstname"
+                                                            type="text"
+                                                            onChange={validationType.handleChange}
+                                                            onBlur={validationType.handleBlur}
+                                                            value={validationType.values.firstname || ""}
+                                                            invalid={
+                                                                validationType.touched.firstname &&
+                                                                    validationType.errors.firstname ? true : false
+                                                            }
+                                                        />
+                                                        {validationType.touched.firstname && validationType.errors.firstname ? (
+                                                            <FormFeedback type="invalid">{validationType.errors.firstname}</FormFeedback>
+                                                        ) : null}
+                                                    </div>
                                                 </Col>
                                                 <Col md={6}>
-                                                    <Label className="form-label">Lastname
-                                                        <span className="errorsymbol">*</span></Label>
-                                                    <Input
-                                                        name="lastname"
-                                                        placeholder="Enter Lastname"
-                                                        type="text"
-                                                        onChange={validationType.handleChange}
-                                                        onBlur={validationType.handleBlur}
-                                                        value={validationType.values.lastname || ""}
-                                                        invalid={
-                                                            validationType.touched.lastname &&
-                                                                validationType.errors.lastname ? true : false
-                                                        }
-                                                    />
-                                                    {validationType.touched.lastname && validationType.errors.lastname ? (
-                                                        <FormFeedback type="invalid">{validationType.errors.lastname}</FormFeedback>
-                                                    ) : null}
+                                                    <div className="mb-3">
+                                                        <Label className="form-label">Last Name
+                                                            <span className="errorsymbol">*</span></Label>
+                                                        <Input
+                                                            name="lastname"
+                                                            placeholder="Enter Lastname"
+                                                            type="text"
+                                                            onChange={validationType.handleChange}
+                                                            onBlur={validationType.handleBlur}
+                                                            value={validationType.values.lastname || ""}
+                                                            invalid={
+                                                                validationType.touched.lastname &&
+                                                                    validationType.errors.lastname ? true : false
+                                                            }
+                                                        />
+                                                        {validationType.touched.lastname && validationType.errors.lastname ? (
+                                                            <FormFeedback type="invalid">{validationType.errors.lastname}</FormFeedback>
+                                                        ) : null}
+                                                    </div>
                                                 </Col>
 
                                                 <Col md={6}>
-                                                    <Label className="form-label">Address1
-                                                        <span className="errorsymbol">*</span></Label>
-                                                    <Input
-                                                        name="address1"
-                                                        placeholder="Enter Address1"
-                                                        type="text"
-                                                        onChange={validationType.handleChange}
-                                                        onBlur={validationType.handleBlur}
-                                                        value={validationType.values.address1 || ""}
-                                                        invalid={
-                                                            validationType.touched.address1 &&
-                                                                validationType.errors.address1 ? true : false
-                                                        }
-                                                    />
-                                                    {validationType.touched.address1 && validationType.errors.address1 ? (
-                                                        <FormFeedback type="invalid">{validationType.errors.address1}</FormFeedback>
-                                                    ) : null}
+                                                    <div className="mb-3">
+                                                        <Label className="form-label">Address1
+                                                            <span className="errorsymbol">*</span></Label>
+                                                        <Input
+                                                            name="address1"
+                                                            placeholder="Enter Address1"
+                                                            type="text"
+                                                            onChange={validationType.handleChange}
+                                                            onBlur={validationType.handleBlur}
+                                                            value={validationType.values.address1 || ""}
+                                                            invalid={
+                                                                validationType.touched.address1 &&
+                                                                    validationType.errors.address1 ? true : false
+                                                            }
+                                                        />
+                                                        {validationType.touched.address1 && validationType.errors.address1 ? (
+                                                            <FormFeedback type="invalid">{validationType.errors.address1}</FormFeedback>
+                                                        ) : null}
+                                                    </div>
                                                 </Col>
                                                 <Col md={6}>
-                                                    <Label className="form-label">Address2
-                                                    </Label>
-                                                    <Input
-                                                        name="address2"
-                                                        placeholder="Enter Address2"
-                                                        type="text"
-                                                        onChange={validationType.handleChange}
-                                                        onBlur={validationType.handleBlur}
-                                                        value={validationType.values.address2 || ""}
+                                                    <div className="mb-3">
+                                                        <Label className="form-label">Address2
+                                                        </Label>
+                                                        <Input
+                                                            name="address2"
+                                                            placeholder="Enter Address2"
+                                                            type="text"
+                                                            onChange={validationType.handleChange}
+                                                            onBlur={validationType.handleBlur}
+                                                            value={validationType.values.address2 || ""}
 
-                                                    />
+                                                        />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Label className="form-label">City
+                                                            <span className="errorsymbol">*</span></Label>
+                                                        <Input
+                                                            name="city"
+                                                            placeholder="Enter City"
+                                                            type="text"
+                                                            onChange={validationType.handleChange}
+                                                            onBlur={validationType.handleBlur}
+                                                            value={validationType.values.city || ""}
+                                                            invalid={
+                                                                validationType.touched.city &&
+                                                                    validationType.errors.city ? true : false
+                                                            }
+                                                        />
+                                                        {validationType.touched.city && validationType.errors.city ? (
+                                                            <FormFeedback type="invalid">{validationType.errors.city}</FormFeedback>
+                                                        ) : null}
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Label className="form-label">State
+                                                            <span className="errorsymbol">*</span></Label>
+                                                        <Input
+                                                            name="state"
+                                                            placeholder="Enter State"
+                                                            type="text"
+                                                            onChange={validationType.handleChange}
+                                                            onBlur={validationType.handleBlur}
+                                                            value={validationType.values.state || ""}
+                                                            invalid={
+                                                                validationType.touched.state &&
+                                                                    validationType.errors.state ? true : false
+                                                            }
+                                                        />
+                                                        {validationType.touched.state && validationType.errors.state ? (
+                                                            <FormFeedback type="invalid">{validationType.errors.state}</FormFeedback>
+                                                        ) : null}
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Label className="form-label">Country
+                                                            <span className="errorsymbol">*</span></Label>
+                                                        <Input
+                                                            name="country"
+                                                            placeholder="Enter Country"
+                                                            type="text"
+                                                            onChange={validationType.handleChange}
+                                                            onBlur={validationType.handleBlur}
+                                                            value={validationType.values.country || ""}
+                                                            invalid={
+                                                                validationType.touched.country &&
+                                                                    validationType.errors.country ? true : false
+                                                            }
+                                                        />
+                                                        {validationType.touched.country && validationType.errors.country ? (
+                                                            <FormFeedback type="invalid">{validationType.errors.country}</FormFeedback>
+                                                        ) : null}
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Label className="form-label">Postcode
+                                                            <span className="errorsymbol">*</span></Label>
+                                                        <Input
+                                                            name="postcode"
+                                                            placeholder="Enter Postcode"
+                                                            type="text"
+                                                            onChange={validationType.handleChange}
+                                                            onBlur={validationType.handleBlur}
+                                                            value={validationType.values.postcode || ""}
+                                                            invalid={
+                                                                validationType.touched.postcode &&
+                                                                    validationType.errors.postcode ? true : false
+                                                            }
+                                                        />
+                                                        {validationType.touched.postcode && validationType.errors.postcode ? (
+                                                            <FormFeedback type="invalid">{validationType.errors.postcode}</FormFeedback>
+                                                        ) : null}
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Label className="form-label">Phone Number
+                                                            <span className="errorsymbol">*</span></Label>
+                                                        <Input
+                                                            name="phonenumber"
+                                                            placeholder="Enter PhoneNumber"
+                                                            type="number"
+                                                            onChange={validationType.handleChange}
+                                                            onBlur={validationType.handleBlur}
+                                                            value={validationType.values.phonenumber || ""}
+                                                            invalid={
+                                                                validationType.touched.phonenumber &&
+                                                                    validationType.errors.phonenumber ? true : false
+                                                            }
 
+                                                        />
+                                                        {validationType.touched.phonenumber && validationType.errors.phonenumber ? (
+                                                            <FormFeedback type="invalid">
+                                                                {validationType.errors.phonenumber}
+                                                            </FormFeedback>
+                                                        ) : null}
+                                                    </div>
                                                 </Col>
                                                 <Col md={6}>
-                                                    <Label className="form-label">City
-                                                        <span className="errorsymbol">*</span></Label>
-                                                    <Input
-                                                        name="city"
-                                                        placeholder="Enter City"
-                                                        type="text"
-                                                        onChange={validationType.handleChange}
-                                                        onBlur={validationType.handleBlur}
-                                                        value={validationType.values.city || ""}
-                                                        invalid={
-                                                            validationType.touched.city &&
-                                                                validationType.errors.city ? true : false
-                                                        }
-                                                    />
-                                                    {validationType.touched.city && validationType.errors.city ? (
-                                                        <FormFeedback type="invalid">{validationType.errors.city}</FormFeedback>
-                                                    ) : null}
-                                                </Col>
-                                                <Col md={6}>
-                                                    <Label className="form-label">State
-                                                        <span className="errorsymbol">*</span></Label>
-                                                    <Input
-                                                        name="state"
-                                                        placeholder="Enter State"
-                                                        type="text"
-                                                        onChange={validationType.handleChange}
-                                                        onBlur={validationType.handleBlur}
-                                                        value={validationType.values.state || ""}
-                                                        invalid={
-                                                            validationType.touched.state &&
-                                                                validationType.errors.state ? true : false
-                                                        }
-                                                    />
-                                                    {validationType.touched.state && validationType.errors.state ? (
-                                                        <FormFeedback type="invalid">{validationType.errors.state}</FormFeedback>
-                                                    ) : null}
-                                                </Col>
-                                                <Col md={6}>
-                                                    <Label className="form-label">Country
-                                                        <span className="errorsymbol">*</span></Label>
-                                                    <Input
-                                                        name="country"
-                                                        placeholder="Enter Country"
-                                                        type="text"
-                                                        onChange={validationType.handleChange}
-                                                        onBlur={validationType.handleBlur}
-                                                        value={validationType.values.country || ""}
-                                                        invalid={
-                                                            validationType.touched.country &&
-                                                                validationType.errors.country ? true : false
-                                                        }
-                                                    />
-                                                    {validationType.touched.country && validationType.errors.country ? (
-                                                        <FormFeedback type="invalid">{validationType.errors.country}</FormFeedback>
-                                                    ) : null}
-                                                </Col>
-                                                <Col md={6}>
-                                                    <Label className="form-label">Postcode
-                                                        <span className="errorsymbol">*</span></Label>
-                                                    <Input
-                                                        name="postcode"
-                                                        placeholder="Enter Postcode"
-                                                        type="text"
-                                                        onChange={validationType.handleChange}
-                                                        onBlur={validationType.handleBlur}
-                                                        value={validationType.values.postcode || ""}
-                                                        invalid={
-                                                            validationType.touched.postcode &&
-                                                                validationType.errors.postcode ? true : false
-                                                        }
-                                                    />
-                                                    {validationType.touched.postcode && validationType.errors.postcode ? (
-                                                        <FormFeedback type="invalid">{validationType.errors.postcode}</FormFeedback>
-                                                    ) : null}
-                                                </Col>
-                                                <Col md={6}>
-                                                    <Label className="form-label">PhoneNumber
-                                                        <span className="errorsymbol">*</span></Label>
-                                                    <Input
-                                                        name="phonenumber"
-                                                        placeholder="Enter PhoneNumber"
-                                                        type="number"
-                                                        onChange={validationType.handleChange}
-                                                        onBlur={validationType.handleBlur}
-                                                        value={validationType.values.phonenumber || ""}
-                                                        invalid={
-                                                            validationType.touched.phonenumber &&
-                                                                validationType.errors.phonenumber ? true : false
-                                                        }
+                                                    <div className="mb-3">
+                                                        <Label className="form-label">Product Image</Label>
 
-                                                    />
-                                                    {validationType.touched.phonenumber && validationType.errors.phonenumber ? (
-                                                        <FormFeedback type="invalid">
-                                                            {validationType.errors.phonenumber}
-                                                        </FormFeedback>
-                                                    ) : null}
-                                                </Col>
-                                                <Col md={6}>
-                                                    <Label className="form-label">Product Image</Label>
-
-                                                    <Input className="form-control"
-                                                        id="formFileLg"
-                                                        type="file"
-                                                        accept="image/png, image/jpeg"
-                                                        onChange={handleAcceptedProfileImage} />
+                                                        <Input className="form-control"
+                                                            id="formFileLg"
+                                                            type="file"
+                                                            accept="image/png, image/jpeg"
+                                                            onChange={handleAcceptedProfileImage} />
 
 
-                                                    <div className="avatar-lg">
-                                                        <div className="avatar-title bg-light rounded-circle">
-                                                            <img src={
-                                                                profile?.user_profile?.profileimage ?
-                                                                    process.env.REACT_APP_LOCAL_IMAGE +
-                                                                    profile?.user_profile?.profileimage :
-                                                                    profileimage ? profileimage : ''}
-                                                                id="profileimage"
-                                                                alt=""
-                                                                className="avatar-md h-auto rounded-circle"
-                                                                height={50}
-                                                                width={50}
-                                                            />
+                                                        <div className="avatar-lg">
+                                                            <div className="avatar-title bg-light rounded-circle">
+                                                                <img src={
+                                                                    profile?.user_profile?.profileimage ?
+                                                                        process.env.REACT_APP_LOCAL_IMAGE +
+                                                                        profile?.user_profile?.profileimage :
+                                                                        profileimage ? profileimage : ''}
+                                                                    id="profileimage"
+                                                                    alt=""
+                                                                    className="avatar-md h-auto rounded-circle"
+                                                                    height={50}
+                                                                    width={50}
+                                                                />
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </Col>
@@ -333,7 +353,7 @@ const Profile = (props) => {
                     buttonText="Okay"
                 />
             }
-        </React.Fragment >
+        </Fragment>
     )
 }
 

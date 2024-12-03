@@ -181,7 +181,7 @@ const ProductListPage = () => {
             search: searchValue,
             per_page: pageSize
         }
-        console.log(pageSize, "currentPage")
+      
         dispatch(getProductsList(userData, currentPage === currentPage ? 1 : currentPage));
     };
     if (isLoading || productloading) {

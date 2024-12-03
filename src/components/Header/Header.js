@@ -71,7 +71,7 @@ const Header = () => {
                     </button>
                     &nbsp;
                     <button onClick={() => setModalShow(false)} className='otp-button btn btn-secondary dz-xs-flex m-r5'>
-                        Cancle
+                    Cancel
                     </button>
                 </ModalBody>
             </Modal>

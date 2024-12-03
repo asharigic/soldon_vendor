@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Button,
@@ -402,390 +402,394 @@ const AddProduct = () => {
   });
 
   return (
-    <React.Fragment>
-      <div className="page-content">
-        <Container fluid>
-          <h1>Add Product</h1>
+    <Fragment>
+      <div className="container">
 
-          <Row>
-            <Col xs="12">
-              {productloading ? <Spinners setLoading={setIsLoading} />
-                :
-                <Form onSubmit={metaData.handleSubmit} autoComplete="off">
-                  <Row>
-                    <Col sm="6">
-                      <div className="mb-3">
-                        <Label htmlFor="productname">Product Name <span className="errorsymbol">*</span></Label>
-                        <Input
-                          id="productname"
-                          name="productname"
-                          type="text"
-                          placeholder="Product Name"
-                          value={metaData.values.productname}
-                          onChange={metaData.handleChange}
-                          invalid={
-                            metaData.touched.productname && metaData.errors.productname ? true : false
-                          }
-                        />
-                        {metaData.errors.productname && metaData.touched.productname ? (
-                          <FormFeedback type="invalid">{metaData.errors.productname}</FormFeedback>
-                        ) : null}
-                      </div>
-                      <div className="mb-3">
-                        <Label htmlFor="price">Price <span className="errorsymbol">*</span></Label>
-                        <Input
-                          id="price"
-                          name="price"
-                          type="number"
-                          placeholder="Price"
-                          value={metaData.values.price}
-                          onChange={metaData.handleChange}
-                          invalid={
-                            metaData.touched.price && metaData.errors.price ? true : false
-                          }
-                        />
-                        {metaData.errors.price && metaData.touched.price ? (
-                          <FormFeedback type="invalid">{metaData.errors.price}</FormFeedback>
-                        ) : null}
-                      </div>
-                      <div className="mb-3">
-                        <Label className="control-label">Status <span className="errorsymbol">*</span></Label>
-                        <Select
-                          name="status"
-                          options={statusType}
-                          value={selectedStatus ? selectedStatus : ""}
-                          placeholder="Select Status"
-                          onChange={(selectedOption) => handleSelectStatus(selectedOption)}
-                          classNamePrefix="react-select"
-                          className={`select2 ${metaData.touched.status && metaData.errors.status ? 'is-invalid' : ''}`} />
-                        {metaData.errors.status && metaData.touched.status ? (
-                          <span className="text-danger">{metaData.errors.status}</span>
-                        ) : null}
-                      </div>
-                      <div className="mb-3">
-                        <Label className="form-label">Product Image</Label>
-
-                        <div className="text-center">
-
-
-                          <Input className="form-control"
-                            id="formFileLg"
-                            type="file"
-                            accept="image/png, image/jpeg"
-                            onChange={handleAcceptedProductImage} />
-
-
-
-                          <div className="avatar-lg">
-                            <div className="avatar-title bg-light rounded-circle">
-                              <img src={productimage || ''} id="productimage" alt="" className="avatar-md h-auto rounded-circle" width={50} />
-                            </div>
-                          </div>
-
-                        </div>
-                      </div>
-                      <div className="mb-3">
-                        <Label className="control-label">Product Categories <span className="errorsymbol">*</span></Label>
-                        <Select
-                          name="category_id"
-                          value={selectedCategory}
-                          placeholder="Select Product Categories"
-                          options={categories?.categories && categories?.categories?.map(attr => ({
-                            value: attr.id,
-                            label: attr.name
-                          }))}
-                          isMulti
-                          onChange={(selectedOption) => handleSelectCategory(selectedOption)}
-                          className={`select2-selection ${metaData.touched.category_id && metaData.errors.category_id ? 'is-invalid' : ''}`} />
-                        {metaData.errors.category_id && metaData.touched.category_id ? (
-                          <span className="text-danger">{metaData.errors.category_id}</span>
-                        ) : null}
-                        <Link className="mt-2 d-block" to="#" onClick={() => setIsCategoryModal(true)}>+Add New Category</Link>
-                      </div>
-                      <div className="mb-3">
-                        <Label className="control-label">Product Tags <span className="errorsymbol">*</span></Label>
-                        <Select
-                          name="tags_id"
-                          value={selectedtag}
-                          placeholder="Select Product Tags"
-                          options={tags?.tags && tags?.tags?.map(attr => ({
-                            value: attr.id,
-                            label: attr.name
-                          }))}
-                          onChange={(selectedOption) => handleSelectTag(selectedOption)}
-                          isMulti
-                          className={`select2-selection ${metaData.touched.tags_id && metaData.errors.tags_id ? 'is-invalid' : ''}`} />
-                        {metaData.errors.tags_id && metaData.touched.tags_id ? (
-                          <span className="text-danger">{metaData.errors.tags_id}</span>
-                        ) : null}
-                        <Link className="mt-2 d-block" to="#" onClick={() => setIsTagModal(true)}>+Add New Tag</Link>
-                      </div>
-
-                      <div className="mb-3">
-                        <Label htmlFor="metatitle">Additional Condition</Label>
-                        <Input
-                          id="metatitle"
-                          name="additional_condition"
-                          type="text"
-                          placeholder="Additional Condition"
-                          value={metaData.values.additional_condition}
-                          onChange={metaData.handleChange}
-                        />
-                      </div>
-                    </Col>
-                    <Col sm="6">
-                      <div className="mb-3">
-                        <Label htmlFor="metatitle">Sub Title</Label>
-                        <Input
-                          id="metatitle"
-                          name="subtitle"
-                          type="text"
-                          placeholder="Sub Title"
-                          value={metaData.values.subtitle}
-                          onChange={metaData.handleChange}
-                        />
-                      </div>
-                      <div className="mb-3">
-
-                        <Label htmlFor="description">
-                          Product Description <span className="errorsymbol">*</span>
-                        </Label>
-                        <Col lg="12">
-                          <CKEditor
-                            editor={ClassicEditor}
-                            config={{
-
-                              licenseKey: 'yb9cohmfnwpo4zlbubfkoeyzgj99jhzjo4gp5yie0ribr5y9',
+        <h1 className="heading">Add Product</h1>
+        <Row>
+          <Col xl={12}>
+            {productloading ? <Spinners setLoading={setIsLoading} />
+              :
+              <Card>
+                <CardBody>
+                  <Form onSubmit={metaData.handleSubmit} autoComplete="off">
+                    <Row>
+                      <Col sm="6">
+                        <div className="mb-3">
+                          <Label htmlFor="productname">Product Name <span className="errorsymbol">*</span></Label>
+                          <Input
+                            id="productname"
+                            name="productname"
+                            type="text"
+                            placeholder="Product Name"
+                            value={metaData.values.productname}
+                            onChange={metaData.handleChange}
+                            invalid={
+                              metaData.touched.productname && metaData.errors.productname ? true : false
                             }
-                            }
-                            data={metaData.values.description}
-                            onChange={handleEditorChange} // Update Formik's content field
-                            onBlur={handleEditorBlur} // Formik onBlur for validation
                           />
-
-                          {metaData.errors.description && metaData.touched.description ? (
-                            <span className="text-danger">{metaData.errors.description}</span>
+                          {metaData.errors.productname && metaData.touched.productname ? (
+                            <FormFeedback type="invalid">{metaData.errors.productname}</FormFeedback>
                           ) : null}
-                        </Col>
-
-                      </div>
-                      <div className="mb-3">
-                        <div>
-                          <Label htmlFor="formFileLg" className="form-label">Product Gallery</Label>
-                          {productgallery.length > 0 &&
-                            productgallery.map((item, index) => {
-                              return (
-                                <div key={item}>
-                                  <img src={item} alt="" height={100} width={100} />
-                                  <button type="button" className="button remove mt-3 p-2" onClick={() => removeImageproduct(index)}>Remove</button>
-                                </div>
-                              );
-                            })}
-                          <Input className="form-control" id="formFileLg" type="file" accept="image/png, image/jpeg" onChange={onproductGallery} />
                         </div>
-                      </div>
-                      <div className="mb-3">
-                        <Label className="control-label">Product Term <span className="errorsymbol">*</span></Label>
-                        <Select
-                          name="term_id"
-                          value={selectedterm}
-                          placeholder="Select Product Term"
-                          options={terms?.terms && terms?.terms?.map(attr => ({
-                            value: attr.id,
-                            label: attr.name
-                          }))}
-                          isMulti
-                          onChange={(selectedOption) => handleSelectTerm(selectedOption)}
-                          className={`select2-selection ${metaData.touched.term_id && metaData.errors.term_id ? 'is-invalid' : ''}`} />
-                        <Link className="mt-2 d-block" to="#" onClick={() => setIsTermModal(true)}>+Add New Term</Link>
-                      </div>
-                      <div className="mb-3">
-                        <Label className="control-label">Stock Status</Label>
-                        <Select
-                          name="stock_status"
-                          options={stockType}
-                          value={selectedstock}
-                          onChange={(selectedOption) => handleSelectStock(selectedOption)}
-                          classNamePrefix="select2"
-                          placeholder="Select Stock Status"
-                        />
-                      </div>
+                        <div className="mb-3">
+                          <Label htmlFor="price">Price <span className="errorsymbol">*</span></Label>
+                          <Input
+                            id="price"
+                            name="price"
+                            type="number"
+                            placeholder="Price"
+                            value={metaData.values.price}
+                            onChange={metaData.handleChange}
+                            invalid={
+                              metaData.touched.price && metaData.errors.price ? true : false
+                            }
+                          />
+                          {metaData.errors.price && metaData.touched.price ? (
+                            <FormFeedback type="invalid">{metaData.errors.price}</FormFeedback>
+                          ) : null}
+                        </div>
+                        <div className="mb-3">
+                          <Label className="control-label">Status <span className="errorsymbol">*</span></Label>
+                          <Select
+                            name="status"
+                            options={statusType}
+                            value={selectedStatus ? selectedStatus : ""}
+                            placeholder="Select Status"
+                            onChange={(selectedOption) => handleSelectStatus(selectedOption)}
+                            classNamePrefix="react-select"
+                            className={`select2 ${metaData.touched.status && metaData.errors.status ? 'is-invalid' : ''}`} />
+                          {metaData.errors.status && metaData.touched.status ? (
+                            <span className="text-danger">{metaData.errors.status}</span>
+                          ) : null}
+                        </div>
+                        <div className="mb-3">
+                          <Label className="form-label">Product Image</Label>
+
+                          <div className="text-center">
 
 
-                    </Col>
-                    <Col sm="6">
-                      <div className="mb-3">
-                        <Label htmlFor="packagingcondition">Product Condition <span className="errorsymbol">*</span></Label>
-                        <div className="productradiobutton">
-                          {productconditionoptions.map((option) => (
-                            <div key={option.value} className="form-check form-check-left mb-3">
-                              <input
-                                type="radio"
-                                id={`productCondition_${option.value}`}  // Unique id for this group
-                                name="productCondition"
-                                value={option.value}
-                                className="form-check-input"
-                                checked={productcondition === option.value}
-                                onClick={handleproductconditionChange}
-                              />
-                              <label className="form-check-label" htmlFor={`productCondition_${option.value}`}>
-                                {option.label}
-                              </label>
+                            <Input className="form-control"
+                              id="formFileLg"
+                              type="file"
+                              accept="image/png, image/jpeg"
+                              onChange={handleAcceptedProductImage} />
+
+
+
+                            <div className="avatar-lg">
+                              <div className="avatar-title bg-light rounded-circle">
+                                <img src={productimage || ''} id="productimage" alt="" className="avatar-md h-auto rounded-circle" width={50} />
+                              </div>
                             </div>
-                          ))}
+
+                          </div>
                         </div>
-                      </div>
-                      <div className="mb-3">
-                        <Label htmlFor="metatitle">Packaging Condition Grade <span className="errorsymbol">*</span></Label>
-                        <div className="productradiobutton">
-                          {productgradeOptions.map((option) => (
-                            <div key={option.value} className="form-check form-check-left mb-3">
-                              <input
-                                type="radio"
-                                id={`productGrade_${option.value}`}  // Unique id for this group
-                                name="productGrade"
-                                value={option.value}
-                                className="form-check-input"
-                                checked={productgrade === option.value}
-                                onClick={handleproductgradeChange}
-                              />
-                              <label className="form-check-label" htmlFor={`productGrade_${option.value}`}>
-                                {option.label}
-                              </label>
-                            </div>
-                          ))}
+                        <div className="mb-3">
+                          <Label className="control-label">Product Categories <span className="errorsymbol">*</span></Label>
+                          <Select
+                            name="category_id"
+                            value={selectedCategory}
+                            placeholder="Select Product Categories"
+                            options={categories?.categories && categories?.categories?.map(attr => ({
+                              value: attr.id,
+                              label: attr.name
+                            }))}
+                            isMulti
+                            onChange={(selectedOption) => handleSelectCategory(selectedOption)}
+                            className={`select2-selection ${metaData.touched.category_id && metaData.errors.category_id ? 'is-invalid' : ''}`} />
+                          {metaData.errors.category_id && metaData.touched.category_id ? (
+                            <span className="text-danger">{metaData.errors.category_id}</span>
+                          ) : null}
+                          <Link className="mt-2 d-block" to="#" onClick={() => setIsCategoryModal(true)}>+Add New Category</Link>
                         </div>
+                        <div className="mb-3">
+                          <Label className="control-label">Product Tags <span className="errorsymbol">*</span></Label>
+                          <Select
+                            name="tags_id"
+                            value={selectedtag}
+                            placeholder="Select Product Tags"
+                            options={tags?.tags && tags?.tags?.map(attr => ({
+                              value: attr.id,
+                              label: attr.name
+                            }))}
+                            onChange={(selectedOption) => handleSelectTag(selectedOption)}
+                            isMulti
+                            className={`select2-selection ${metaData.touched.tags_id && metaData.errors.tags_id ? 'is-invalid' : ''}`} />
+                          {metaData.errors.tags_id && metaData.touched.tags_id ? (
+                            <span className="text-danger">{metaData.errors.tags_id}</span>
+                          ) : null}
+                          <Link className="mt-2 d-block" to="#" onClick={() => setIsTagModal(true)}>+Add New Tag</Link>
+                        </div>
+
+
+                      </Col>
+                      <Col sm="6">
+                        <div className="mb-3">
+                          <Label htmlFor="metatitle">Sub Title</Label>
+                          <Input
+                            id="metatitle"
+                            name="subtitle"
+                            type="text"
+                            placeholder="Sub Title"
+                            value={metaData.values.subtitle}
+                            onChange={metaData.handleChange}
+                          />
+                        </div>
+                        <div className="mb-3">
+
+                          <Label htmlFor="description">
+                            Product Description <span className="errorsymbol">*</span>
+                          </Label>
+                          <Col lg="12">
+                            <CKEditor
+                              editor={ClassicEditor}
+                              config={{
+
+                                licenseKey: 'yb9cohmfnwpo4zlbubfkoeyzgj99jhzjo4gp5yie0ribr5y9',
+                              }
+                              }
+                              data={metaData.values.description}
+                              onChange={handleEditorChange} // Update Formik's content field
+                              onBlur={handleEditorBlur} // Formik onBlur for validation
+                            />
+
+                            {metaData.errors.description && metaData.touched.description ? (
+                              <span className="text-danger">{metaData.errors.description}</span>
+                            ) : null}
+                          </Col>
+
+                        </div>
+                        <div className="mb-3">
+                          <div>
+                            <Label htmlFor="formFileLg" className="form-label">Product Gallery</Label>
+                            {productgallery.length > 0 &&
+                              productgallery.map((item, index) => {
+                                return (
+                                  <div key={item}>
+                                    <img src={item} alt="" height={100} width={100} />
+                                    <button type="button" className="button remove mt-3 p-2" onClick={() => removeImageproduct(index)}>Remove</button>
+                                  </div>
+                                );
+                              })}
+                            <Input className="form-control" id="formFileLg" type="file" accept="image/png, image/jpeg" onChange={onproductGallery} />
+                          </div>
+                        </div>
+                        <div className="mb-3">
+                          <Label className="control-label">Product Term <span className="errorsymbol">*</span></Label>
+                          <Select
+                            name="term_id"
+                            value={selectedterm}
+                            placeholder="Select Product Term"
+                            options={terms?.terms && terms?.terms?.map(attr => ({
+                              value: attr.id,
+                              label: attr.name
+                            }))}
+                            isMulti
+                            onChange={(selectedOption) => handleSelectTerm(selectedOption)}
+                            className={`select2-selection ${metaData.touched.term_id && metaData.errors.term_id ? 'is-invalid' : ''}`} />
+                          <Link className="mt-2 d-block" to="#" onClick={() => setIsTermModal(true)}>+Add New Term</Link>
+                        </div>
+                        <div className="mb-3">
+                          <Label className="control-label">Stock Status</Label>
+                          <Select
+                            name="stock_status"
+                            options={stockType}
+                            value={selectedstock}
+                            onChange={(selectedOption) => handleSelectStock(selectedOption)}
+                            classNamePrefix="select2"
+                            placeholder="Select Stock Status"
+                          />
+                        </div>
+
+                        <div className="mb-3">
+                          <Label htmlFor="metatitle">Additional Condition</Label>
+                          <Input
+                            id="metatitle"
+                            name="additional_condition"
+                            type="text"
+                            placeholder="Additional Condition"
+                            value={metaData.values.additional_condition}
+                            onChange={metaData.handleChange}
+                          />
+                        </div>
+                      </Col>
+                      <Col sm="6">
+                        <div className="mb-3">
+                          <Label htmlFor="packagingcondition">Product Condition <span className="errorsymbol">*</span></Label>
+                          <div className="productradiobutton">
+                            {productconditionoptions.map((option) => (
+                              <div key={option.value} className="form-check form-check-left mb-3">
+                                <input
+                                  type="radio"
+                                  id={`productCondition_${option.value}`}  // Unique id for this group
+                                  name="productCondition"
+                                  value={option.value}
+                                  className="form-check-input"
+                                  checked={productcondition === option.value}
+                                  onClick={handleproductconditionChange}
+                                />
+                                <label className="form-check-label" htmlFor={`productCondition_${option.value}`}>
+                                  {option.label}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="mb-3">
+                          <Label htmlFor="metatitle">Packaging Condition Grade <span className="errorsymbol">*</span></Label>
+                          <div className="productradiobutton">
+                            {productgradeOptions.map((option) => (
+                              <div key={option.value} className="form-check form-check-left mb-3">
+                                <input
+                                  type="radio"
+                                  id={`productGrade_${option.value}`}  // Unique id for this group
+                                  name="productGrade"
+                                  value={option.value}
+                                  className="form-check-input"
+                                  checked={productgrade === option.value}
+                                  onClick={handleproductgradeChange}
+                                />
+                                <label className="form-check-label" htmlFor={`productGrade_${option.value}`}>
+                                  {option.label}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="mb-3">
+                          <Label htmlFor="metaDescription">Model
+                          </Label>
+                          <Input
+                            name="model"
+                            id="model"
+                            type="text"
+                            placeholder="Model"
+                            value={metaData.values.model}
+                            onChange={metaData.handleChange}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <Label htmlFor="metaDescription">EAN
+                          </Label>
+                          <Input
+                            name="ean"
+                            id="ean"
+                            type="text"
+                            placeholder="ean"
+                            value={metaData.values.ean}
+                            onChange={metaData.handleChange}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <Label htmlFor="metatitle">Weight (kg)</Label>
+                          <Input
+                            id="metatitle"
+                            name="weight"
+                            type="number"
+                            placeholder="Weight"
+                            value={metaData.values.weight}
+                            onChange={metaData.handleChange}
+                          />
+                        </div>
+
+                      </Col>
+                      <Col sm="6">
+                        <div className="mb-3">
+                          <Label className="control-label">Sealed <span className="errorsymbol">*</span></Label>
+                          <Select
+                            name="sealed"
+                            options={sealedType}
+                            value={selectedsealed}
+                            placeholder="Select Sealed"
+                            onChange={(selectedOption) => handleSelectsealed(selectedOption)}
+                            classNamePrefix="react-select"
+                            className={`select2 ${metaData.touched.sealed && metaData.errors.sealed ? 'is-invalid' : ''}`} />
+                          {metaData.errors.sealed && metaData.touched.sealed ? (
+                            <span className="text-danger">{metaData.errors.sealed}</span>
+                          ) : null}
+                        </div>
+                        <div className="mb-3">
+                          <Label htmlFor="metakeywords">Manufacturer</Label>
+                          <Input
+                            id="metakeywords"
+                            name="manufacturer"
+                            type="text"
+                            placeholder="Manufacturer"
+                            value={metaData.values.manufacturer}
+                            onChange={metaData.handleChange}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <Label htmlFor="metaDescription">Variation
+                          </Label>
+                          <Input
+                            name="variation"
+                            id="variation"
+                            type="text"
+                            placeholder="Variation"
+                            value={metaData.values.variation}
+                            onChange={metaData.handleChange}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <Label htmlFor="metaDescription">UPC
+                          </Label>
+                          <Input
+                            name="upc"
+                            id="upc"
+                            type="text"
+                            placeholder="upc"
+                            value={metaData.values.upc}
+                            onChange={metaData.handleChange}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <Label htmlFor="metatitle">Width </Label>
+                          <Input
+                            id="metatitle"
+                            name="width"
+                            type="number"
+                            placeholder="width"
+                            value={metaData.values.width}
+                            onChange={metaData.handleChange}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <Label htmlFor="metatitle">Height </Label>
+                          <Input
+                            id="metatitle"
+                            name="height"
+                            type="number"
+                            placeholder="height"
+                            value={metaData.values.height}
+                            onChange={metaData.handleChange}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <Label htmlFor="metatitle">Length </Label>
+                          <Input
+                            id="metatitle"
+                            name="length"
+                            type="number"
+                            placeholder="length"
+                            value={metaData.values.length}
+                            onChange={metaData.handleChange}
+                          />
+                        </div>
+                      </Col>
+                      <div className="d-flex flex-wrap gap-2">
+                        <Button type="submit" color="primary"> Save  </Button>
+                        <Button type="button" color="secondary" onClick={() => navigate("/productlist")}> Cancel</Button>
                       </div>
-                      <div className="mb-3">
-                        <Label htmlFor="metaDescription">Model
-                        </Label>
-                        <Input
-                          name="model"
-                          id="model"
-                          type="text"
-                          placeholder="Model"
-                          value={metaData.values.model}
-                          onChange={metaData.handleChange}
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <Label htmlFor="metaDescription">EAN
-                        </Label>
-                        <Input
-                          name="ean"
-                          id="ean"
-                          type="text"
-                          placeholder="ean"
-                          value={metaData.values.ean}
-                          onChange={metaData.handleChange}
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <Label htmlFor="metatitle">Weight (kg)</Label>
-                        <Input
-                          id="metatitle"
-                          name="weight"
-                          type="number"
-                          placeholder="Weight"
-                          value={metaData.values.weight}
-                          onChange={metaData.handleChange}
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <Label htmlFor="metatitle">Length </Label>
-                        <Input
-                          id="metatitle"
-                          name="length"
-                          type="number"
-                          placeholder="length"
-                          value={metaData.values.length}
-                          onChange={metaData.handleChange}
-                        />
-                      </div>
-                    </Col>
-                    <Col sm="6">
-                      <div className="mb-3">
-                        <Label className="control-label">Sealed <span className="errorsymbol">*</span></Label>
-                        <Select
-                          name="sealed"
-                          options={sealedType}
-                          value={selectedsealed}
-                          placeholder="Select Sealed"
-                          onChange={(selectedOption) => handleSelectsealed(selectedOption)}
-                          classNamePrefix="react-select"
-                          className={`select2 ${metaData.touched.sealed && metaData.errors.sealed ? 'is-invalid' : ''}`} />
-                        {metaData.errors.sealed && metaData.touched.sealed ? (
-                          <span className="text-danger">{metaData.errors.sealed}</span>
-                        ) : null}
-                      </div>
-                      <div className="mb-3">
-                        <Label htmlFor="metakeywords">Manufacturer</Label>
-                        <Input
-                          id="metakeywords"
-                          name="manufacturer"
-                          type="text"
-                          placeholder="Manufacturer"
-                          value={metaData.values.manufacturer}
-                          onChange={metaData.handleChange}
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <Label htmlFor="metaDescription">Variation
-                        </Label>
-                        <Input
-                          name="variation"
-                          id="variation"
-                          type="text"
-                          placeholder="Variation"
-                          value={metaData.values.variation}
-                          onChange={metaData.handleChange}
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <Label htmlFor="metaDescription">UPC
-                        </Label>
-                        <Input
-                          name="upc"
-                          id="upc"
-                          type="text"
-                          placeholder="upc"
-                          value={metaData.values.upc}
-                          onChange={metaData.handleChange}
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <Label htmlFor="metatitle">Width </Label>
-                        <Input
-                          id="metatitle"
-                          name="width"
-                          type="number"
-                          placeholder="width"
-                          value={metaData.values.width}
-                          onChange={metaData.handleChange}
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <Label htmlFor="metatitle">Height </Label>
-                        <Input
-                          id="metatitle"
-                          name="height"
-                          type="number"
-                          placeholder="height"
-                          value={metaData.values.height}
-                          onChange={metaData.handleChange}
-                        />
-                      </div>
-                    </Col>
-                    <div className="d-flex flex-wrap gap-2">
-                      <Button type="submit" color="primary"> Save  </Button>
-                      <Button type="button" color="secondary" onClick={() => navigate("/productlist")}> Cancel</Button>
-                    </div>
-                  </Row>
-                </Form>
-              }
-            </Col>
-          </Row>
-        </Container>
+                    </Row>
+                  </Form>
+                </CardBody>
+              </Card>
+            }
+          </Col>
+        </Row>
+
       </div>
 
       {!productloading &&
@@ -960,7 +964,7 @@ const AddProduct = () => {
           </Form>
         </Modal>
       }
-    </React.Fragment >
+    </Fragment>
   )
 };
 
