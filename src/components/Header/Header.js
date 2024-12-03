@@ -55,6 +55,9 @@ const Header = () => {
                         <Link to="/buying-list">Buying</Link>
                     </li>
                     <li>
+                        <Link to="/selling-list">Selling</Link>
+                    </li>
+                    <li>
                         <Link onClick={() => setModalShow(true)}>Logout</Link>
                     </li>
                 </ul>

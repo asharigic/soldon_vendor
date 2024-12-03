@@ -21,6 +21,7 @@ import FavouriteList from "../pages/Vendor/Favourite/FavouriteList";
 
 //Ordar Management
 import BuyingListPage from "../pages/Vendor/OrdarManagement/BuyingProduct/BuyingProduct";
+import SellingListPage from "../pages/Vendor/OrdarManagement/SellingProduct/SellingProduct";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/", exact: true, component: <Navigate to="/Dashboard" /> },
@@ -33,6 +34,8 @@ const authProtectedRoutes = [
   { path: "/edit-product/:id", component: <EditProduct /> },
   { path: "/favourites", component: <FavouriteList /> },
   { path: "/buying-list", component: <BuyingListPage /> },
+  { path: "/selling-list", component: <SellingListPage /> },
+
 ];
 
 const publicRoutes = [

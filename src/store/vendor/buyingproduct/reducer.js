@@ -3,7 +3,10 @@
 import {
     GET_BUYINGHLIST,
     GET_BUYINGHLIST_SUCCESS,
-    GET_BUYINGHLIST_FAIL
+    GET_BUYINGHLIST_FAIL,
+    SHOW_BUYINGHPRODUCT,
+    SHOW_BUYINGHPRODUCT_SUCCESS,
+    SHOW_BUYINGHPRODUCT_FAIL
 
 } from "./actionType";
 
@@ -12,7 +15,8 @@ const initialState = {
     showbuyingproducts: null,
     buyingproductloading: false,
     buyingerror: null,
-    successbuyingproduct: false
+    successbuyingproduct: false,
+    
 }
 
 const BuyingProductsReducer = (state = initialState, action) => {
@@ -38,6 +42,28 @@ const BuyingProductsReducer = (state = initialState, action) => {
                 buyingerror: action.payload,
                 buyingproductloading: false
             };
+         //Show Buying Product
+         case SHOW_BUYINGHPRODUCT:
+            return {
+                ...state,
+                buyingproductloading: false,
+            };
+
+        case SHOW_BUYINGHPRODUCT_SUCCESS:
+            return {
+                ...state,
+                buyingproductloading: false,
+                showbuyingproducts: action.payload,
+                successbuyingproduct:true
+            };
+
+        case SHOW_BUYINGHPRODUCT_FAIL:
+            return {
+                ...state,
+                buyingproductloading: false,
+                error: action.payload,
+            };
+
         default:
             state = { ...state }
     }

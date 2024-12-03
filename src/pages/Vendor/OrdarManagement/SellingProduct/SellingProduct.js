@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getBuyingList, showBuyingProduct } from '../../../../store/vendor/buyingproduct/action';
+import { getSellingList } from '../../../../store/vendor/sellingproduct/action';
 import DataTable from '../../../../components/Common/DataTable';
 import { Link } from 'react-router-dom';
 import { Badge, Modal, Button, Table } from 'react-bootstrap';
@@ -27,9 +28,9 @@ const ProjectStatus = ({ status }) => {
             return <Badge className="bg-success"> {status} </Badge>;
     }
 };
-const BuyingListPage = () => {
-    document.title = "Buying | Quench";
-    const { buyingproducts, buyingproductloading, successbuyingproduct, showbuyingproducts } = useSelector((state) => state.BuyingProduct);
+const SellingListPage = () => {
+    document.title = "Selling | Quench";
+    const { sellingproducts, sellingproductloading, successsellingproduct, showbuyingproducts } = useSelector((state) => state.SellingProductData);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);
     const [totalItems, setTotalItems] = useState(0);
@@ -46,14 +47,14 @@ const BuyingListPage = () => {
             per_page: limit,
             search: searchValue,
         };
-        dispatch(getBuyingList(payload, page));// Dispatch action to fetch products list
+        dispatch(getSellingList(payload, page));// Dispatch action to fetch products list
     }, [currentPage, pageSize, dispatch]);
 
     useEffect(() => {
-        if (buyingproducts?.meta) {
-            setTotalItems(buyingproducts.meta.total); // Update total items count for pagination
+        if (sellingproducts?.meta) {
+            setTotalItems(sellingproducts.meta.total); // Update total items count for pagination
         }
-    }, [buyingproducts]);
+    }, [sellingproducts]);
 
     // Dynamic column definition
     const columns = useMemo(
@@ -95,7 +96,7 @@ const BuyingListPage = () => {
                 enableSorting: true,
             },
             {
-                header: "Purchased Item",
+                header: "Product Name",
                 accessorKey: "productname",
                 cell: ({ row }) => {
                     return row?.cart_item?.product?.productname
@@ -143,12 +144,24 @@ const BuyingListPage = () => {
                 enableSorting: true,
             },
             {
+                header: "Stock Status",
+                accessorKey: "stock_status",
+                cell: ({ row }) => {
+
+                    return row?.cart_item?.product?.stock_status
+                        ? row?.cart_item?.product?.stock_status.charAt(0).toUpperCase() + row?.cart_item?.product?.stock_status.slice(1).toLowerCase()
+                        : "_";
+                },
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
                 header: "Action",
                 accessorKey: "action",
                 cell: (cellProps) => (
                     <div>
                         {/* <Link onClick={() => setViewModal(true)}>View Order</Link> */}
-                        <Link onClick={() => handleVieworderdetail(cellProps.row.id)}>View Order</Link>
+                        <Link onClick={() => handleVieworderdetail(cellProps.row.id)}>View Details</Link>
                     </div >
                 ),
                 enableColumnFilter: false,
@@ -174,21 +187,21 @@ const BuyingListPage = () => {
     }
 
 
-    if (isLoading || buyingproductloading) {
+    if (isLoading || sellingproductloading) {
         return <Spinners setLoading={setIsLoading} />;
     }
     return (
         <div>
 
             <div style={{ textAlign: 'center' }}>
-                <h5>Buying Order List</h5>
+                <h5>Selling Product List</h5>
 
             </div>
             {isLoading ? <Spinners setLoading={setIsLoading} />
                 :
 
                 <DataTable
-                    data={buyingproducts?.data || []}
+                    data={sellingproducts?.data || []}
                     columns={columns} // Passing dynamic columns to DataTable
                     pageSize={pageSize}
                     totalItems={totalItems}
@@ -217,7 +230,7 @@ const BuyingListPage = () => {
                         tabIndex="-1"
 
                     >
-                       
+
                         <div className="modal-content">
                             <Modal.Header closeButton>Order Details</Modal.Header>
                             <Modal.Body>
@@ -296,4 +309,4 @@ const BuyingListPage = () => {
     );
 };
 
-export default BuyingListPage;
+export default SellingListPage;

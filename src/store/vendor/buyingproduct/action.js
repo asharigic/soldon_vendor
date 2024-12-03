@@ -3,7 +3,10 @@
 import {
     GET_BUYINGHLIST,
     GET_BUYINGHLIST_SUCCESS,
-    GET_BUYINGHLIST_FAIL
+    GET_BUYINGHLIST_FAIL,
+    SHOW_BUYINGHPRODUCT,
+    SHOW_BUYINGHPRODUCT_SUCCESS,
+    SHOW_BUYINGHPRODUCT_FAIL
 
 } from "./actionType";
 
@@ -22,3 +25,25 @@ export const getBuyingListFail = (error) => ({
     type: GET_BUYINGHLIST_FAIL,
     payload: error,
 })
+
+//Show buying product 
+export const showBuyingProduct = (id) => {
+    return {
+      type: SHOW_BUYINGHPRODUCT,
+      payload: { id },
+    }
+  }
+  
+  export const showBuyingProductSuccess = (products) => {
+    return {
+      type: SHOW_BUYINGHPRODUCT_SUCCESS,
+      payload: { products },
+    }
+  }
+  
+  export const showBuyingProductFail = (error) => {
+    return {
+      type: SHOW_BUYINGHPRODUCT_FAIL,
+      payload: error,
+    }
+  }
