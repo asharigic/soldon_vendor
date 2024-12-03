@@ -301,7 +301,7 @@ const Profile = (props) => {
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Label className="form-label">Product Image</Label>
+                                                        <Label className="form-label">Profile Image</Label>
 
                                                         <Input className="form-control"
                                                             id="formFileLg"
@@ -313,10 +313,10 @@ const Profile = (props) => {
                                                         <div className="avatar-lg">
                                                             <div className="avatar-title bg-light rounded-circle">
                                                                 <img src={
-                                                                    profile?.user_profile?.profileimage ?
-                                                                        process.env.REACT_APP_LOCAL_IMAGE +
-                                                                        profile?.user_profile?.profileimage :
-                                                                        profileimage ? profileimage : ''}
+                                                                    profileimage ? profileimage :
+                                                                        profile?.user_profile?.profileimage ?
+                                                                            process.env.REACT_APP_LOCAL_IMAGE +
+                                                                            profile?.user_profile?.profileimage : ""}
                                                                     id="profileimage"
                                                                     alt=""
                                                                     className="avatar-md h-auto rounded-circle"

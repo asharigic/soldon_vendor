@@ -108,7 +108,8 @@ const BuyingListPage = () => {
             {
                 header: "Total",
                 accessorKey: "total",
-                cell: (cellProps) => cellProps?.row?.total || "_",
+                cell: (cellProps) => (cellProps?.row?.total ? <span><i className="bx bx-pound"></i>{cellProps?.row?.total}</span> : "_"),
+
                 enableColumnFilter: false,
                 enableSorting: true,
             },
