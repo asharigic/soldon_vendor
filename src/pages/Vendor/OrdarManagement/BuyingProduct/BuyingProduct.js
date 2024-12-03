@@ -29,7 +29,7 @@ const ProjectStatus = ({ status }) => {
 };
 const BuyingListPage = () => {
     document.title = "Buying | Quench";
-    const { buyingproducts, buyingproductloading, successbuyingproduct, showbuyingproducts } = useSelector((state) => state.BuyingProduct);
+    const { buyingproducts, buyingproductloading, showbuyingproducts } = useSelector((state) => state.BuyingProduct);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);
     const [totalItems, setTotalItems] = useState(0);
