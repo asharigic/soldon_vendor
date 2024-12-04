@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import { Container } from "reactstrap";
@@ -27,20 +27,14 @@ const Dashboard = props => {
  
 
     return (
-        <React.Fragment>
-            <div className="page-content">
-                <Container fluid>
-
-
-
-                    <div className="alert-success alert alert-success fade show">
+        <Fragment>
+            <div className="container">
+                <div className="alert-success alert alert-success fade show">
                         <h4 className="alert-heading">Welcome to Quench {username}</h4>
-                      
                     </div>
-                </Container>
             </div>
            
-        </React.Fragment>
+        </Fragment>
     );
 };
 

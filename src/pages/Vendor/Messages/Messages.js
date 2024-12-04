@@ -10,13 +10,16 @@ import SimpleBar from "simplebar-react";
 import 'simplebar-react/dist/simplebar.min.css';
 import { map } from "lodash";
 import EmojiPicker from 'emoji-picker-react';
-
+import { getProfile } from "../../../store/vendor/profile/actions";
+import bgimg1 from '../../../assets/images/no-img.jpg';
 const Messages = (props) => {
     document.title = "Messages | Quench";
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { messages, messageserror, messagesloading, messagessuccess, messagesupdate } = useSelector((state) => state.MessagesData);
-    const [isLoading, setLoading] = useState(messagesloading);
+    const { messages, messagesloading, messagessuccess } = useSelector((state) => state.MessagesData);
+    const { profile, loading } = useSelector((state) => state.ProfileData);
+    // const [isLoading, setLoading] = useState(messagesloading);
+    const [isLoading, setLoading] = useState(true);
     const [userProfileImage, setUserProfileImage] = useState(null);
     const [userName, setUserName] = useState(null);
     const [activeTab, setactiveTab] = useState("1");
@@ -42,13 +45,13 @@ const Messages = (props) => {
         if (!localStorage.getItem("vendoruser")) {
             navigate('/login');
         } else {
+            dispatch(getProfile());
             const obj = JSON.parse(localStorage.getItem("vendoruser"));
             setUserID(obj.id);
             setUserName(obj?.username);
-            setUserPhone(obj?.user_profile?.phonenumber);
-            setUserEmail(obj?.email);
-            setUserProfileImage(`${process.env.REACT_APP_URL}` + obj.profile_image);
-
+            // setUserPhone(obj?.user_profile?.phonenumber);
+            // setUserEmail(obj?.email);
+            // setUserProfileImage(`${process.env.REACT_APP_URL}` + obj.profile_image);
             dispatch(getMessagesList());
             setLoading(false);
         }
@@ -209,7 +212,9 @@ const Messages = (props) => {
         setUserDetailID(id);
         setShowUserDetail(prevState => !prevState);
     };
-
+    if (isLoading || loading || messagesloading) {
+        return <Spinners setLoading={setLoading} />;  // Display loading state while data is being fetched
+    };
     return (
         <Fragment>
             <div className="page-content">
@@ -222,7 +227,7 @@ const Messages = (props) => {
                                     <div >
                                         <div className="py-4 border-bottom">
                                             <div className="d-flex">
-                                                {userProfileImage == "" ? (
+                                                {/* {userProfileImage == "" ? (
                                                     <div
                                                         className="avatar-md rounded-circle img-thumbnail"
                                                         style={{
@@ -253,10 +258,24 @@ const Messages = (props) => {
                                                             }}
                                                         />
                                                     </div>
-                                                )}
-
+                                                )} */}
+                                                <div className="align-self-center me-3">
+                                                    <img
+                                                        src={
+                                                            profile?.user_profile?.profileimage ?
+                                                                process.env.REACT_APP_LOCAL_IMAGE +
+                                                                profile?.user_profile?.profileimage : bgimg1 ? bgimg1 : ""}
+                                                        style={{
+                                                            width: "60px",
+                                                            height: "60px",
+                                                            borderRadius: "50%",
+                                                            marginRight: "15px",
+                                                        }}
+                                                    />
+                                                </div>
                                                 <div className="flex-grow-1">
-                                                    <h5 className="font-size-15 mt-0 mb-1">{userName}</h5>
+                                                    {/* <h5 className="font-size-15 mt-0 mb-1">{userName}</h5> */}
+                                                    <h5 className="font-size-15 mt-0 mb-1">{profile?.username}</h5>
                                                 </div>
                                             </div>
                                         </div>
@@ -381,9 +400,9 @@ const Messages = (props) => {
                                                                 toggle={toggleRefresh}
                                                             >
                                                                 <DropdownToggle className="btn nav-btn" tag="a">
-                                                                    {messagesloading ? 
-                                                                        <i className="bx bx-loader bx-spin" /> 
-                                                                        : 
+                                                                    {messagesloading ?
+                                                                        <i className="bx bx-loader bx-spin" />
+                                                                        :
                                                                         <i className="bx bx-revision" />
                                                                     }
                                                                 </DropdownToggle>
@@ -507,25 +526,36 @@ const Messages = (props) => {
                                                                                             <div className="text-center mb-4">
                                                                                                 <div className="avatar-md mx-auto mb-4">
                                                                                                     {userDetailID === userID ? (
-                                                                                                        <img src={userProfileImage} className="avatar-title bg-light  rounded-circle text-primary h1" alt="" style={{ height: "40%", width: "40%",borderRadius: "50%" }} />
+                                                                                                        <img
+                                                                                                            //  src={userProfileImage} 
+                                                                                                            src={profile?.user_profile?.profileimage ?
+                                                                                                                process.env.REACT_APP_LOCAL_IMAGE +
+                                                                                                                profile?.user_profile?.profileimage : bgimg1 ? bgimg1 : ""}
+                                                                                                            className="avatar-title bg-light  rounded-circle text-primary h1" alt="" style={{ height: "40%", width: "40%", borderRadius: "50%" }} />
                                                                                                     ) : (
                                                                                                         message?.sender_profileimage === "" ? (
-                                                                                                        <div className="avatar-title bg-light  rounded-circle text-primary h1">
-                                                                                                            <span className="avatar-title rounded-circle bg-primary-subtle text-primary">
-                                                                                                                {message?.sender?.charAt(0).toUpperCase() || ""}
-                                                                                                            </span>
-                                                                                                        </div>
-                                                                                                    ) : (
-                                                                                                        <img src={message?.sender_profileimage} className="avatar-title bg-light  rounded-circle text-primary h1" alt="" style={{ height: "40%", width: "40%",borderRadius: "50%" }} />
-                                                                                                    ))
+                                                                                                            <div className="avatar-title bg-light  rounded-circle text-primary h1">
+                                                                                                                <span className="avatar-title rounded-circle bg-primary-subtle text-primary">
+                                                                                                                    {message?.sender?.charAt(0).toUpperCase() || ""}
+                                                                                                                </span>
+                                                                                                            </div>
+                                                                                                        ) : (
+                                                                                                            <img src={message?.sender_profileimage} className="avatar-title bg-light  rounded-circle text-primary h1" alt="" style={{ height: "40%", width: "40%", borderRadius: "50%" }} />
+                                                                                                        ))
                                                                                                     }
                                                                                                 </div>
 
                                                                                                 <Row className="justify-content-center">
                                                                                                     <Col xl={10}>
                                                                                                         <h3 className="text-primary">{userDetailID === userID ? userName : message.sender}</h3>
-                                                                                                        <h6 className="text-secondary">{userDetailID === userID ? userPhone : message?.user_phone}</h6>
-                                                                                                        <h6 className="text-secondary">{userDetailID === userID ? userEmail : message?.user_email}</h6>
+                                                                                                        <h6 className="text-secondary">
+                                                                                                            {/* {userDetailID === userID ? userPhone : message?.user_phone} */}
+                                                                                                            {userDetailID === userID ? profile?.user_profile?.phonenumber : message?.user_phone}
+                                                                                                        </h6>
+                                                                                                        <h6 className="text-secondary">
+                                                                                                            {/* {userDetailID === userID ? userEmail : message?.user_email} */}
+                                                                                                            {userDetailID === userID ? profile?.email : message?.user_email}
+                                                                                                        </h6>
                                                                                                         <p className="text-muted font-size-14 mb-4">
                                                                                                         </p>
                                                                                                     </Col>
@@ -612,8 +642,8 @@ const Messages = (props) => {
                         </Col>
                     </Row >
                 </Container>
-            </div>
-        </Fragment>
+            </div >
+        </Fragment >
     );
 };
 
