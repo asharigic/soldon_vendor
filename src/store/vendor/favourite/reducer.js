@@ -21,6 +21,7 @@ const favouriteReducer = (state = INIT_STATE, action) => {
         case GET_FAVOURITE_LIST:
             return {
                 ...state,
+                favourite: action.payload,
                 favouriteloading: true,
                 favouritesuccess: false,
                 favouriteerror: null,

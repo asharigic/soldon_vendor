@@ -188,21 +188,21 @@ const FavouriteList = (props) => {
         ) : (
           <p className="no-data">No favourite products found.</p>
         )} */}
-        {isLoading ? <Spinners setLoading={setLoading} />
-          :
-          <DataTable
-            data={favourite?.data || []}
-            columns={columns} // Passing dynamic columns to DataTable
-            pageSize={pageSize}
-            totalItems={totalItems}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            setPageSize={setPageSize}
-            searchValue={searchValue}
-            setSearchValue={setSearchValue}
-            handleSearch={handleSearch}
-          />
-        }
+          {isLoading ? <Spinners setLoading={setLoading} />
+              :
+              <DataTable
+                data={favourite?.data || []}
+                columns={columns} // Passing dynamic columns to DataTable
+                pageSize={pageSize}
+                totalItems={totalItems}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                setPageSize={setPageSize}
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                handleSearch={handleSearch}
+              />
+            }
       </div>
     </Fragment>
   );

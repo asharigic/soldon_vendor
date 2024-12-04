@@ -242,8 +242,13 @@ const EditProduct = props => {
       images: "",
       productcondition: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.productcondition : "new",
       packaging_condition: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.packaging_condition : "gradeA",
-      term_id: showproducts?.product?.terms ? showproducts.product.terms.length === 0 ? "" : showproducts.product.terms.map(term => term.id) : [],
-      category_id: showproducts?.product?.categories ? showproducts.product.categories.length === 0 ? "" : showproducts.product.categories.map(category => category.id) : [],
+      term_id: showproducts?.product?.terms ? showproducts?.product?.terms?.length === 0 ? [] : showproducts.product.terms.map(term => term.id) : [],
+      // category_id: showproducts?.product?.categories ? showproducts?.product?.categories?.length === 0 ? [] : showproducts.product.categories.map(category => category.id) : [],
+      category_id: showproducts?.product?.categories
+        ? showproducts.product.categories.length === 0
+          ? []
+          : showproducts.product.categories.map(category => category.id)
+        : [],
       tags_id: showproducts?.product?.tags ? showproducts.product.tags.length === 0 ? "" : showproducts.product.tags.map(tags => tags.id) : [],
 
       manufacturer: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.manufacturer : "",
@@ -276,47 +281,61 @@ const EditProduct = props => {
           return base64Data;  // this will return just the base64-encoded data
         })
         : [];
-      const product = {
-        "product": {
-          "productname": values.productname,
-          "subtitle": values.subtitle ? values.subtitle : "",
-          "price": values.price,
-          "description": editorContent ? editorContent : values.description,
-          "status": selectedStatusId ? selectedStatusId : showproducts && showproducts.product ? showproducts.product.status : "",
-          "image": productimage ? (productimage.startsWith('data:image') ? productimage.split(',')[1] : "") : "",
-          "stock_status": selectedStockId ? selectedStockId : showproducts && showproducts.product ? showproducts.product.stock_status : "",
-        },
-        "images": images ? images : "",
-        "info": {
-          "productcondition": productcondition,
-          "packaging_condition": productgrade,
-          "sealed": selectedsealedId ? selectedsealedId : showproducts && showproducts.product ? showproducts.product.info.sealed : "",
-          "manufacturer": values.manufacturer ? values.manufacturer : "",
-          "model": values.model ? values.model : "",
-          "variation": values.variation ? values.variation : "",
-          "ean": values.ean ? values.ean : "",
-          "upc": values.upc ? values.upc : "",
-          "weight": values.weight ? values.weight : "",
-          "length": values.length ? values.length : "",
-          "width": values.width ? values.width : "",
-          "height": values.height ? values.height : "",
-          "additional_condition": values.additional_condition ? values.additional_condition : ''
+      if (!values.category_id || values.category_id.length === 0) {
 
-        },
-        "terms": {
-          "ids": selectedtermId ? selectedtermId : '',
-        },
-        "categories": {
-          "ids": selectedCategoryId ? selectedCategoryId : '',
-        },
-        "tags": {
-          ids: selectedTagId ? selectedTagId : '',
-        },
+        metaData.setFieldError('category_id', 'Please Select Products Category');
+
       }
-      console.log(product, "selectedCategoryId")
+      else if (!values.term_id || values.term_id.length === 0) {
+        metaData.setFieldError('term_id', 'Please Select Products Term');
+      }
+      else if (!values.tags_id || values.tags_id.length === 0) {
+        metaData.setFieldError('tags_id', 'Please Select Products Tags');
+      }
+      else {
+        const product = {
+          "product": {
+            "productname": values.productname,
+            "subtitle": values.subtitle ? values.subtitle : "",
+            "price": values.price,
+            "description": editorContent ? editorContent : values.description,
+            "status": selectedStatusId ? selectedStatusId : showproducts && showproducts.product ? showproducts.product.status : "",
+            "image": productimage ? (productimage.startsWith('data:image') ? productimage.split(',')[1] : "") : "",
+            "stock_status": selectedStockId ? selectedStockId : showproducts && showproducts.product ? showproducts.product.stock_status : "",
+          },
+          "images": images ? images : "",
+          "info": {
+            "productcondition": productcondition,
+            "packaging_condition": productgrade,
+            "sealed": selectedsealedId ? selectedsealedId : showproducts && showproducts.product ? showproducts.product.info.sealed : "",
+            "manufacturer": values.manufacturer ? values.manufacturer : "",
+            "model": values.model ? values.model : "",
+            "variation": values.variation ? values.variation : "",
+            "ean": values.ean ? values.ean : "",
+            "upc": values.upc ? values.upc : "",
+            "weight": values.weight ? values.weight : "",
+            "length": values.length ? values.length : "",
+            "width": values.width ? values.width : "",
+            "height": values.height ? values.height : "",
+            "additional_condition": values.additional_condition ? values.additional_condition : ''
 
-      dispatch(editProduct(props.router.params.id, product));
+          },
+          "terms": {
+            "ids": selectedtermId ? selectedtermId : '',
+          },
+          "categories": {
+            "ids": selectedCategoryId ? selectedCategoryId : '',
+          },
+          "tags": {
+            ids: selectedTagId ? selectedTagId : '',
+          },
+        }
+         dispatch(editProduct(props.router.params.id, product));
       toggleModal1();
+      }
+
+
+    
     }
   });
 
@@ -587,6 +606,7 @@ const EditProduct = props => {
                         {metaData.errors.category_id && metaData.touched.category_id ? (
                           <span className="text-danger">{metaData.errors.category_id}</span>
                         ) : null}
+                        {console.log(metaData.touched.category_id, "metaData.errors.category_id")}
                         <Link className="mt-2 d-block" to="#" onClick={() => setIsCategoryModal(true)}>+Add New Category</Link>
                       </div>
                       <div className="mb-3">

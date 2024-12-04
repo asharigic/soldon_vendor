@@ -9,8 +9,9 @@ import {
 } from "./actionTypes";
 
 // Get Favourite List
-export const getFavouriteList = () => ({
+export const getFavouriteList = (seachproduct, page) => ({
     type: GET_FAVOURITE_LIST,
+    payload: { seachproduct, page }
 });
 
 export const getFavouriteListSuccess = (favourite) => ({

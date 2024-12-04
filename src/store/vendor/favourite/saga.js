@@ -5,10 +5,11 @@ import { getFavouriteListSuccess, getFavouriteListFail, deleteFavouriteProductSu
 import axiosInstance from '../../axiosInstance';
 
 //Get Favourite List
-function* fetchFavouriteList() {
+function* fetchFavouriteList({ payload: { seachproduct, page } }) {
     try {
-        const response = yield call(axiosInstance.get, `${process.env.REACT_APP_API}vendor/product/favorite-product-list`);
-        yield put(getFavouriteListSuccess(response.data));
+        const response = yield call(axiosInstance.post, `${process.env.REACT_APP_API}vendor/product/favorite-product-list?page=${page}`, seachproduct);
+        
+        yield put(getFavouriteListSuccess(response.data.favorite_products));
     } catch (error) {
         yield put(getFavouriteListFail(error.message));
     }
