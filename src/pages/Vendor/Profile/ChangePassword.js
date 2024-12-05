@@ -75,7 +75,7 @@ const ChangePassword = props => {
                                     }}>
                                     <div className="mb-3">
 
-                                        <Label className="form-label">New Password <span className="errorsymbol">*</span></Label>
+                                        <Label className="form-label">New Password <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                                         <div className="login-password">
                                             <Input
                                                 name="new_password"
@@ -100,7 +100,7 @@ const ChangePassword = props => {
 
                                     <div className="mb-3">
 
-                                        <Label className="form-label">Confirm Password <span className="errorsymbol">*</span></Label>
+                                        <Label className="form-label">Confirm Password <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                                         <div className="login-password">
                                             <Input
                                                 name="new_password_confirmation"

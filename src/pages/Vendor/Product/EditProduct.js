@@ -521,7 +521,7 @@ const EditProduct = props => {
                   <Row>
                     <Col sm="6">
                       <div className="mb-3">
-                        <Label htmlFor="productname">Product Name <span className="errorsymbol">*</span></Label>
+                        <Label htmlFor="productname">Product Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                         <Input
                           id="productname"
                           name="productname"
@@ -538,7 +538,7 @@ const EditProduct = props => {
                         ) : null}
                       </div>
                       <div className="mb-3">
-                        <Label htmlFor="price">Price <span className="errorsymbol">*</span></Label>
+                        <Label htmlFor="price">Price <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                         <Input
                           id="price"
                           name="price"
@@ -555,7 +555,7 @@ const EditProduct = props => {
                         ) : null}
                       </div>
                       <div className="mb-3">
-                        <Label className="control-label">Status <span className="errorsymbol">*</span></Label>
+                        <Label className="control-label">Status <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                         <Select
                           name="status"
                           options={statusType}
@@ -591,7 +591,7 @@ const EditProduct = props => {
                         </div>
                       </div>
                       <div className="mb-3">
-                        <Label className="control-label">Product Categories <span className="errorsymbol">*</span></Label>
+                        <Label className="control-label">Product Categories <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                         <Select
                           name="category_id"
                           value={selectedCategory}
@@ -610,7 +610,7 @@ const EditProduct = props => {
                         <Link className="mt-2 d-block" to="#" onClick={() => setIsCategoryModal(true)}>+Add New Category</Link>
                       </div>
                       <div className="mb-3">
-                        <Label className="control-label">Product Tags <span className="errorsymbol">*</span></Label>
+                        <Label className="control-label">Product Tags <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                         <Select
                           name="tags_id"
                           value={selectedtag}
@@ -645,7 +645,7 @@ const EditProduct = props => {
                       <div className="mb-3">
 
                         <Label htmlFor="description">
-                          Product Description <span className="errorsymbol">*</span>
+                          Product Description <span className="errorsymbol" style={{color: "red"}}>*</span>
                         </Label>
                         <Col lg="12">
                           <CKEditor
@@ -683,7 +683,7 @@ const EditProduct = props => {
                         </div>
                       </div>
                       <div className="mb-3">
-                        <Label className="control-label">Product Term <span className="errorsymbol">*</span></Label>
+                        <Label className="control-label">Product Term <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                         <Select
                           name="term_id"
                           id="term_id"
@@ -728,10 +728,10 @@ const EditProduct = props => {
                     </Col>
                     <Col sm="6">
                       <div className="mb-3">
-                        <Label htmlFor="packagingcondition">Product Condition <span className="errorsymbol">*</span></Label>
-                        <div className="productradiobutton">
+                        <Label htmlFor="packagingcondition">Product Condition <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <div className="productradiobutton d-flex">
                           {productconditionoptions.map((option) => (
-                            <div key={option.value} className="form-check form-check-left mb-3">
+                            <div key={option.value} className="form-check form-check-left mb-3" style={{paddingRight: "20px"}}>
                               <input
                                 type="radio"
                                 id={`productcondition${option.value}`} // Unique id for each radio button
@@ -749,10 +749,10 @@ const EditProduct = props => {
                         </div>
                       </div>
                       <div className="mb-3">
-                        <Label htmlFor="metatitle">Packaging Condition Grade <span className="errorsymbol">*</span></Label>
-                        <div className="productradiobutton">
+                        <Label htmlFor="metatitle">Packaging Condition Grade <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <div className="productradiobutton d-flex">
                           {productgradeOptions.map((option) => (
-                            <div key={option.value} className="form-check form-check-left mb-3">
+                            <div key={option.value} className="form-check form-check-left mb-3" style={{paddingRight: "20px"}}>
                               <input
                                 type="radio"
                                 id={`productGrade_${option.value}`}  // Unique id for this group
@@ -804,11 +804,21 @@ const EditProduct = props => {
                           onChange={metaData.handleChange}
                         />
                       </div>
-
+                      <div className="mb-3">
+                        <Label htmlFor="metatitle">Length </Label>
+                        <Input
+                          id="metatitle"
+                          name="length"
+                          type="number"
+                          placeholder="Length"
+                          value={metaData.values.length}
+                          onChange={metaData.handleChange}
+                        />
+                      </div>
                     </Col>
                     <Col sm="6">
                       <div className="mb-3">
-                        <Label className="control-label">Sealed <span className="errorsymbol">*</span></Label>
+                        <Label className="control-label">Sealed <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                         <Select
                           name="sealed"
                           options={sealedType}
@@ -878,17 +888,6 @@ const EditProduct = props => {
                           onChange={metaData.handleChange}
                         />
                       </div>
-                      <div className="mb-3">
-                        <Label htmlFor="metatitle">Length </Label>
-                        <Input
-                          id="metatitle"
-                          name="length"
-                          type="number"
-                          placeholder="Length"
-                          value={metaData.values.length}
-                          onChange={metaData.handleChange}
-                        />
-                      </div>
                     </Col>
                     <div className="d-flex flex-wrap gap-2">
                       <Button type="submit" color="primary"> Save Changes  </Button>
@@ -932,7 +931,7 @@ const EditProduct = props => {
           }}>
             <div className="modal-body">
               <div className="mb-3">
-                <Label className="form-label">Name <span className="errorsymbol">*</span></Label>
+                <Label className="form-label">Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                 <Input
                   name="name"
                   placeholder="Enter Name"
@@ -974,7 +973,7 @@ const EditProduct = props => {
           }}>
             <div className="modal-body">
               <div className="mb-3">
-                <Label className="form-label">Name <span className="errorsymbol">*</span></Label>
+                <Label className="form-label">Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                 <Input
                   name="name"
                   placeholder="Enter Name"
@@ -1035,7 +1034,7 @@ const EditProduct = props => {
           }}>
             <div className="modal-body">
               <div className="mb-3">
-                <Label className="form-label">Term Name <span className="errorsymbol">*</span></Label>
+                <Label className="form-label">Term Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                 <Input
                   name="name"
                   placeholder="Type Term Name"
@@ -1052,7 +1051,7 @@ const EditProduct = props => {
                 ) : null}
               </div>
               <div className="mb-3">
-                <Label className="form-label">Select Attribute <span className="errorsymbol">*</span></Label>
+                <Label className="form-label">Select Attribute <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                 <Select
                   name="attribute_id"
                   value={selectedAttribute}

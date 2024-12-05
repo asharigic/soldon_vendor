@@ -52,16 +52,16 @@ const Settings = (props) => {
   return (
     <Fragment>
       <div className="page-content" style={{ maxWidth: '600px', margin: '0 auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-        <h1 style={{ textAlign: 'center' }}>Settings</h1>
+        <h1 className="heading">Settings</h1>
         {settingsloading ? (
           <Spinners setLoading={setLoading} />
         ) : (
           <div>
             <section style={{ marginBottom: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
-              <h2 style={{ textAlign: 'center' }}>Email Settings</h2>
+              <h2 style={{ textAlign: 'center', fontSize: "20px" }}>Email Settings</h2>
               <div style={{ marginBottom: '10px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span>Email me when new announcements are published</span>
+                  <span style={{fontSize: "14px"}}>Email me when new announcements are published</span>
                   <button
                     onClick={() => handleToggle('is_email_notification_enabled')}
                     style={{
@@ -93,7 +93,7 @@ const Settings = (props) => {
               </div>
               <div style={{ marginBottom: '10px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span>Email me when I receive a new message</span>
+                  <span style={{fontSize: "14px"}}>Email me when I receive a new message</span>
                   <button
                     onClick={() => handleToggle('is_email_message_enabled')}
                     style={{
@@ -125,9 +125,9 @@ const Settings = (props) => {
               </div>
             </section>
             <section style={{ marginBottom: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
-              <h2 style={{ textAlign: 'center' }}>Security Settings</h2>
+              <h2 style={{ textAlign: 'center', fontSize: "20px" }}>Security Settings</h2>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span>2FA Authentication</span>
+                <span style={{fontSize: "14px"}}>2FA Authentication</span>
                 <button
                   onClick={() => handleToggle('is_2fa_enabled')}
                   style={{

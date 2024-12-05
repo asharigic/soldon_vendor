@@ -115,7 +115,7 @@ const Profile = (props) => {
                                                 <Col md={6}>
                                                     <div className="mb-3">
                                                         <Label className="form-label">First Name
-                                                            <span className="errorsymbol">*</span></Label>
+                                                            <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                                                         <Input
                                                             name="firstname"
                                                             placeholder="Enter Firstname"
@@ -136,7 +136,7 @@ const Profile = (props) => {
                                                 <Col md={6}>
                                                     <div className="mb-3">
                                                         <Label className="form-label">Last Name
-                                                            <span className="errorsymbol">*</span></Label>
+                                                            <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                                                         <Input
                                                             name="lastname"
                                                             placeholder="Enter Lastname"
@@ -158,7 +158,7 @@ const Profile = (props) => {
                                                 <Col md={6}>
                                                     <div className="mb-3">
                                                         <Label className="form-label">Address1
-                                                            <span className="errorsymbol">*</span></Label>
+                                                            <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                                                         <Input
                                                             name="address1"
                                                             placeholder="Enter Address1"
@@ -194,7 +194,7 @@ const Profile = (props) => {
                                                 <Col md={6}>
                                                     <div className="mb-3">
                                                         <Label className="form-label">City
-                                                            <span className="errorsymbol">*</span></Label>
+                                                            <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                                                         <Input
                                                             name="city"
                                                             placeholder="Enter City"
@@ -215,7 +215,7 @@ const Profile = (props) => {
                                                 <Col md={6}>
                                                     <div className="mb-3">
                                                         <Label className="form-label">State
-                                                            <span className="errorsymbol">*</span></Label>
+                                                            <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                                                         <Input
                                                             name="state"
                                                             placeholder="Enter State"
@@ -236,7 +236,7 @@ const Profile = (props) => {
                                                 <Col md={6}>
                                                     <div className="mb-3">
                                                         <Label className="form-label">Country
-                                                            <span className="errorsymbol">*</span></Label>
+                                                            <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                                                         <Input
                                                             name="country"
                                                             placeholder="Enter Country"
@@ -257,7 +257,7 @@ const Profile = (props) => {
                                                 <Col md={6}>
                                                     <div className="mb-3">
                                                         <Label className="form-label">Postcode
-                                                            <span className="errorsymbol">*</span></Label>
+                                                            <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                                                         <Input
                                                             name="postcode"
                                                             placeholder="Enter Postcode"
@@ -278,7 +278,7 @@ const Profile = (props) => {
                                                 <Col md={6}>
                                                     <div className="mb-3">
                                                         <Label className="form-label">Phone Number
-                                                            <span className="errorsymbol">*</span></Label>
+                                                            <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                                                         <Input
                                                             name="phonenumber"
                                                             placeholder="Enter PhoneNumber"

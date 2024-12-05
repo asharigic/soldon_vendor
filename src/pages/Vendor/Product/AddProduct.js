@@ -416,7 +416,7 @@ const AddProduct = () => {
                     <Row>
                       <Col sm="6">
                         <div className="mb-3">
-                          <Label htmlFor="productname">Product Name <span className="errorsymbol">*</span></Label>
+                          <Label htmlFor="productname">Product Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                           <Input
                             id="productname"
                             name="productname"
@@ -433,7 +433,7 @@ const AddProduct = () => {
                           ) : null}
                         </div>
                         <div className="mb-3">
-                          <Label htmlFor="price">Price <span className="errorsymbol">*</span></Label>
+                          <Label htmlFor="price">Price <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                           <Input
                             id="price"
                             name="price"
@@ -450,7 +450,7 @@ const AddProduct = () => {
                           ) : null}
                         </div>
                         <div className="mb-3">
-                          <Label className="control-label">Status <span className="errorsymbol">*</span></Label>
+                          <Label className="control-label">Status <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                           <Select
                             name="status"
                             options={statusType}
@@ -486,7 +486,7 @@ const AddProduct = () => {
                           </div>
                         </div>
                         <div className="mb-3">
-                          <Label className="control-label">Product Categories <span className="errorsymbol">*</span></Label>
+                          <Label className="control-label">Product Categories <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                           <Select
                             name="category_id"
                             value={selectedCategory}
@@ -501,10 +501,10 @@ const AddProduct = () => {
                           {metaData.errors.category_id && metaData.touched.category_id ? (
                             <span className="text-danger">{metaData.errors.category_id}</span>
                           ) : null}
-                          <Link className="mt-2 d-block" to="#" onClick={() => setIsCategoryModal(true)}>+Add New Category</Link>
+                          <Link className="mt-2 d-block" to="#" onClick={() => setIsCategoryModal(true)}>+ Add New Category</Link>
                         </div>
                         <div className="mb-3">
-                          <Label className="control-label">Product Tags <span className="errorsymbol">*</span></Label>
+                          <Label className="control-label">Product Tags <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                           <Select
                             name="tags_id"
                             value={selectedtag}
@@ -519,7 +519,7 @@ const AddProduct = () => {
                           {metaData.errors.tags_id && metaData.touched.tags_id ? (
                             <span className="text-danger">{metaData.errors.tags_id}</span>
                           ) : null}
-                          <Link className="mt-2 d-block" to="#" onClick={() => setIsTagModal(true)}>+Add New Tag</Link>
+                          <Link className="mt-2 d-block" to="#" onClick={() => setIsTagModal(true)}>+ Add New Tag</Link>
                         </div>
 
 
@@ -539,7 +539,7 @@ const AddProduct = () => {
                         <div className="mb-3">
 
                           <Label htmlFor="description">
-                            Product Description <span className="errorsymbol">*</span>
+                            Product Description <span className="errorsymbol" style={{color: "red"}}>*</span>
                           </Label>
                           <Col lg="12">
                             <CKEditor
@@ -576,7 +576,7 @@ const AddProduct = () => {
                           </div>
                         </div>
                         <div className="mb-3">
-                          <Label className="control-label">Product Term <span className="errorsymbol">*</span></Label>
+                          <Label className="control-label">Product Term <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                           <Select
                             name="term_id"
                             value={selectedterm}
@@ -588,7 +588,7 @@ const AddProduct = () => {
                             isMulti
                             onChange={(selectedOption) => handleSelectTerm(selectedOption)}
                             className={`select2-selection ${metaData.touched.term_id && metaData.errors.term_id ? 'is-invalid' : ''}`} />
-                          <Link className="mt-2 d-block" to="#" onClick={() => setIsTermModal(true)}>+Add New Term</Link>
+                          <Link className="mt-2 d-block" to="#" onClick={() => setIsTermModal(true)}>+ Add New Term</Link>
                         </div>
                         <div className="mb-3">
                           <Label className="control-label">Stock Status</Label>
@@ -616,7 +616,7 @@ const AddProduct = () => {
                       </Col>
                       <Col sm="6">
                         <div className="mb-3">
-                          <Label htmlFor="packagingcondition">Product Condition <span className="errorsymbol">*</span></Label>
+                          <Label htmlFor="packagingcondition">Product Condition <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                           <div className="productradiobutton d-flex" >
                             {productconditionoptions.map((option) => (
                               <div key={option.value} className="form-check form-check-left mb-3" style={{paddingRight: "20px"}}>
@@ -637,7 +637,7 @@ const AddProduct = () => {
                           </div>
                         </div>
                         <div className="mb-3">
-                          <Label htmlFor="metatitle">Packaging Condition Grade <span className="errorsymbol">*</span></Label>
+                          <Label htmlFor="metatitle">Packaging Condition Grade <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                           <div className="productradiobutton d-flex">
                             {productgradeOptions.map((option) => (
                               <div key={option.value} className="form-check form-check-left mb-3" style={{paddingRight: "20px"}}>
@@ -706,7 +706,7 @@ const AddProduct = () => {
                       </Col>
                       <Col sm="6">
                         <div className="mb-3">
-                          <Label className="control-label">Sealed <span className="errorsymbol">*</span></Label>
+                          <Label className="control-label">Sealed <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                           <Select
                             name="sealed"
                             options={sealedType}
@@ -819,7 +819,7 @@ const AddProduct = () => {
           }}>
             <div className="modal-body">
               <div className="mb-3">
-                <Label className="form-label">Name <span className="errorsymbol">*</span></Label>
+                <Label className="form-label">Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                 <Input
                   name="name"
                   placeholder="Enter Name"
@@ -861,7 +861,7 @@ const AddProduct = () => {
           }}>
             <div className="modal-body">
               <div className="mb-3">
-                <Label className="form-label">Name <span className="errorsymbol">*</span></Label>
+                <Label className="form-label">Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                 <Input
                   name="name"
                   placeholder="Enter Name"
@@ -921,7 +921,7 @@ const AddProduct = () => {
           }}>
             <div className="modal-body">
               <div className="mb-3">
-                <Label className="form-label">Term Name <span className="errorsymbol">*</span></Label>
+                <Label className="form-label">Term Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                 <Input
                   name="name"
                   placeholder="Type Term Name"
@@ -938,7 +938,7 @@ const AddProduct = () => {
                 ) : null}
               </div>
               <div className="mb-3">
-                <Label className="form-label">Select Attribute <span className="errorsymbol">*</span></Label>
+                <Label className="form-label">Select Attribute <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                 <Select
                   name="attribute_id"
                   value={selectedAttribute}
