@@ -217,7 +217,8 @@ const Messages = (props) => {
     };
     return (
         <Fragment>
-            <div className="page-content">
+            <div className="container">
+                <h1 className="heading">Messages</h1>
                 <Container fluid>
                     <Breadcrumb title="Admin" breadcrumbItem="Messages" />
                     <Row style={{ margin: "auto" }}>
@@ -289,7 +290,7 @@ const Messages = (props) => {
                                                     className="form-control"
                                                     placeholder="Search..."
                                                 />
-                                                <i className="bx bx-search-alt search-icon" />
+                                                {/* <i className="bx bx-search-alt search-icon" /> */}
                                             </div>
                                         </div>
 

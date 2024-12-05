@@ -198,7 +198,7 @@ const ProductListPage = () => {
                 />
                 <h1 className="heading">Product List</h1>
 
-                <button className='btn btn-dark' onClick={() => navigate('/add-product')}>Add Product</button>
+                {/* <button className='btn btn-dark' onClick={() => navigate('/add-product')}>Add Product</button> */}
 
                 {isLoading ? <Spinners setLoading={setIsLoading} />
                     :
@@ -208,12 +208,14 @@ const ProductListPage = () => {
                         columns={columns} // Passing dynamic columns to DataTable
                         pageSize={pageSize}
                         totalItems={totalItems}
+                        isAddButton={true}
                         currentPage={currentPage}
                         setCurrentPage={setCurrentPage}
                         setPageSize={setPageSize}
                         searchValue={searchValue}
                         setSearchValue={setSearchValue}
                         handleSearch={handleSearch}
+                        SearchPlaceholder="Search..."
                     />
                 }
 

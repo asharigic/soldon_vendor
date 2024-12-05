@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutUser } from '../../store/actions';
 import logo from '../../assets/images/logo.png';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, ModalFooter } from 'react-bootstrap';
 
 import './Header.css'
 const Header = () => {
@@ -72,14 +72,16 @@ const Header = () => {
                 <ModalHeader>Alert</ModalHeader>
                 <ModalBody>
                     <p>Are you sure you want to logout?</p>
+                </ModalBody>
+                <ModalFooter>
                     <button onClick={() => handlelogout()} className='otp-button btn btn-primary dz-xs-flex m-r5'>
-                        Save
+                        Okay
                     </button>
                     &nbsp;
                     <button onClick={() => setModalShow(false)} className='otp-button btn btn-secondary dz-xs-flex m-r5'>
                         Cancel
                     </button>
-                </ModalBody>
+                </ModalFooter>
             </Modal>
         </header>
     );

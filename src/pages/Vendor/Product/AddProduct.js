@@ -617,9 +617,9 @@ const AddProduct = () => {
                       <Col sm="6">
                         <div className="mb-3">
                           <Label htmlFor="packagingcondition">Product Condition <span className="errorsymbol">*</span></Label>
-                          <div className="productradiobutton">
+                          <div className="productradiobutton d-flex" >
                             {productconditionoptions.map((option) => (
-                              <div key={option.value} className="form-check form-check-left mb-3">
+                              <div key={option.value} className="form-check form-check-left mb-3" style={{paddingRight: "20px"}}>
                                 <input
                                   type="radio"
                                   id={`productCondition_${option.value}`}  // Unique id for this group
@@ -638,9 +638,9 @@ const AddProduct = () => {
                         </div>
                         <div className="mb-3">
                           <Label htmlFor="metatitle">Packaging Condition Grade <span className="errorsymbol">*</span></Label>
-                          <div className="productradiobutton">
+                          <div className="productradiobutton d-flex">
                             {productgradeOptions.map((option) => (
-                              <div key={option.value} className="form-check form-check-left mb-3">
+                              <div key={option.value} className="form-check form-check-left mb-3" style={{paddingRight: "20px"}}>
                                 <input
                                   type="radio"
                                   id={`productGrade_${option.value}`}  // Unique id for this group
@@ -692,7 +692,17 @@ const AddProduct = () => {
                             onChange={metaData.handleChange}
                           />
                         </div>
-
+                        <div className="mb-3">
+                          <Label htmlFor="metatitle">Length </Label>
+                          <Input
+                            id="metatitle"
+                            name="length"
+                            type="number"
+                            placeholder="length"
+                            value={metaData.values.length}
+                            onChange={metaData.handleChange}
+                          />
+                        </div>
                       </Col>
                       <Col sm="6">
                         <div className="mb-3">
@@ -763,17 +773,6 @@ const AddProduct = () => {
                             type="number"
                             placeholder="height"
                             value={metaData.values.height}
-                            onChange={metaData.handleChange}
-                          />
-                        </div>
-                        <div className="mb-3">
-                          <Label htmlFor="metatitle">Length </Label>
-                          <Input
-                            id="metatitle"
-                            name="length"
-                            type="number"
-                            placeholder="length"
-                            value={metaData.values.length}
                             onChange={metaData.handleChange}
                           />
                         </div>

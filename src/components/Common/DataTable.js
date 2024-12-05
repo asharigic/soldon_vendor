@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Table, Pagination, Form, Button } from 'react-bootstrap';
 import { FiSearch, FiArrowUp, FiArrowDown } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import { Input } from 'reactstrap';
 
 const DataTable = ({
   data,
   columns,
   pageSize,
+  isAddButton,
   totalItems,
   currentPage,
   setCurrentPage,
@@ -21,6 +23,7 @@ const DataTable = ({
   // Sorting state
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState('asc');
+  const navigate = useNavigate();
 
   // Handle page change
   const handlePageChange = (page) => {
@@ -54,42 +57,48 @@ const DataTable = ({
   return (
     <div>
       <div className="me-2" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <Form.Select value={pageSize} onChange={handlePageSizeChange} className="form-select" style={{ width: 100 }}>
+        <Form.Select value={pageSize} onChange={handlePageSizeChange} className="form-select" style={{ width: 100 }}>
           <option value={15}>15</option>
           <option value={20}>20</option>
           <option value={30}>30</option>
         </Form.Select>
-        <div style={{ position: 'relative' }}>
-          <Input
-            value={searchValue ?? ''}
-            onChange={(e) => setSearchValue(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSearch();
-              }
-            }}
-            className="form-control search-box me-2 mb-2"
-            placeholder={SearchPlaceholder}
-            style={{ paddingRight: '40px' }} // Make space for the button inside the input
-          />
-          <Button
-            type="button"
-            className="btn btn-success"
-            style={{
-              position: 'absolute',
-              right: '5px', // Align button to the right inside the input field
-              top: '50%',
-              transform: 'translateY(-62%)', // Center the button vertically
-              width: '30px',
-              height: '30px',
-              padding: 0, // Remove padding to fit the button well inside
-            }}
-            onClick={handleSearch}
-          >
-            <FiSearch />
-          </Button>
+        <div className="d-flex" style={{ gap: '10px' }}>
+          <div style={{ position: 'relative' }}>
+            <Input
+              value={searchValue ?? ''}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSearch();
+                }
+              }}
+              className="form-control search-box me-2 mb-2"
+              placeholder={SearchPlaceholder}
+              style={{ paddingRight: '40px' }} // Make space for the button inside the input
+            />
+            <Button
+              type="button"
+              className="btn btn-success"
+              style={{
+                position: 'absolute',
+                right: '5px', // Align button to the right inside the input field
+                top: '50%',
+                transform: 'translateY(-62%)', // Center the button vertically
+                width: '30px',
+                height: '30px',
+                padding: 0, // Remove padding to fit the button well inside
+              }}
+              onClick={handleSearch}
+            >
+              <FiSearch />
+            </Button>
+          </div>
+          {isAddButton && (
+            <div>
+              <button className="btn btn-dark" onClick={() => navigate('/add-product')}>Add Product</button>
+            </div>
+          )}
         </div>
-        
       </div>
       <Table striped bordered hover responsive>
         <thead>

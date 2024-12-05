@@ -26,7 +26,7 @@ const NotificationsList = (props) => {
             {notificationsloading ? (
                 <Spinners setLoading={setLoading} />
             ) : (
-                <div
+                <div className="container"
                     style={{
                         maxHeight: "500px", // Set your desired height
                         overflowY: "auto", // Enable vertical scroll
@@ -48,9 +48,10 @@ const NotificationsList = (props) => {
                                     backgroundColor: "#f0efef",
                                     border: "1px solid black",
                                     borderRadius: "5px", // Optional styling
+                                    maxHeight: "80px"
                                 }}
                             >
-                                <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                                <div style={{ display: "flex", alignItems: "center", marginBottom: "10px", height: "50px" }}>
                                     {notification.sent_by_image === "" ? (
                                         <div
                                             className="avatar-md rounded-circle img-thumbnail"
@@ -78,12 +79,13 @@ const NotificationsList = (props) => {
                                                 height: "50px",
                                                 borderRadius: "50%",
                                                 marginRight: "15px",
+                                                marginBottom: "5px"
                                             }}
                                         />
                                     )}
                                     <div style={{ marginLeft: "10px" }}>
                                         <h3 style={{ fontSize: "16px", fontWeight: "bold", margin: 0 }}>{notification.sent_by_name}</h3>
-                                        <p style={{ fontSize: "12px", color: "#888", margin: "5px 0" }}>{notification.sent_at}</p>
+                                        <span style={{ fontSize: "12px", color: "#888", margin: "5px 0" }}>{notification.sent_at}</span><br />
                                         <span>{notification.content.replace(/<[^>]*>/g, "")}</span>
                                     </div>
                                 </div>

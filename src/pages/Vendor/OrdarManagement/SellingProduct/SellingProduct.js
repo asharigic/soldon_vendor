@@ -216,6 +216,7 @@ const SellingListPage = () => {
                         searchValue={searchValue}
                         setSearchValue={setSearchValue}
                         handleSearch={handleSearch}
+                        SearchPlaceholder="Search..."
                     />
                 }
                 {ViewModal && (

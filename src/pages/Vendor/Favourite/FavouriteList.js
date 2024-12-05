@@ -201,6 +201,7 @@ const FavouriteList = (props) => {
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
                 handleSearch={handleSearch}
+                SearchPlaceholder="Search..."
               />
             }
       </div>
