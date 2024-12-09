@@ -24,6 +24,8 @@ import FavouriteList from "../pages/Vendor/Favourite/FavouriteList";
 import BuyingListPage from "../pages/Vendor/OrdarManagement/BuyingProduct/BuyingProduct";
 import SellingListPage from "../pages/Vendor/OrdarManagement/SellingProduct/SellingProduct";
 import HomeProductListPage from "../pages/Authentication/HomeProduct";
+import ReportList from "../pages/Vendor/Reports/ReportList";
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: '/', component: <HomeProductListPage /> },
@@ -39,7 +41,7 @@ const authProtectedRoutes = [
   { path: "/favourites", component: <FavouriteList /> },
   { path: "/buying-list", component: <BuyingListPage /> },
   { path: "/selling-list", component: <SellingListPage /> },
-
+  { path: "/reports", component: <ReportList /> },
 ];
 
 const publicRoutes = [

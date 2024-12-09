@@ -1,0 +1,6 @@
+//reportsactionTypes.js
+
+//Get Sales Report List
+export const GET_SALES_REPORT_LIST = "GET_SALES_REPORT_LIST"
+export const GET_SALES_REPORT_LIST_SUCCESS = "GET_SALES_REPORT_LIST_SUCCESS"
+export const GET_SALES_REPORT_LIST_FAIL = "GET_SALES_REPORT_LIST_FAIL"

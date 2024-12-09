@@ -56,13 +56,16 @@ const Header = () => {
                         <Link to="/selling-list">Selling</Link>
                     </li>
                     <li>
+                        <Link to="/reports">Reports</Link>
+                    </li>
+                    <li>
                         <Dropdown show={isOpen} onToggle={() => setIsOpen(!isOpen)}>
                             <Dropdown.Toggle as="li" onClick={() => setIsOpen(!isOpen)} style={{ cursor: 'pointer', padding: '10px' }}>
                                 <span>{userDetails?.username}</span>
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
                                 <Dropdown.Item onClick={() => navigate('/profile')}> <Link to="/profile">Profile</Link></Dropdown.Item>
-                                <Dropdown.Item onClick={()=> navigate('/changepassword')}>Change Password</Dropdown.Item>
+                                <Dropdown.Item onClick={() => navigate('/changepassword')}>Change Password</Dropdown.Item>
                                 <Dropdown.Item onClick={() => navigate('/settings')}>Settings</Dropdown.Item>
                                 <Dropdown.Item onClick={() => setModalShow(true)}>Logout</Dropdown.Item>
                             </Dropdown.Menu>
