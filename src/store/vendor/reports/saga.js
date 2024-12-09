@@ -5,9 +5,9 @@ import { getSalesReportListSuccess, getSalesReportListFail } from './actions';
 import axiosInstance from '../../axiosInstance';
 
 //Get Sales Report List
-function* fetchSalesReportList() {
+function* fetchSalesReportList({ payload: { report } }) {
     try {
-        const response = yield call(axiosInstance.post, `${process.env.REACT_APP_API}vendor/report/sales-report`);
+        const response = yield call(axiosInstance.post, `${process.env.REACT_APP_API}vendor/report/sales-report`, report);
         yield put(getSalesReportListSuccess(response.data));
     } catch (error) {
         yield put(getSalesReportListFail(error.message));

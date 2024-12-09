@@ -2,24 +2,24 @@ import React from "react";
 import ReactApexChart from "react-apexcharts";
 import getChartColorsArray from "../../../components/Common/getChartColorsArray";
 
-const Spinearea = ({ dataColors, chart }) => {
+const Spinearea = ({ dataColors, chart, data }) => {
     const spineareaChartColors = getChartColorsArray(dataColors);
 
     const series = [
         {
             name: "Commission",
-            data: [34, 40, 28, 52, 42, 109, 100],
+            data: data.map(item => item.total_commissions),
         },
         {
             name: "Total Sales",
-            data: [32, 60, 34, 46, 34, 52, 41],
+            data: data.map(item => item.total_sales),
         },
     ];
 
     const seriesOrder = [
         {
             name: "Number of Orders",
-            data: [34, 40, 28, 52, 42, 109, 100],
+            data: data.map(item => item.total_orders),
         }
     ];
 
@@ -39,34 +39,26 @@ const Spinearea = ({ dataColors, chart }) => {
 
         colors: spineareaChartColors,
         xaxis: {
-            type: "datetime",
-            categories: [
-                "2018-09-19T00:00:00",
-                "2018-09-19T01:30:00",
-                "2018-09-19T02:30:00",
-                "2018-09-19T03:30:00",
-                "2018-09-19T04:30:00",
-                "2018-09-19T05:30:00",
-                "2018-09-19T06:30:00",
-            ],
+            type: "category",
+            categories: data.map(item => item.formatted_month),
         },
         grid: {
             borderColor: "#f1f1f1",
         },
         tooltip: {
             x: {
-                format: "dd/MM/yy HH:mm",
+                format: "MMM yyyy",
             },
         },
     }
-    console.log("chart", chart);
+    console.log("summary_data", data?.summary_data);
 
     return (
         <ReactApexChart
             options={options}
             series={chart == "NumberofOrders" ? seriesOrder : series}
             type="area"
-            height={chart == "NumberofOrders" ? "120" : "250"}
+            height={chart == "NumberofOrders" ? "150" : "250"}
         />
     )
 }

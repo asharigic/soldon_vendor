@@ -6,8 +6,9 @@ import {
 } from "./actionTypes";
 
 // Get Sales Report List
-export const getSalesReportList = () => ({
+export const getSalesReportList = (report) => ({
     type: GET_SALES_REPORT_LIST,
+    payload: { report }
 });
 
 export const getSalesReportListSuccess = (report) => ({
