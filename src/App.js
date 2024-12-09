@@ -11,7 +11,7 @@ import Authmiddleware from "./routes/route";
 
 import Header from './components/Header/Header';
 import NonAuthLayout from "./components/NonAuthLayout";
-
+import HomeHeader from './components/Header/HomeHeader';
 
 
 
@@ -26,7 +26,7 @@ const App = () => {
             path={route.path}
             element={
               <NonAuthLayout>
-                <Header/>
+                <HomeHeader/>
                 {route.component}
               </NonAuthLayout>
             }

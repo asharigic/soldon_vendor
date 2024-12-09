@@ -16,9 +16,6 @@ import {
     APPROVE_PRODUCT,
     APPROVE_PRODUCT_SUCCESS,
     APPROVE_PRODUCT_FAIL,
-    CLONE_PRODUCT,
-    CLONE_PRODUCT_SUCCESS,
-    CLONE_PRODUCT_FAIL
 
 } from "./actionTypes";
 
@@ -29,7 +26,6 @@ const initialState = {
     approveproduct:null,
     error: null,
     successproduct: false,
-    cloneproduct:null
 }
 
 const ProductsReducer = (state = initialState, action) => {
@@ -158,27 +154,7 @@ const ProductsReducer = (state = initialState, action) => {
                 error: action.payload,
             };
 
-         //clone Tag
-         case CLONE_PRODUCT:
-            return {
-                ...state,
-                productloading: false,
-            };
-
-        case CLONE_PRODUCT_SUCCESS:
-            return {
-                ...state,
-                productloading: false,
-                cloneproduct: action.payload.products
-            };
-
-        case CLONE_PRODUCT_FAIL:
-            return {
-                ...state,
-                productloading: false,
-                error: action.payload,
-            };
-
+        
         default:
             state = { ...state }
     }

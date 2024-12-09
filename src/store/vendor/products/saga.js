@@ -9,7 +9,7 @@ import {
   DELETE_PRODUCT,
   SHOW_PRODUCT,
   APPROVE_PRODUCT,
-  CLONE_PRODUCT
+  
 } from "./actionTypes";
 
 //Include Both Helper File with needed methods
@@ -26,8 +26,7 @@ import {
   deleteProductSuccess,
   approveProductSuccess,
   approveProductFail,
-  cloneProductSuccess,
-  cloneProductFail
+  
 } from "./actions";
 import axiosInstance from "../../axiosInstance";
 
@@ -111,20 +110,7 @@ function* deleteProduct({ payload: { product } }) {
   }
 }
 
-//Clone Product
-function* CloneProduct(id) {
-  try {
-    const response = yield call(axiosInstance.get, `${process.env.REACT_APP_API}vendor/product/clone/${id.payload.id}`);
 
-    if (response && response.data) {
-      yield put(cloneProductSuccess(response.data));
-    } else {
-      yield put(cloneProductFail("Invalid response format."));
-    }
-  } catch (error) {
-    yield put(cloneProductFail(error.message));
-  }
-}
 function* ProductSaga() {
   yield takeEvery(GET_PRODUCTLIST, fetchProducts);
   yield takeEvery(ADD_NEW_PRODUCT, addNewProduct);
@@ -132,7 +118,7 @@ function* ProductSaga() {
   yield takeEvery(EDIT_PRODUCT, editProduct);
   yield takeEvery(DELETE_PRODUCT, deleteProduct);
   yield takeEvery(APPROVE_PRODUCT, approveProduct);
-  yield takeEvery(CLONE_PRODUCT, CloneProduct);
+ 
 
 
 };

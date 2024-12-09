@@ -26,7 +26,8 @@ import SellingListPage from "../pages/Vendor/OrdarManagement/SellingProduct/Sell
 import HomeProductListPage from "../pages/Authentication/HomeProduct";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
-  // { path: "/", exact: true, component: <Navigate to="/Dashboard" /> },
+  { path: '/', component: <HomeProductListPage /> },
+
   { path: "/profile", component: <Profile /> },
   { path: "/changepassword", component: <ChangePassword /> },
   { path: "/settings", component: <Settings /> },

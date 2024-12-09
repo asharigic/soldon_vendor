@@ -1,16 +1,29 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getHomeProductsList } from '../../store/auth/homeproduct/actions';
+import { getHomeProductsList, cloneProduct } from '../../store/auth/homeproduct/actions';
+
 import Spinners from '../../components/Common/Spinner';
+import { Container, Row, Col, Card, ListGroupItem, ListGroup } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import Nouislider from "nouislider-react";
+import "nouislider/distribute/nouislider.css";
+import CommonModal from '../../components/Common/CommonModal';
 const HomeProductListPage = () => {
     document.title = "Home | Quench";
-    const { homeproducts, homeproductloading, homeerror } = useSelector((state) => state.HomeProductData);
+    const { homeproducts, homeproductloading ,homesuccessproduct,homeerror} = useSelector((state) => state.HomeProductData);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchValue, setSearchValue] = useState('');
     const [totalItems, setTotalItems] = useState(0);
+    const [modal1, setModal1] = useState(false);
+    const toggleModal1 = () => setModal1(!modal1);
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedPriceRange, setSelectedPriceRange] = useState('');
     const [pageSize, setPageSize] = useState(15); // Default page size
+    const [minCost, setMinCost] = useState(0);
+    const [maxCost, setMaxCost] = useState(500);
     useEffect(() => {
         const page = currentPage || 1;
         const limit = pageSize || 15;
@@ -18,20 +31,132 @@ const HomeProductListPage = () => {
             per_page: limit,
             search: searchValue,
         };
-        dispatch(getHomeProductsList(payload, page));// Dispatch action to fetch products list
+        dispatch(getHomeProductsList(payload, page)); // Dispatch action to fetch products list
     }, [currentPage, pageSize, dispatch]);
+    const categories = ['Electronics', 'Furniture', 'Clothing'];
+    const handleCategorySelect = (category) => {
+        setSelectedCategory(category);
+    };
+
+
+    const handleSliderChange = useCallback((values) => {
+        const [min, max] = values;
+        setMinCost(min);
+        setMaxCost(max);
+        setSelectedPriceRange([min, max]);
+    }, []);
+    useEffect(() => {
+        // You can add logic here to update the product list based on selected category or price range.
+    }, [selectedCategory, selectedPriceRange]);
+
+    const handleCloneProduct = (productId) => {
+        if (!localStorage.getItem("vendoruser")) {
+            navigate('/login')
+
+        }
+        else {
+            dispatch(cloneProduct(productId));
+            toggleModal1();
+        }
+    }
     if (isLoading || homeproductloading) {
         return <Spinners setLoading={setIsLoading} />;
     }
+
     return (
         <Fragment>
-            {isLoading ? <Spinners setLoading={setIsLoading} />
-                :
-                <div className="container">
-                    <h1>Product List </h1>
-                </div>
+            {isLoading ? <Spinners setLoading={setIsLoading} /> : (
+                <Container>
+                    <Row>
+                        <Col md={3}>
+                            <h1 className="heading">Filters</h1>
+                            <div>
+                                <ListGroup className="filter-list">
+                                    {/* Categories Filter */}
+                                    <ListGroupItem>
+                                        <h5>Categories</h5>
+                                        <div className="list-unstyled">
+                                            {categories.map((category) => (
+                                                <div key={category} className="mb-2">
+                                                    <Link
+                                                        to="#"
+                                                        className={`d-block ${selectedCategory === category ? 'text-primary' : 'text-dark'}`}
+                                                        onClick={() => handleCategorySelect(category)}
+                                                    >
+                                                        {category}
+                                                    </Link>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </ListGroupItem>
+
+                                    <ListGroupItem>
+                                        <h5>Price</h5>
+                                        <div className="price-slider">
+                                            <Nouislider
+                                                range={{ min: 0, max: 600 }}
+                                                start={[minCost, maxCost]}
+                                                connect
+                                                step={1}
+                                                onSlide={handleSliderChange}
+                                                // tooltips={true}
+                                            />
+                                            <div className="mt-3">
+                                                <span>Min: ${minCost}</span> - <span>Max: ${maxCost}</span>
+                                            </div>
+                                        </div>
+                                    </ListGroupItem>
+                                </ListGroup>
+                            </div>
+                        </Col>
+                        <Col md={9}>
+                            <h1 className="heading">Product List</h1>
+                            <Row>
+                                {homeproducts.map((product) => (
+                                    <Col key={product.id} sm={12} md={6} lg={4}>
+                                        <Card className="mb-4">
+                                            <Card.Body>
+                                                <Card.Img src={process.env.REACT_APP_URL + product.image}></Card.Img>
+                                                <Card.Title>{product.name}</Card.Title>
+                                                <Card.Subtitle className="mb-2 text-muted">{product.subtitle}</Card.Subtitle>
+                                                <Card.Text>${product.price}</Card.Text>
+
+                                                <div className="button-container">
+                                                    {product.stock_status === "out_of_stock" ?
+
+                                                        <button className="button" disabled style={{ cursor: "not-allowed", fontSize: 12 }}>Buy Unavailable</button> :
+
+                                                        <button className="button" style={{ backgroundColor: "white", color: "black", fontSize: 12 }}>Buy Available</button>}
+                                                    <button
+                                                        className="button"
+                                                        style={{ backgroundColor: "white", color: "black", fontSize: 12 }} onClick={() => { handleCloneProduct(product.product_id) }}>
+                                                        Sell One Of These
+                                                    </button>
+                                                </div>
+
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                ))}
+                            </Row>
+
+
+                        </Col>
+                    </Row>
+                    {!homeproductloading &&
+                        < CommonModal
+                            isOpen={modal1}
+                            toggle={toggleModal1}
+                            title={homesuccessproduct ? "Success" : "Alert"}
+                            message={homesuccessproduct ? "Product Cloned Successfully." : homeerror}
+                            redirectTo={homesuccessproduct ? "/productlist" : toggleModal1} //
+                            buttonText="Okay"
+                        />
+                    }
+                </Container>
+            )
             }
-        </Fragment>
+        </Fragment >
     );
 };
 

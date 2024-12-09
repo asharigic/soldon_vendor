@@ -21,6 +21,7 @@ const NonAuthLayout = (props) => {
 
   useEffect(() => {
     if (layoutModeType) {
+      console.log(layoutModeType,"layoutModeType")
       dispatch(changeLayoutMode(layoutModeType));
     }
   }, [layoutModeType, dispatch]);
