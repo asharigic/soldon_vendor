@@ -1,26 +1,22 @@
-import React from "react";
-import ReactApexChart from "react-apexcharts";
+import React from "react"
+import ReactApexChart from "react-apexcharts"
 import getChartColorsArray from "../../../components/Common/getChartColorsArray";
 
-const Spinearea = ({ dataColors, chart, data }) => {
+const Spinearea = ({ dataColors, chartData }) => {
     const spineareaChartColors = getChartColorsArray(dataColors);
+
+    const seriesData = Object.values(chartData);
+
+    const categories = Object.keys(chartData).map((day, index) => ({
+        index: index + 1,
+        formatted_day: day
+    }));
 
     const series = [
         {
-            name: "Commission",
-            data: data.map(item => item.total_commissions),
+            name: "series1",
+            data: seriesData,
         },
-        {
-            name: "Total Sales",
-            data: data.map(item => item.total_sales),
-        },
-    ];
-
-    const seriesOrder = [
-        {
-            name: "Number of Orders",
-            data: data.map(item => item.total_orders),
-        }
     ];
 
     const options = {
@@ -36,30 +32,29 @@ const Spinearea = ({ dataColors, chart, data }) => {
             curve: "smooth",
             width: 3,
         },
-
         colors: spineareaChartColors,
         xaxis: {
             type: "category",
-            categories: data.map(item => item.formatted_month),
+            categories: categories.map(item => item.formatted_day),
         },
         grid: {
             borderColor: "#f1f1f1",
         },
         tooltip: {
             x: {
-                format: "MMM yyyy",
+                format: "dd/MM/yy",
             },
         },
-    }
+    };
 
     return (
         <ReactApexChart
             options={options}
-            series={chart == "NumberofOrders" ? seriesOrder : series}
+            series={series}
             type="area"
-            height={chart == "NumberofOrders" ? "150" : "250"}
+            height="200"
         />
-    )
-}
+    );
+};
 
 export default Spinearea;

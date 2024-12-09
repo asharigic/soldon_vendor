@@ -6,7 +6,6 @@ import axiosInstance from '../../axiosInstance';
 
 // Get Wallet List
 function* fetchWalletList() {
-    debugger
     try {
         const response = yield call(axiosInstance.get, `${process.env.REACT_APP_API}vendor/wallet/show`);
         yield put(getWalletListSuccess(response.data));
@@ -17,7 +16,6 @@ function* fetchWalletList() {
 
 // Get Wallet Chart List
 function* fetchWalletChartList({ payload: { wallet } }) {
-    debugger
     try {
         const response = yield call(axiosInstance.post, `${process.env.REACT_APP_API}vendor/wallet/earnings-data`, wallet);
         yield put(getWalletChartListSuccess(response.data));
