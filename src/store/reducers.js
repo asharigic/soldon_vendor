@@ -19,6 +19,7 @@ import BuyingProductsReducer from "./vendor/buyingproduct/reducer";
 import SellingProductReducer from "./vendor/sellingproduct/reducer";
 import HomeProductsReducer from "./auth/homeproduct/reducer";
 import reportsReducer from "./vendor/reports/reducer";
+import walletReducer from "./vendor/wallet/reducer";
 
 const rootReducer = combineReducers({
   Layout,
@@ -38,7 +39,8 @@ const rootReducer = combineReducers({
   BuyingProduct: BuyingProductsReducer,
   SellingProductData: SellingProductReducer,
   HomeProductData:HomeProductsReducer,
-  ReportsData: reportsReducer
+  ReportsData: reportsReducer,
+  WalletData: walletReducer
 });
 
 export default rootReducer;

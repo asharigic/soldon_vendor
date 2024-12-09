@@ -66,6 +66,7 @@ const Header = () => {
                             <Dropdown.Menu>
                                 <Dropdown.Item onClick={() => navigate('/profile')}> <Link to="/profile">Profile</Link></Dropdown.Item>
                                 <Dropdown.Item onClick={() => navigate('/changepassword')}>Change Password</Dropdown.Item>
+                                <Dropdown.Item onClick={() => navigate('/wallet')}>Wallet</Dropdown.Item>
                                 <Dropdown.Item onClick={() => navigate('/settings')}>Settings</Dropdown.Item>
                                 <Dropdown.Item onClick={() => setModalShow(true)}>Logout</Dropdown.Item>
                             </Dropdown.Menu>
