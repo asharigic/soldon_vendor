@@ -17,6 +17,7 @@ import CategoriesSaga from "./master/categories/saga";
 import favouriteSaga from "./vendor/favourite/saga";
 import BuyingProductSaga from "./vendor/buyingproduct/saga";
 import SellingProductSaga from "./vendor/sellingproduct/saga";
+import HomeProductSaga from "./auth/homeproduct/saga";
 export default function* rootSaga() {
   yield all([
     //public
@@ -35,6 +36,7 @@ export default function* rootSaga() {
     fork(CategoriesSaga),
     fork(favouriteSaga),
     fork(BuyingProductSaga),
-    fork(SellingProductSaga)
+    fork(SellingProductSaga),
+    fork(HomeProductSaga)
   ]);
 }

@@ -17,6 +17,7 @@ import CategoriesReducer from "./master/categories/reducer";
 import favouriteReducer from "./vendor/favourite/reducer";
 import BuyingProductsReducer from "./vendor/buyingproduct/reducer";
 import SellingProductReducer from "./vendor/sellingproduct/reducer";
+import HomeProductsReducer from "./auth/homeproduct/reducer";
 const rootReducer = combineReducers({
   Layout,
   Login: Login,
@@ -33,7 +34,8 @@ const rootReducer = combineReducers({
   categories: CategoriesReducer,
   FavouriteData: favouriteReducer,
   BuyingProduct:BuyingProductsReducer,
-  SellingProductData:SellingProductReducer
+  SellingProductData:SellingProductReducer,
+  HomeProductData:HomeProductsReducer
 });
 
 export default rootReducer;
