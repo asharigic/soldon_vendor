@@ -18,8 +18,11 @@ import {
   DELETE_PRODUCT_FAIL,
   APPROVE_PRODUCT,
   APPROVE_PRODUCT_SUCCESS,
-  APPROVE_PRODUCT_FAIL
-  
+  APPROVE_PRODUCT_FAIL,
+  CLONE_PRODUCT,
+  CLONE_PRODUCT_SUCCESS,
+  CLONE_PRODUCT_FAIL
+
 } from "./actionTypes";
 
 //Get products
@@ -140,6 +143,28 @@ export const approveProductSuccess = (id) => {
 export const approveProductFail = (error) => {
   return {
     type: APPROVE_PRODUCT_FAIL,
+    payload: error,
+  }
+}
+
+//clone product 
+export const cloneProduct = (id) => {
+  return {
+    type: CLONE_PRODUCT,
+    payload: { id },
+  }
+}
+
+export const cloneProductSuccess = (products) => {
+  return {
+    type: CLONE_PRODUCT_SUCCESS,
+    payload: { products },
+  }
+}
+
+export const cloneProductFail = (error) => {
+  return {
+    type: CLONE_PRODUCT_FAIL,
     payload: error,
   }
 }
