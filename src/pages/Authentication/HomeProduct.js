@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Nouislider from "nouislider-react";
 import "nouislider/distribute/nouislider.css";
 import CommonModal from '../../components/Common/CommonModal';
-
+import { BsHeart } from 'react-icons/bs';
 const HomeProductListPage = () => {
     document.title = "Home | Quench";
     const { homeproducts, homeproductloading, homesuccessproduct, homeerror } = useSelector((state) => state.HomeProductData);
@@ -144,6 +144,7 @@ const HomeProductListPage = () => {
                                     <Col key={product.id} sm={12} md={6} lg={4}>
                                         <Card className="mb-4">
                                             <Card.Body>
+                                                <Card.Header style={{justifyContent:'flex-end'}}><BsHeart/></Card.Header>
                                                 <Card.Img src={process.env.REACT_APP_URL + product.image}></Card.Img>
                                                 <Card.Title>{product.name}</Card.Title>
                                                 <Card.Subtitle className="mb-2 text-muted">{product.subtitle}</Card.Subtitle>
