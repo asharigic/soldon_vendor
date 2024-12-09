@@ -74,41 +74,57 @@ const ReportList = () => {
                 <Row>
                     {/* Left Section: Sales Summary */}
                     <Col xl={3}>
-                        <Card>
-                            <CardBody>
-                                <div>
-                                    <FormGroup>
-                                        <Label for="fromDate">From:</Label>
-                                        <Input
-                                            type="date"
-                                            id="fromDate"
-                                            value={fromDate}
-                                            onChange={(e) => setFromDate(e.target.value)}
-                                        />
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label for="toDate">To:</Label>
-                                        <Input
-                                            type="date"
-                                            id="toDate"
-                                            value={toDate}
-                                            onChange={(e) => setToDate(e.target.value)}
-                                        />
-                                    </FormGroup>
-                                    <button
-                                        className="btn btn-primary"
-                                        onClick={handleDateChange}
-                                    >
-                                        Filter
-                                    </button>
-                                </div>
-                                <div className="mt-4">
-                                    <h5>Sales: <i className="bx bx-pound"></i>{reports?.summary?.salesTotal}</h5>
-                                    <h5>Orders: {reports?.summary?.orderTotal}</h5>
-                                    <h5>Commissions: <i className="bx bx-pound"></i>{reports?.summary?.commissionTotal}</h5>
-                                </div>
-                            </CardBody>
-                        </Card>
+                        <Row>
+                            <Col>
+                                <Card>
+                                    <CardBody>
+                                        <div>
+                                            <FormGroup>
+                                                <Label for="fromDate">From:</Label>
+                                                <Input
+                                                    type="date"
+                                                    id="fromDate"
+                                                    value={fromDate}
+                                                    onChange={(e) => setFromDate(e.target.value)}
+                                                />
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <Label for="toDate">To:</Label>
+                                                <Input
+                                                    type="date"
+                                                    id="toDate"
+                                                    value={toDate}
+                                                    onChange={(e) => setToDate(e.target.value)}
+                                                />
+                                            </FormGroup>
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={handleDateChange}
+                                            >
+                                                Filter
+                                            </button>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Card style={{ marginTop: "20px" }}>
+                                    <CardBody>
+                                        <div>
+                                            <span>Total Sales: <i className="bx bx-pound"></i><b>{reports?.summary?.salesTotal}</b></span>
+                                        </div>
+                                        <div>
+                                            <span>Number of Orders: <b>{reports?.summary?.orderTotal}</b></span>
+                                        </div>
+                                        <div>
+                                            <span>Commission: <i className="bx bx-pound"></i><b>{reports?.summary?.commissionTotal}</b></span>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                        </Row>
                     </Col>
 
                     {/* Right Section: Graphs */}
