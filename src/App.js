@@ -26,6 +26,7 @@ const App = () => {
             path={route.path}
             element={
               <NonAuthLayout>
+                <Header/>
                 {route.component}
               </NonAuthLayout>
             }

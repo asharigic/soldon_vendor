@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { Link } from "react-router-dom";
 
-
+import logo from '../../assets/images/QUENCHED-02-01-100x33.png'
 const Register = props => {
   //meta title
   document.title = "Register | Quench";
@@ -53,7 +53,7 @@ const Register = props => {
     <React.Fragment>
       <div className="home-btn d-none d-sm-block">
         <Link to="/" className="text-dark">
-          <i className="bx bx-home h2" />
+        
         </Link>
       </div>
       <div className="account-pages my-5 pt-sm-5">
@@ -67,6 +67,15 @@ const Register = props => {
                   </Row>
                 </div>
                 <CardBody className="pt-0">
+                  <div className="text-center mt-2">
+                    <Link to="/" className="logo-light-element">
+                      <div className="avatar-md profile-user-wid mb-4">
+                        <span className="avatar-title rounded-circle bg-light ">
+                          <img src={logo} width={100} />
+                        </span>
+                      </div>
+                    </Link>
+                  </div>
                   <div>
                     <Link to="/">
                       <div className="avatar-md profile-user-wid mb-4">
@@ -185,12 +194,12 @@ const Register = props => {
                         ) : null}
                       </div>
 
-                      <div className="mt-4">
+                      <div className="mt-3 d-grid">
                         <button
                           className="btn btn-primary btn-block "
                           type="submit"
                         >
-                          Register
+                          Sign Up
                         </button>
                       </div>
 

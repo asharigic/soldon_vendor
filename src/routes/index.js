@@ -23,9 +23,10 @@ import FavouriteList from "../pages/Vendor/Favourite/FavouriteList";
 //Ordar Management
 import BuyingListPage from "../pages/Vendor/OrdarManagement/BuyingProduct/BuyingProduct";
 import SellingListPage from "../pages/Vendor/OrdarManagement/SellingProduct/SellingProduct";
+import HomeProductListPage from "../pages/Authentication/HomeProduct";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
-  { path: "/", exact: true, component: <Navigate to="/Dashboard" /> },
+  // { path: "/", exact: true, component: <Navigate to="/Dashboard" /> },
   { path: "/profile", component: <Profile /> },
   { path: "/changepassword", component: <ChangePassword /> },
   { path: "/settings", component: <Settings /> },
@@ -43,14 +44,15 @@ const authProtectedRoutes = [
 const publicRoutes = [
   { path: "/login", component: <Login /> },
   { path: "/register", component: <Register /> },
-  {path:'/forgot-password',component:<ForgotPassword/>},
-  {path:'/verification-code',component:<PasswordverificationCode/>},
-  {path:'/reset-password',component:<ResetPassword/>}
-  
+  { path: '/forgot-password', component: <ForgotPassword /> },
+  { path: '/verification-code', component: <PasswordverificationCode /> },
+  { path: '/reset-password', component: <ResetPassword /> },
+  { path: '/', component: <HomeProductListPage /> }
 
-  
-  
-  
+
+
+
+
 ];
 
 export { authProtectedRoutes, publicRoutes };

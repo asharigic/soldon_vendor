@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';  // For navigation with React Router
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
@@ -11,10 +11,24 @@ import './Header.css'
 const Header = () => {
     const [ModalShow, setModalShow] = useState(false);
     const navigate = useNavigate();
-    var userDetails = JSON.parse(localStorage.getItem('vendoruser'))
+    const [userDetails, setUserDetails] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [AuthData, SetAuthData] = useState(true);
     const dispatch = useDispatch()
     const toggle1 = () => setModalShow(!ModalShow);
+    useEffect(() => {
+        const storedUser = localStorage.getItem("vendoruser");
+        if (!storedUser) {
+            SetAuthData(true)
+        }
+        else {
+            const parsedUser = JSON.parse(storedUser);
+            setUserDetails(parsedUser);  // Store user details in state
+            SetAuthData(false)
+
+        }
+    }, []);
+
     const handlelogout = () => {
 
         localStorage.removeItem("vendoruser")
@@ -32,40 +46,55 @@ const Header = () => {
                     </Link>
                 </div>
                 <ul className="nav-links">
-                    <li>
-                        <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                        <Link to="/notifications">Notifications</Link>
-                    </li>
-                    <li>
-                        <Link to="/messages">Messages</Link>
-                    </li>
-                    <li>
-                        <Link to="/productlist">Products</Link>
-                    </li>
-                    <li>
-                        <Link to="/favourites">Favourites</Link>
-                    </li>
-                    <li>
-                        <Link to="/buying-list">Buying</Link>
-                    </li>
-                    <li>
-                        <Link to="/selling-list">Selling</Link>
-                    </li>
-                    <li>
-                        <Dropdown show={isOpen} onToggle={() => setIsOpen(!isOpen)}>
-                            <Dropdown.Toggle as="li" onClick={() => setIsOpen(!isOpen)} style={{ cursor: 'pointer', padding: '10px' }}>
-                                <span>{userDetails.username}</span>
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <Dropdown.Item onClick={() => navigate('/profile')}> <Link to="/profile">Profile</Link></Dropdown.Item>
-                                <Dropdown.Item onClick={()=> navigate('/changepassword')}>Change Password</Dropdown.Item>
-                                <Dropdown.Item onClick={() => navigate('/settings')}>Settings</Dropdown.Item>
-                                <Dropdown.Item onClick={() => setModalShow(true)}>Logout</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </li>
+                    {
+                        AuthData === true ?
+                            <>
+                                <li>
+                                    <Link to="/login">Login</Link>
+                                </li>
+                                <li>
+                                    <Link to="/register">Sign Up</Link>
+                                </li>
+                            </>
+                            :
+                            <>
+                                <li>
+                                    <Link to="/">Home</Link>
+                                </li>
+                                <li>
+                                    <Link to="/notifications">Notifications</Link>
+                                </li>
+                                <li>
+                                    <Link to="/messages">Messages</Link>
+                                </li>
+                                <li>
+                                    <Link to="/productlist">Products</Link>
+                                </li>
+                                <li>
+                                    <Link to="/favourites">Favourites</Link>
+                                </li>
+                                <li>
+                                    <Link to="/buying-list">Buying</Link>
+                                </li>
+                                <li>
+                                    <Link to="/selling-list">Selling</Link>
+                                </li>
+                                <li>
+                                    <Dropdown show={isOpen} onToggle={() => setIsOpen(!isOpen)}>
+                                        <Dropdown.Toggle as="li" onClick={() => setIsOpen(!isOpen)} style={{ cursor: 'pointer', padding: '10px' }}>
+                                            <span>{userDetails.username}</span>
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item onClick={() => navigate('/profile')}> <Link to="/profile">Profile</Link></Dropdown.Item>
+                                            <Dropdown.Item onClick={() => navigate('/changepassword')}>Change Password</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => navigate('/settings')}>Settings</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => setModalShow(true)}>Logout</Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </li>
+                            </>
+                    }
+
                 </ul>
             </nav>
             <Modal isOpen={ModalShow} toggle={toggle1} backdrop="static">
