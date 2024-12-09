@@ -37,12 +37,24 @@ const Spinearea = ({ dataColors, chartData }) => {
             type: "category",
             categories: categories.map(item => item.formatted_day),
         },
+        yaxis: {
+            labels: {
+                formatter: function (value) {
+                    return '£' + value.toFixed(2); // Formats the value to show £ and 2 decimal points
+                },
+            },
+        },
         grid: {
             borderColor: "#f1f1f1",
         },
         tooltip: {
             x: {
                 format: "dd/MM/yy",
+            },
+            y: {
+                formatter: function (value) {
+                    return '£' + value.toFixed(2); // Formats tooltip values as currency as well
+                },
             },
         },
     };
