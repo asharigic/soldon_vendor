@@ -25,6 +25,7 @@ import BuyingListPage from "../pages/Vendor/OrdarManagement/BuyingProduct/Buying
 import SellingListPage from "../pages/Vendor/OrdarManagement/SellingProduct/SellingProduct";
 import HomeProductListPage from "../pages/Authentication/HomeProduct";
 import ReportList from "../pages/Vendor/Reports/ReportList";
+import WalletList from "../pages/Vendor/Wallet/WalletList";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -42,6 +43,7 @@ const authProtectedRoutes = [
   { path: "/buying-list", component: <BuyingListPage /> },
   { path: "/selling-list", component: <SellingListPage /> },
   { path: "/reports", component: <ReportList /> },
+  { path: "/wallet", component: <WalletList /> },
 ];
 
 const publicRoutes = [
