@@ -27,7 +27,7 @@ function* fetchHomeProducts({ payload: { seachproduct, page } }) {
       seachproduct
     );
 
-    yield put(getHomeProductsListSuccess(response.data.products_list.data));
+    yield put(getHomeProductsListSuccess(response.data.products_list));
 
   } catch (error) {
     yield put(getHomeProductsListFail(error.message));

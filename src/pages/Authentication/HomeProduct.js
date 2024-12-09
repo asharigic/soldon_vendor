@@ -1,16 +1,16 @@
 import React, { Fragment, useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getHomeProductsList, cloneProduct } from '../../store/auth/homeproduct/actions';
-
 import Spinners from '../../components/Common/Spinner';
-import { Container, Row, Col, Card, ListGroupItem, ListGroup } from 'react-bootstrap';
+import { Container, Row, Col, Card, ListGroupItem, ListGroup, Pagination } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import Nouislider from "nouislider-react";
 import "nouislider/distribute/nouislider.css";
 import CommonModal from '../../components/Common/CommonModal';
+
 const HomeProductListPage = () => {
     document.title = "Home | Quench";
-    const { homeproducts, homeproductloading ,homesuccessproduct,homeerror} = useSelector((state) => state.HomeProductData);
+    const { homeproducts, homeproductloading, homesuccessproduct, homeerror } = useSelector((state) => state.HomeProductData);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
@@ -24,6 +24,7 @@ const HomeProductListPage = () => {
     const [pageSize, setPageSize] = useState(15); // Default page size
     const [minCost, setMinCost] = useState(0);
     const [maxCost, setMaxCost] = useState(500);
+
     useEffect(() => {
         const page = currentPage || 1;
         const limit = pageSize || 15;
@@ -32,12 +33,19 @@ const HomeProductListPage = () => {
             search: searchValue,
         };
         dispatch(getHomeProductsList(payload, page)); // Dispatch action to fetch products list
-    }, [currentPage, pageSize, dispatch]);
+    }, [currentPage, pageSize, dispatch, searchValue]);
+    useEffect(() => {
+        if (homeproducts) {
+
+            setTotalItems(homeproducts?.meta?.total); // Update total items count for pagination
+        }
+    }, [homeproducts]);
+
     const categories = ['Electronics', 'Furniture', 'Clothing'];
+
     const handleCategorySelect = (category) => {
         setSelectedCategory(category);
     };
-
 
     const handleSliderChange = useCallback((values) => {
         const [min, max] = values;
@@ -45,23 +53,44 @@ const HomeProductListPage = () => {
         setMaxCost(max);
         setSelectedPriceRange([min, max]);
     }, []);
+
     useEffect(() => {
-        // You can add logic here to update the product list based on selected category or price range.
+      
     }, [selectedCategory, selectedPriceRange]);
 
     const handleCloneProduct = (productId) => {
         if (!localStorage.getItem("vendoruser")) {
-            navigate('/login')
-
-        }
-        else {
+            navigate('/login');
+        } else {
             dispatch(cloneProduct(productId));
             toggleModal1();
         }
-    }
+    };
+
     if (isLoading || homeproductloading) {
         return <Spinners setLoading={setIsLoading} />;
     }
+
+    // Pagination handling
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+    const renderPagination = () => {
+        const totalPages = Math.ceil(totalItems / pageSize);
+        let items = [];
+        for (let number = 1; number <= totalPages; number++) {
+            items.push(
+                <Pagination.Item
+                    key={number}
+                    active={currentPage === number} 
+                    onClick={() => handlePageChange(number)}
+                >
+                    {number}
+                </Pagination.Item>
+            );
+        }
+        return items;
+    };
 
     return (
         <Fragment>
@@ -99,7 +128,6 @@ const HomeProductListPage = () => {
                                                 connect
                                                 step={1}
                                                 onSlide={handleSliderChange}
-                                                // tooltips={true}
                                             />
                                             <div className="mt-3">
                                                 <span>Min: ${minCost}</span> - <span>Max: ${maxCost}</span>
@@ -112,7 +140,7 @@ const HomeProductListPage = () => {
                         <Col md={9}>
                             <h1 className="heading">Product List</h1>
                             <Row>
-                                {homeproducts.map((product) => (
+                                {homeproducts.data.map((product) => (
                                     <Col key={product.id} sm={12} md={6} lg={4}>
                                         <Card className="mb-4">
                                             <Card.Body>
@@ -122,14 +150,16 @@ const HomeProductListPage = () => {
                                                 <Card.Text>${product.price}</Card.Text>
 
                                                 <div className="button-container">
-                                                    {product.stock_status === "out_of_stock" ?
-
-                                                        <button className="button" disabled style={{ cursor: "not-allowed", fontSize: 12 }}>Buy Unavailable</button> :
-
-                                                        <button className="button" style={{ backgroundColor: "white", color: "black", fontSize: 12 }}>Buy Available</button>}
+                                                    {product.stock_status === "out_of_stock" ? (
+                                                        <button className="button" disabled style={{ cursor: "not-allowed", fontSize: 12 }}>Buy Unavailable</button>
+                                                    ) : (
+                                                        <button className="button" style={{ backgroundColor: "white", color: "black", fontSize: 12 }}>Buy Available</button>
+                                                    )}
                                                     <button
                                                         className="button"
-                                                        style={{ backgroundColor: "white", color: "black", fontSize: 12 }} onClick={() => { handleCloneProduct(product.product_id) }}>
+                                                        style={{ backgroundColor: "white", color: "black", fontSize: 12 }}
+                                                        onClick={() => { handleCloneProduct(product.product_id) }}
+                                                    >
                                                         Sell One Of These
                                                     </button>
                                                 </div>
@@ -140,23 +170,36 @@ const HomeProductListPage = () => {
                                 ))}
                             </Row>
 
+                            {/* Pagination */}
+                            <div className="pagination-container">
 
+                                <Pagination>
+                                    <Pagination.Prev
+                                        onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                                        disabled={currentPage === 1}
+                                    />
+                                    {renderPagination()}
+                                    <Pagination.Next
+                                        onClick={() => currentPage < totalItems && handlePageChange(currentPage + 1)}
+                                        disabled={currentPage === totalItems}
+                                    />
+                                </Pagination>
+                            </div>
                         </Col>
                     </Row>
                     {!homeproductloading &&
-                        < CommonModal
+                        <CommonModal
                             isOpen={modal1}
                             toggle={toggleModal1}
                             title={homesuccessproduct ? "Success" : "Alert"}
                             message={homesuccessproduct ? "Product Cloned Successfully." : homeerror}
-                            redirectTo={homesuccessproduct ? "/productlist" : toggleModal1} //
+                            redirectTo={homesuccessproduct ? "/productlist" : toggleModal1}
                             buttonText="Okay"
                         />
                     }
                 </Container>
-            )
-            }
-        </Fragment >
+            )}
+        </Fragment>
     );
 };
 
