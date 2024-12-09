@@ -18,10 +18,11 @@ import favouriteSaga from "./vendor/favourite/saga";
 import BuyingProductSaga from "./vendor/buyingproduct/saga";
 import SellingProductSaga from "./vendor/sellingproduct/saga";
 import HomeProductSaga from "./auth/homeproduct/saga";
+import reportsSaga from "./vendor/reports/saga";
+
 export default function* rootSaga() {
   yield all([
     //public
-    
     fork(AuthSaga),
     fork(accountSaga),
     fork(profileSaga),
@@ -37,6 +38,7 @@ export default function* rootSaga() {
     fork(favouriteSaga),
     fork(BuyingProductSaga),
     fork(SellingProductSaga),
-    fork(HomeProductSaga)
+    fork(HomeProductSaga),
+    fork(reportsSaga)
   ]);
 }

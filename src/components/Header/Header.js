@@ -80,6 +80,9 @@ const Header = () => {
                                     <Link to="/selling-list">Selling</Link>
                                 </li>
                                 <li>
+                                    <Link to="/reports">Reports</Link>
+                                </li>
+                                <li>
                                     <Dropdown show={isOpen} onToggle={() => setIsOpen(!isOpen)}>
                                         <Dropdown.Toggle as="li" onClick={() => setIsOpen(!isOpen)} style={{ cursor: 'pointer', padding: '10px' }}>
                                             <span>{userDetails.username}</span>

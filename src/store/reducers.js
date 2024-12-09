@@ -18,6 +18,8 @@ import favouriteReducer from "./vendor/favourite/reducer";
 import BuyingProductsReducer from "./vendor/buyingproduct/reducer";
 import SellingProductReducer from "./vendor/sellingproduct/reducer";
 import HomeProductsReducer from "./auth/homeproduct/reducer";
+import reportsReducer from "./vendor/reports/reducer";
+
 const rootReducer = combineReducers({
   Layout,
   Login: Login,
@@ -33,9 +35,10 @@ const rootReducer = combineReducers({
   tags: TagsReducer,
   categories: CategoriesReducer,
   FavouriteData: favouriteReducer,
-  BuyingProduct:BuyingProductsReducer,
-  SellingProductData:SellingProductReducer,
-  HomeProductData:HomeProductsReducer
+  BuyingProduct: BuyingProductsReducer,
+  SellingProductData: SellingProductReducer,
+  HomeProductData:HomeProductsReducer,
+  ReportsData: reportsReducer
 });
 
 export default rootReducer;
