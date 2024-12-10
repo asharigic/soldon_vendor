@@ -14,7 +14,7 @@ const Spinearea = ({ dataColors, chartData }) => {
 
     const series = [
         {
-            name: "series1",
+            name: "",
             data: seriesData,
         },
     ];
