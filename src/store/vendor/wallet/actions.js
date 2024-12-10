@@ -8,7 +8,10 @@ import {
     GET_WALLET_CHART_DATE_LIST_FAIL,
     GET_WALLET_CHART_LIST,
     GET_WALLET_CHART_LIST_SUCCESS,
-    GET_WALLET_CHART_LIST_FAIL
+    GET_WALLET_CHART_LIST_FAIL,
+    GET_SOLD_PRODUCT_LIST,
+    GET_SOLD_PRODUCT_LIST_SUCCESS,
+    GET_SOLD_PRODUCT_LIST_FAIL
 } from "./actionTypes";
 
 // Get Wallet List
@@ -55,5 +58,21 @@ export const getWalletChartListSuccess = (wallet) => ({
 
 export const getWalletChartListFail = (error) => ({
     type: GET_WALLET_CHART_LIST_FAIL,
+    payload: error,
+});
+
+// Get Sold Products List
+export const getSoldProductList = (seachsoldproducts, page) => ({
+    type: GET_SOLD_PRODUCT_LIST,
+    payload: { seachsoldproducts, page }
+});
+
+export const getSoldProductListSuccess = (seachsoldproducts) => ({
+    type: GET_SOLD_PRODUCT_LIST_SUCCESS,
+    payload: seachsoldproducts,
+});
+
+export const getSoldProductListFail = (error) => ({
+    type: GET_SOLD_PRODUCT_LIST_FAIL,
     payload: error,
 });

@@ -35,6 +35,7 @@ const FavouriteList = (props) => {
       setTotalItems(favourite.meta.total); // Update total items count for pagination
     }
   }, [favourite]);
+  
   const columns = useMemo(
     () => [
       {

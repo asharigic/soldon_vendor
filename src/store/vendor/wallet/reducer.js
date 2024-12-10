@@ -8,16 +8,21 @@ import {
     GET_WALLET_CHART_DATE_LIST_FAIL,
     GET_WALLET_CHART_LIST,
     GET_WALLET_CHART_LIST_SUCCESS,
-    GET_WALLET_CHART_LIST_FAIL
+    GET_WALLET_CHART_LIST_FAIL,
+    GET_SOLD_PRODUCT_LIST,
+    GET_SOLD_PRODUCT_LIST_SUCCESS,
+    GET_SOLD_PRODUCT_LIST_FAIL
 } from './actionTypes';
 
 const INIT_STATE = {
     wallet: [],
     walletchart: [],
     walletchartdate: [],
+    soldproducts: [],
     error: null,
     loading: false,
     chartloading: false,
+    soldproductloading: false,
     success: false
 };
 
@@ -94,6 +99,31 @@ const walletReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 chartloading: false,
+                success: false,
+                error: action.payload,
+            };
+
+        // Get Sold Products List
+        case GET_SOLD_PRODUCT_LIST:
+            return {
+                ...state,
+                soldproducts: action.payload,
+                soldproductloading: true,
+                success: false,
+                error: null,
+            };
+        case GET_SOLD_PRODUCT_LIST_SUCCESS:
+            return {
+                ...state,
+                soldproductloading: false,
+                soldproducts: action.payload.orders,
+                success: true,
+                error: null,
+            };
+        case GET_SOLD_PRODUCT_LIST_FAIL:
+            return {
+                ...state,
+                soldproductloading: false,
                 success: false,
                 error: action.payload,
             };
