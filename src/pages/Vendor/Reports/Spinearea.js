@@ -42,6 +42,13 @@ const Spinearea = ({ dataColors, chart, data }) => {
             type: "category",
             categories: data.map(item => item.formatted_month),
         },
+        yaxis: {
+            labels: {
+                formatter: function (value) {
+                    return chart != "NumberofOrders" ? ('£' + value.toFixed(2)) :  value.toFixed(0); // Formats the value to show £ and 2 decimal points
+                },
+            },
+        },
         grid: {
             borderColor: "#f1f1f1",
         },

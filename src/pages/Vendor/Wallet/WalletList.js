@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getWalletChartList, getWalletList } from '../../../store/vendor/wallet/actions';
 import Spinearea from './Spinearea';
 import { Card, CardBody, CardTitle, Col, FormGroup, Row } from 'reactstrap';
+import Spinners from '../../../components/Common/Spinner';
 
 const WalletList = () => {
     document.title = 'Wallet | Quench';
@@ -40,6 +41,10 @@ const WalletList = () => {
 
     const handleDateChange = (date) => {
         dispatch(getWalletChartList(date));  // Dispatch the action with the formatted date
+    };
+
+    if (isLoading || loading) {
+        return <Spinners setLoading={setLoading} />;
     };
 
     return (
