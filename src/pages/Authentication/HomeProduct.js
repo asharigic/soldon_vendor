@@ -187,7 +187,7 @@ const HomeProductListPage = () => {
                                                 </Card.Body>
 
 
-                                                {/* <div className="button-container">
+                                                <div className="button-container">
                                                     {product.stock_status === "out_of_stock" ? (
                                                         <button className="button" disabled style={{ cursor: "not-allowed", fontSize: 12 }}>Buy Unavailable</button>
                                                     ) : (
@@ -200,7 +200,7 @@ const HomeProductListPage = () => {
                                                     >
                                                         Sell One Of These
                                                     </button>
-                                                </div> */}
+                                                </div>
 
                                             </Card.Body>
                                         </Card>

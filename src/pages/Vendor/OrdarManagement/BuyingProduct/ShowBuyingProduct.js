@@ -44,7 +44,8 @@ const ShowBuyingIdProduct = props => {
                             <Row>
                                 {/* Left Column - Product Image and Name */}
                                 <Col xl={6} className="d-flex flex-column align-items-center">
-                                    <h2 className="mb-3">{showbuyingproducts?.products?.order?.order_item?.product?.productname}</h2>
+                                    <h2 className="mb-3">{showbuyingproducts?.products?.order?.order_item?.product?.productname ? showbuyingproducts?.products?.order?.order_item?.product?.productname : "_"}</h2>
+                                    <h6>{showbuyingproducts?.products?.order?.order_item?.product?.subtitle ? showbuyingproducts?.products?.order?.order_item?.product?.subtitle : "_"}</h6>
                                     <img
                                         className="img-fluid mb-3" // Using Bootstrap's img-fluid for responsive images
                                         height={200}
@@ -56,31 +57,35 @@ const ShowBuyingIdProduct = props => {
                                 {/* Right Column - Order and Return Information */}
                                 <Col xl={6}>
 
-                                    <div className="mb-3">
-                                        <h4 className="font-weight-bold">Order:</h4>
-                                        <p>{showbuyingproducts?.order_id ? showbuyingproducts?.order_id : "_"}</p>
+                                    <div className="mb-3 d-flex align-items-center">
+                                        <h5 className="font-weight-bold me-2 mb-0">Order:</h5>
+                                        <p className="mb-0">{showbuyingproducts?.products?.order?.order_item?.order_id ? showbuyingproducts?.products?.order?.order_item?.order_id : "_"}</p>
                                     </div>
-                                    <div className="mb-3">
-                                        <h4 className="font-weight-bold">Status:</h4>
-                                        <p>{showbuyingproducts?.products?.order?.status ? showbuyingproducts?.products?.order?.status.charAt(0).toUpperCase() + showbuyingproducts?.products?.order?.status.slice(1).toLowerCase() : "_"}</p>
+                                    <div className="mb-3 d-flex align-items-center">
+                                        <h5 className="font-weight-bold me-2 mb-0">Status:</h5>
+                                        <p className="mb-0">{showbuyingproducts?.products?.order?.status ? showbuyingproducts?.products?.order?.status.charAt(0).toUpperCase() + showbuyingproducts?.products?.order?.status.slice(1).toLowerCase() : "_"}</p>
                                     </div>
-                                    <div className="mb-3">
-                                        <h4 className="font-weight-bold">Price:</h4>
-                                        <p>{showbuyingproducts?.products?.order?.order_item?.product?.price ? "$" + showbuyingproducts?.products?.order?.order_item?.product?.price : "_"}</p>
+                                    <hr />
+                                    <div className="mb-3 d-flex align-items-center">
+                                        <h5 className="font-weight-bold me-2 mb-0">Price:</h5>
+                                        <p className="mb-0">{showbuyingproducts?.products?.order?.order_item?.product?.price ? "$" + showbuyingproducts?.products?.order?.order_item?.product?.price : "_"}</p>
                                     </div>
 
-                                    <div className="mb-3">
-                                        <h4 className="font-weight-bold">Sub Total:</h4>
-                                        <p>{showbuyingproducts?.products?.order?.subtotal ? "$" + showbuyingproducts?.products?.order?.subtotal : "_"}</p>
+                                    <div className="mb-3 d-flex align-items-center">
+                                        <h5 className="font-weight-bold me-2 mb-0">Sub Total:</h5>
+                                        <p className="mb-0">{showbuyingproducts?.products?.order?.subtotal ? "$" + showbuyingproducts?.products?.order?.subtotal : "_"}</p>
                                     </div>
-                                    <div className="mb-3">
-                                        <h4 className="font-weight-bold">Fees:</h4>
-                                        <p>{showbuyingproducts?.products?.order?.fees ? "$" + showbuyingproducts?.products?.order?.fees : "_"}</p>
+                                    <div className="mb-3 d-flex align-items-center">
+                                        <h5 className="font-weight-bold me-2 mb-0">Fees:</h5>
+                                        <p className="mb-0">{showbuyingproducts?.products?.order?.fees ? "$" + showbuyingproducts?.products?.order?.fees : "_"}</p>
                                     </div>
-                                    <div className="mb-3">
-                                        <h4 className="font-weight-bold">Total:</h4>
-                                        <p>{showbuyingproducts?.products?.order?.total ? "$" + showbuyingproducts?.products?.order?.total : "_"}</p>
+                                    <hr />
+                                    <div className="mb-3 d-flex align-items-center">
+                                        <h5 className="font-weight-bold me-2 mb-0">Total:</h5>
+                                        <p className="mb-0">{showbuyingproducts?.products?.order?.total ? "$" + showbuyingproducts?.products?.order?.total : "_"}</p>
                                     </div>
+                                    <hr />
+
                                     <div className="mb-3">
                                         <Button onClick={() => handleReturnOrder()}>Return Order</Button>
                                     </div>
