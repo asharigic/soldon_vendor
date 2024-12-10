@@ -21,7 +21,7 @@ import axiosInstance from "../../axiosInstance";
 function* fetchHomeProducts({ payload: { seachproduct, page } }) {
   try {
     const response = yield call(
-      axios.post,
+      axiosInstance.post,
 
       `${process.env.REACT_APP_API}home/product-list?page=${page}`,
       seachproduct

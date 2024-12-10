@@ -2,15 +2,19 @@ import React, { Fragment, useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getHomeProductsList, cloneProduct } from '../../store/auth/homeproduct/actions';
 import Spinners from '../../components/Common/Spinner';
-import { Container, Row, Col, Card, ListGroupItem, ListGroup, Pagination } from 'react-bootstrap';
+import { Container, Row, Col, Card, ListGroupItem, ListGroup, Pagination, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import Nouislider from "nouislider-react";
 import "nouislider/distribute/nouislider.css";
 import CommonModal from '../../components/Common/CommonModal';
 import { BsHeart } from 'react-icons/bs';
+import { deleteFavouriteProduct } from '../../store/vendor/favourite/actions';
+import bg1 from '../../assets/images/no-img.jpg'
 const HomeProductListPage = () => {
     document.title = "Home | Quench";
     const { homeproducts, homeproductloading, homesuccessproduct, homeerror } = useSelector((state) => state.HomeProductData);
+    const { favouriteloading, favouritesuccess, favouriteerror, favouriteproduct } = useSelector((state) => state.FavouriteData);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
@@ -19,6 +23,8 @@ const HomeProductListPage = () => {
     const [totalItems, setTotalItems] = useState(0);
     const [modal1, setModal1] = useState(false);
     const toggleModal1 = () => setModal1(!modal1);
+    const [wishlistmodal, setWishlistmodal] = useState(false);
+    const toggleWishlistModal = () => setWishlistmodal(!wishlistmodal);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedPriceRange, setSelectedPriceRange] = useState('');
     const [pageSize, setPageSize] = useState(15); // Default page size
@@ -55,7 +61,7 @@ const HomeProductListPage = () => {
     }, []);
 
     useEffect(() => {
-      
+
     }, [selectedCategory, selectedPriceRange]);
 
     const handleCloneProduct = (productId) => {
@@ -82,7 +88,7 @@ const HomeProductListPage = () => {
             items.push(
                 <Pagination.Item
                     key={number}
-                    active={currentPage === number} 
+                    active={currentPage === number}
                     onClick={() => handlePageChange(number)}
                 >
                     {number}
@@ -91,17 +97,32 @@ const HomeProductListPage = () => {
         }
         return items;
     };
+    const handleWishlist = (productId) => {
+        if (!localStorage.getItem("vendoruser")) {
+            navigate('/login');
+        } else {
 
+            dispatch(deleteFavouriteProduct(productId));
+            toggleWishlistModal()
+            const page = currentPage || 1;
+            const limit = pageSize || 15;
+            const payload = {
+                per_page: limit,
+                search: searchValue,
+            };
+            dispatch(getHomeProductsList(payload, page));
+        }
+    }
     return (
         <Fragment>
             {isLoading ? <Spinners setLoading={setIsLoading} /> : (
                 <Container>
                     <Row>
-                        <Col md={3}>
+                        {/* <Col md={3}>
                             <h1 className="heading">Filters</h1>
                             <div>
                                 <ListGroup className="filter-list">
-                                    {/* Categories Filter */}
+                             
                                     <ListGroupItem>
                                         <h5>Categories</h5>
                                         <div className="list-unstyled">
@@ -136,19 +157,35 @@ const HomeProductListPage = () => {
                                     </ListGroupItem>
                                 </ListGroup>
                             </div>
-                        </Col>
-                        <Col md={9}>
+                        </Col> */}
+                        <Col md={12}>
                             <h1 className="heading">Product List</h1>
                             <Row>
                                 {homeproducts.data.map((product) => (
                                     <Col key={product.id} sm={12} md={6} lg={4}>
                                         <Card className="mb-4">
                                             <Card.Body>
-                                                <Card.Header style={{justifyContent:'flex-end'}}><BsHeart/></Card.Header>
-                                                <Card.Img src={process.env.REACT_APP_URL + product.image}></Card.Img>
-                                                <Card.Title>{product.name}</Card.Title>
-                                                <Card.Subtitle className="mb-2 text-muted">{product.subtitle}</Card.Subtitle>
-                                                <Card.Text>${product.price}</Card.Text>
+
+                                                <Card.Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: 'none' }}>
+                                                    <h5 style={{ margin: 0, border: 'none' }}></h5>
+
+                                                    {
+                                                        product.is_added_to_favorite === 0 ?
+                                                            <BsHeart style={{ cursor: 'pointer' }} onClick={() => handleWishlist(product.product_id)} />
+                                                            :
+                                                            <BsHeart style={{ cursor: 'pointer', color: 'red' }} onClick={() => handleWishlist(product.product_id)} />
+                                                    }
+
+                                                </Card.Header>
+                                                <Card.Img src={product.image ? process.env.REACT_APP_URL + product.image : bg1} />
+
+
+                                                <Card.Body>
+                                                    <Card.Title>{product.name}</Card.Title>
+                                                    <Card.Subtitle className="mb-2 text-muted">{product.subtitle}</Card.Subtitle>
+                                                    <Card.Text style={{ fontWeight: 'bold', color: 'green' }}>${product.price}</Card.Text>
+                                                </Card.Body>
+
 
                                                 <div className="button-container">
                                                     {product.stock_status === "out_of_stock" ? (
@@ -197,6 +234,20 @@ const HomeProductListPage = () => {
                             redirectTo={homesuccessproduct ? "/productlist" : toggleModal1}
                             buttonText="Okay"
                         />
+                    }
+
+                    {
+                        wishlistmodal && !favouriteloading &&
+                        <CommonModal
+                            isOpen={wishlistmodal}
+                            toggle={toggleWishlistModal}
+                            title={favouritesuccess ? "Success" : "Alert"}
+                            message={favouritesuccess ? favouriteproduct.message : favouriteerror}
+                            redirectTo={favouritesuccess ? "/" : toggleWishlistModal}
+                            buttonText="Okay"
+                        />
+
+
                     }
                 </Container>
             )}

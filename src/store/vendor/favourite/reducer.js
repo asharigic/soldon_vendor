@@ -3,16 +3,19 @@ import {
     GET_FAVOURITE_LIST,
     GET_FAVOURITE_LIST_SUCCESS,
     GET_FAVOURITE_LIST_FAIL,
+    DELETE_FAVOURITE_PRODUCT,
     DELETE_FAVOURITE_PRODUCT_SUCCESS,
     DELETE_FAVOURITE_PRODUCT_FAIL
 } from './actionTypes';
 
 const INIT_STATE = {
     favourite: [],
-    favouriteerror: null,
+    favouriteproduct: null,
     favouriteloading: false,
     favouritesuccess: false,
-    favouriteupdate: null
+    favouriteerror: null,
+    favouriteupdate: null,
+
 };
 
 const favouriteReducer = (state = INIT_STATE, action) => {
@@ -43,18 +46,27 @@ const favouriteReducer = (state = INIT_STATE, action) => {
             };
 
         //Delete Favourite Product
+        case DELETE_FAVOURITE_PRODUCT:
+            return {
+                ...state,
+                favouriteloading: true,
+            };
         case DELETE_FAVOURITE_PRODUCT_SUCCESS:
             return {
                 ...state,
+                // // favouriteproduct: [action.payload, ...state.favouriteproduct],
+                favouriteloading: false,
+                favouriteproduct: action.payload,
                 favouritesuccess: true,
-                favouriteproduct: [action.payload, ...state.favouriteproduct]
             };
 
         case DELETE_FAVOURITE_PRODUCT_FAIL:
             return {
                 ...state,
-                error: action.payload,
+                favouriteloading: false,
                 favouritesuccess: false,
+                favouriteerror: action.payload,
+               
             };
 
         default:
