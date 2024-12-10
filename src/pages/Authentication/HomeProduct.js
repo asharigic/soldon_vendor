@@ -164,7 +164,7 @@ const HomeProductListPage = () => {
                                 {homeproducts.data.map((product) => (
                                     <Col key={product.id} sm={12} md={6} lg={4}>
                                         <Card className="mb-4 inner-card text-center">
-                                            <Card.Body>
+                                            <Card.Body onClick={()=>{navigate(`/product-details/${product.product_id}`)}}>
 
                                                 <Card.Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: 'none' }}>
                                                     <h5 style={{ margin: 0, border: 'none' }}></h5>

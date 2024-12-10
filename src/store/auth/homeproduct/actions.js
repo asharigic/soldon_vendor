@@ -6,7 +6,10 @@ import {
   GET_HOME_PRODUCTLIST_FAIL,
   CLONE_PRODUCT,
   CLONE_PRODUCT_SUCCESS,
-  CLONE_PRODUCT_FAIL
+  CLONE_PRODUCT_FAIL,
+  SHOW_HOME_PRODUCTLIST,
+  SHOW_HOME_PRODUCTLIST_SUCCESS,
+  SHOW_HOME_PRODUCTLIST_FAIL
 } from "./actionTypes";
 
 //Get products
@@ -43,6 +46,29 @@ export const cloneProductSuccess = (products) => {
 export const cloneProductFail = (error) => {
   return {
     type: CLONE_PRODUCT_FAIL,
+    payload: error,
+  }
+}
+
+
+//Show product 
+export const showHomeProduct = (id) => {
+  return {
+    type: SHOW_HOME_PRODUCTLIST,
+    payload: { id },
+  }
+}
+
+export const showHomeProductSuccess = (products) => {
+  return {
+    type: SHOW_HOME_PRODUCTLIST_SUCCESS,
+    payload: { products },
+  }
+}
+
+export const showHomeProductFail = (error) => {
+  return {
+    type: SHOW_HOME_PRODUCTLIST_FAIL,
     payload: error,
   }
 }

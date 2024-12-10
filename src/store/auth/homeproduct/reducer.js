@@ -4,15 +4,19 @@ import {
     GET_HOME_PRODUCTLIST_FAIL,
     CLONE_PRODUCT,
     CLONE_PRODUCT_SUCCESS,
-    CLONE_PRODUCT_FAIL
+    CLONE_PRODUCT_FAIL,
+    SHOW_HOME_PRODUCTLIST,
+    SHOW_HOME_PRODUCTLIST_SUCCESS,
+    SHOW_HOME_PRODUCTLIST_FAIL
 } from "./actionTypes";
 
 const initialState = {
     homeproducts: [],
     homeproductloading: false,
+    showproductdetails: null,
     homeerror: null,
     homesuccessproduct: false,
-    cloneproduct:null
+    cloneproduct: null
 }
 
 const HomeProductsReducer = (state = initialState, action) => {
@@ -60,6 +64,26 @@ const HomeProductsReducer = (state = initialState, action) => {
                 homeproductloading: false,
                 homeerror: action.payload,
                 homesuccessproduct: false
+            };
+        //Show Home Product
+        case SHOW_HOME_PRODUCTLIST:
+            return {
+                ...state,
+                homeproductloading: false,
+            };
+
+        case SHOW_HOME_PRODUCTLIST_SUCCESS:
+            return {
+                ...state,
+                homeproductloading: false,
+                showproductdetails: action.payload
+            };
+
+        case SHOW_HOME_PRODUCTLIST_FAIL:
+            return {
+                ...state,
+                homeproductloading: false,
+                homeerror: action.payload,
             };
 
         default:

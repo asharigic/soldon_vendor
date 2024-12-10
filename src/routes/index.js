@@ -24,6 +24,7 @@ import FavouriteList from "../pages/Vendor/Favourite/FavouriteList";
 import BuyingListPage from "../pages/Vendor/OrdarManagement/BuyingProduct/BuyingProduct";
 import SellingListPage from "../pages/Vendor/OrdarManagement/SellingProduct/SellingProduct";
 import HomeProductListPage from "../pages/Authentication/HomeProduct";
+import HomeProductDetails from "../pages/Authentication/HomeProductDetails";
 import ReportList from "../pages/Vendor/Reports/ReportList";
 import WalletList from "../pages/Vendor/Wallet/WalletList";
 import ReturnOrderById from "../pages/Vendor/OrdarManagement/SellingProduct/ReturnOrderById";
@@ -57,7 +58,9 @@ const publicRoutes = [
   { path: '/forgot-password', component: <ForgotPassword /> },
   { path: '/verification-code', component: <PasswordverificationCode /> },
   { path: '/reset-password', component: <ResetPassword /> },
-  { path: '/', component: <HomeProductListPage /> }
+  { path: '/', component: <HomeProductListPage /> },
+  { path: '/product-details/:id', component: <HomeProductDetails /> }
+  
 
 
 
