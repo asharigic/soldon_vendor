@@ -36,3 +36,6 @@
     transform: rotate(360deg);
   }
 }
+.inner-card{
+    height: calc(100% - 20px);
+}

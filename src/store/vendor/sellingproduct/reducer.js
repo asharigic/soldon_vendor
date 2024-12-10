@@ -3,12 +3,20 @@
 import {
     GET_SELLINGLIST,
     GET_SELLINGLIST_SUCCESS,
-    GET_SELLINGLIST_FAIL
+    GET_SELLINGLIST_FAIL,
+    GET_RETURNORDERLIST,
+    GET_RETURNORDERLIST_SUCCESS,
+    GET_RETURNORDERLIST_FAIL,
+    SHOW_RETURNORDERLIST,
+    SHOW_RETURNORDERLIST_SUCCESS,
+    SHOW_RETURNORDERLIST_FAIL
 
 } from "./actionType";
 
 const initialState = {
     sellingproducts: [],
+    returnorderproducts: null,
+    showreturnorderproduct: null,
     sellingproductloading: false,
     sellingerror: null,
     successsellingproduct: false,
@@ -34,6 +42,50 @@ const SellingProductReducer = (state = initialState, action) => {
             };
 
         case GET_SELLINGLIST_FAIL:
+            return {
+                ...state,
+                sellingerror: action.payload,
+                sellingproductloading: false
+            };
+        //Get Retun order List
+        case GET_RETURNORDERLIST:
+            return {
+                ...state,
+                sellingproductloading: true,
+                sellingerror: null,
+                successsellingproduct: false,
+            };
+        case GET_RETURNORDERLIST_SUCCESS:
+            return {
+                ...state,
+                sellingproductloading: false,
+                returnorderproducts: action.payload,
+                successsellingproduct: true,
+            };
+
+        case GET_RETURNORDERLIST_FAIL:
+            return {
+                ...state,
+                sellingerror: action.payload,
+                sellingproductloading: false
+            };
+        //show Retun order List
+        case SHOW_RETURNORDERLIST:
+            return {
+                ...state,
+                sellingproductloading: true,
+                sellingerror: null,
+                successsellingproduct: false,
+            };
+        case SHOW_RETURNORDERLIST_SUCCESS:
+            return {
+                ...state,
+                sellingproductloading: false,
+                showreturnorderproduct: action.payload,
+                successsellingproduct: true,
+            };
+
+        case SHOW_RETURNORDERLIST_FAIL:
             return {
                 ...state,
                 sellingerror: action.payload,

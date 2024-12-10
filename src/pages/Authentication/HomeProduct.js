@@ -163,7 +163,7 @@ const HomeProductListPage = () => {
                             <Row>
                                 {homeproducts.data.map((product) => (
                                     <Col key={product.id} sm={12} md={6} lg={4}>
-                                        <Card className="mb-4">
+                                        <Card className="mb-4 inner-card text-center">
                                             <Card.Body>
 
                                                 <Card.Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: 'none' }}>
@@ -187,7 +187,7 @@ const HomeProductListPage = () => {
                                                 </Card.Body>
 
 
-                                                <div className="button-container">
+                                                {/* <div className="button-container">
                                                     {product.stock_status === "out_of_stock" ? (
                                                         <button className="button" disabled style={{ cursor: "not-allowed", fontSize: 12 }}>Buy Unavailable</button>
                                                     ) : (
@@ -200,7 +200,7 @@ const HomeProductListPage = () => {
                                                     >
                                                         Sell One Of These
                                                     </button>
-                                                </div>
+                                                </div> */}
 
                                             </Card.Body>
                                         </Card>

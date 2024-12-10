@@ -6,17 +6,21 @@ import {
     GET_BUYINGHLIST_FAIL,
     SHOW_BUYINGHPRODUCT,
     SHOW_BUYINGHPRODUCT_SUCCESS,
-    SHOW_BUYINGHPRODUCT_FAIL
+    SHOW_BUYINGHPRODUCT_FAIL,
+    RETURN_BUYINGPRODUCT,
+    RETURN_BUYINGPRODUCT_SUCCESS,
+    RETURN_BUYINGPRODUCT_FAIL
 
 } from "./actionType";
 
 const initialState = {
     buyingproducts: [],
     showbuyingproducts: null,
+    returnproduct: null,
     buyingproductloading: false,
     buyingerror: null,
     successbuyingproduct: false,
-    
+
 }
 
 const BuyingProductsReducer = (state = initialState, action) => {
@@ -42,8 +46,8 @@ const BuyingProductsReducer = (state = initialState, action) => {
                 buyingerror: action.payload,
                 buyingproductloading: false
             };
-         //Show Buying Product
-         case SHOW_BUYINGHPRODUCT:
+        //Show Buying Product
+        case SHOW_BUYINGHPRODUCT:
             return {
                 ...state,
                 buyingproductloading: false,
@@ -54,7 +58,7 @@ const BuyingProductsReducer = (state = initialState, action) => {
                 ...state,
                 buyingproductloading: false,
                 showbuyingproducts: action.payload,
-                successbuyingproduct:true
+                successbuyingproduct: true
             };
 
         case SHOW_BUYINGHPRODUCT_FAIL:
@@ -63,7 +67,28 @@ const BuyingProductsReducer = (state = initialState, action) => {
                 buyingproductloading: false,
                 error: action.payload,
             };
+        //Return producrt
+        case RETURN_BUYINGPRODUCT:
+            return {
+                ...state,
+                buyingproductloading: true
+            };
 
+        case RETURN_BUYINGPRODUCT_SUCCESS:
+            return {
+                ...state,
+                buyingproductloading: false,
+                returnproduct: action.payload,
+                successbuyingproduct: true
+            };
+
+        case RETURN_BUYINGPRODUCT_FAIL:
+            return {
+                ...state,
+                buyingproductloading: false,
+                buyingerror: action.payload,
+                successbuyingproduct: false,
+            };
         default:
             state = { ...state }
     }

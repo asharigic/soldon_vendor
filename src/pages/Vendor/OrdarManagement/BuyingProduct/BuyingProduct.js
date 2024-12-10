@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AiTwotoneEye } from "react-icons/ai";
 import { getBuyingList, showBuyingProduct } from '../../../../store/vendor/buyingproduct/action';
 import DataTable from '../../../../components/Common/DataTable';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Badge, Modal, Button, Table } from 'react-bootstrap';
 import bgimg1 from '../../../../assets/images/no-img.jpg';
 import Spinners from '../../../../components/Common/Spinner';
@@ -31,6 +31,7 @@ const BuyingListPage = () => {
     document.title = "Buying | Quench";
     const { buyingproducts, buyingproductloading, showbuyingproducts } = useSelector((state) => state.BuyingProduct);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const [totalItems, setTotalItems] = useState(0);
     const [pageSize, setPageSize] = useState(15); // Default page size
@@ -80,7 +81,7 @@ const BuyingListPage = () => {
                 accessorKey: "image",
                 cell: (cellProps) => {
 
-                    const imageSrc = cellProps?.row?.cart_item?.product?.image || bgimg1; // Fallback URL
+                    const imageSrc = cellProps?.row?.order_item?.product?.image || bgimg1; // Fallback URL
                     return (
                         <img
                             className="img-drop-area"
@@ -98,8 +99,8 @@ const BuyingListPage = () => {
                 header: "Purchased Item",
                 accessorKey: "productname",
                 cell: ({ row }) => {
-                    return row?.cart_item?.product?.productname
-                        ? row?.cart_item?.product?.productname.charAt(0).toUpperCase() + row?.cart_item?.product?.productname.slice(1).toLowerCase()
+                    return row?.order_item?.product?.productname
+                        ? row?.order_item?.product?.productname.charAt(0).toUpperCase() + row?.order_item?.product?.productname.slice(1).toLowerCase()
                         : "_";
                 },
                 enableColumnFilter: false,
@@ -150,7 +151,11 @@ const BuyingListPage = () => {
                 cell: (cellProps) => (
 
                     <div className='text-center'>
-                        <button className="btn  btn-sm btn-primary rounded-0" onClick={() => handleVieworderdetail(cellProps.row.id)} style={{ cursor: 'pointer' }}> <AiTwotoneEye /></button>
+                        <button className="btn  btn-sm btn-primary rounded-0"
+                            // onClick={() => handleVieworderdetail(cellProps.row.id)} style={{ cursor: 'pointer' }}
+                            onClick={() => navigate(`/buying-order/${cellProps.row.id}`)}
+                        >
+                            <AiTwotoneEye /></button>
                         &nbsp;
 
 
@@ -245,16 +250,16 @@ const BuyingListPage = () => {
                                                 <tr>
                                                     <th scope="row">
                                                         <div>
-                                                            <img src={showbuyingproducts?.products?.order?.cart_item?.product?.image ? showbuyingproducts?.products?.order?.cart_item?.product?.image : bgimg1} alt="" className="avatar-sm" width={50} />
+                                                            <img src={showbuyingproducts?.products?.order?.order_item?.product?.image ? showbuyingproducts?.products?.order?.order_item?.product?.image : bgimg1} alt="" className="avatar-sm" width={50} />
                                                         </div>
                                                     </th>
                                                     <td>
                                                         <div>
-                                                            <h5 className="text-truncate font-size-14">{showbuyingproducts?.products?.order?.cart_item?.product?.productname}</h5>
+                                                            <h5 className="text-truncate font-size-14">{showbuyingproducts?.products?.order?.order_item?.product?.productname}</h5>
 
                                                         </div>
                                                     </td>
-                                                    <td>$ {showbuyingproducts?.products?.order?.cart_item?.product?.price}</td>
+                                                    <td>$ {showbuyingproducts?.products?.order?.order_item?.product?.price}</td>
                                                 </tr>
 
                                                 <tr>

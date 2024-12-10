@@ -26,7 +26,8 @@ import SellingListPage from "../pages/Vendor/OrdarManagement/SellingProduct/Sell
 import HomeProductListPage from "../pages/Authentication/HomeProduct";
 import ReportList from "../pages/Vendor/Reports/ReportList";
 import WalletList from "../pages/Vendor/Wallet/WalletList";
-
+import ReturnOrderById from "../pages/Vendor/OrdarManagement/SellingProduct/ReturnOrderById";
+import ShowBuyingProduct from "../pages/Vendor/OrdarManagement/BuyingProduct/ShowBuyingProduct";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: '/', component: <HomeProductListPage /> },
@@ -44,6 +45,10 @@ const authProtectedRoutes = [
   { path: "/selling-list", component: <SellingListPage /> },
   { path: "/reports", component: <ReportList /> },
   { path: "/wallet", component: <WalletList /> },
+  { path: "/manage-order/:id", component: <ReturnOrderById /> },
+  { path: "/buying-order/:id", component: <ShowBuyingProduct /> },
+
+
 ];
 
 const publicRoutes = [

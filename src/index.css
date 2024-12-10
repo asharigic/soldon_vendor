@@ -28,3 +28,6 @@
 .login-button {
   width: 100%;
 }
+.card.inner-card{
+  height: calc(100% - 20px);
+}

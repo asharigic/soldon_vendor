@@ -2,12 +2,13 @@ import React, { Fragment, useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AiTwotoneEye } from "react-icons/ai";
 import { getBuyingList, showBuyingProduct } from '../../../../store/vendor/buyingproduct/action';
-import { getSellingList } from '../../../../store/vendor/sellingproduct/action';
+import { getSellingList, getretunorderList } from '../../../../store/vendor/sellingproduct/action';
 import DataTable from '../../../../components/Common/DataTable';
-import { Link } from 'react-router-dom';
-import { Badge, Modal, Button, Table } from 'react-bootstrap';
+import { Link,useNavigate } from 'react-router-dom';
+import { Badge, Modal, Button, Table, Tabs, Tab } from 'react-bootstrap';
 import bgimg1 from '../../../../assets/images/no-img.jpg';
 import Spinners from '../../../../components/Common/Spinner';
+import moment from 'moment/moment';
 const ProjectStatus = ({ status }) => {
     switch (status) {
         case "pending":
@@ -19,28 +20,29 @@ const ProjectStatus = ({ status }) => {
         case "draft":
             return <Badge className="bg-danger"> Draft </Badge>;
         case "published":
-            return <Badge className="bg-success"> Published </Badge>;
+            return <Badge className="badge-soft-secondary"> Published </Badge>;
         case "expired":
             return <Badge className="badge-soft-secondary"> Expired</Badge>;
-
+        case "completed":
+            <Badge className="bg-success">Completed</Badge>
 
         default:
-            return <Badge className="bg-success"> {status} </Badge>;
+            return <Badge className="bg-success"> {status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()} </Badge>;
     }
 };
 const SellingListPage = () => {
     document.title = "Selling | Quench";
-    const { sellingproducts, sellingproductloading } = useSelector((state) => state.SellingProductData);
+    const { sellingproducts, sellingproductloading, returnorderproducts } = useSelector((state) => state.SellingProductData);
     const { showbuyingproducts } = useSelector((state) => state.BuyingProduct);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [key, setKey] = useState('selling');
     const [isLoading, setIsLoading] = useState(true);
     const [totalItems, setTotalItems] = useState(0);
     const [pageSize, setPageSize] = useState(15); // Default page size
     const [currentPage, setCurrentPage] = useState(1);
     const [searchValue, setSearchValue] = useState('');
     const [ViewModal, setViewModal] = useState(false);
-
-
     useEffect(() => {
         const page = currentPage || 1;
         const limit = pageSize || 15;
@@ -48,7 +50,9 @@ const SellingListPage = () => {
             per_page: limit,
             search: searchValue,
         };
-        dispatch(getSellingList(payload, page));// Dispatch action to fetch products list
+        dispatch(getSellingList(payload, page));
+
+        // Dispatch action to fetch products list
     }, [currentPage, pageSize, dispatch]);
 
     useEffect(() => {
@@ -82,7 +86,7 @@ const SellingListPage = () => {
                 accessorKey: "image",
                 cell: (cellProps) => {
 
-                    const imageSrc = cellProps?.row?.cart_item?.product?.image || bgimg1; // Fallback URL
+                    const imageSrc = cellProps?.row?.order_item?.product?.image || bgimg1; // Fallback URL
                     return (
                         <img
                             className="img-drop-area"
@@ -100,8 +104,8 @@ const SellingListPage = () => {
                 header: "Product Name",
                 accessorKey: "productname",
                 cell: ({ row }) => {
-                    return row?.cart_item?.product?.productname
-                        ? row?.cart_item?.product?.productname.charAt(0).toUpperCase() + row?.cart_item?.product?.productname.slice(1).toLowerCase()
+                    return row?.order_item?.product?.productname
+                        ? row?.order_item?.product?.productname.charAt(0).toUpperCase() + row?.order_item?.product?.productname.slice(1).toLowerCase()
                         : "_";
                 },
                 enableColumnFilter: false,
@@ -111,19 +115,109 @@ const SellingListPage = () => {
                 header: "Total",
                 accessorKey: "total",
                 cell: (cellProps) => (cellProps?.row?.total ? <span><i className="bx bx-pound"></i>{cellProps?.row?.total}</span> : "_"),
-               
+
                 enableColumnFilter: false,
                 enableSorting: true,
             },
             {
                 header: "Date",
                 accessorKey: "date",
-                cell: (cellProps) => (cellProps?.row?.placed_at ? <span>{cellProps?.row?.placed_at}</span> : "_"),
+                cell: (cellProps) => (cellProps?.row?.placed_at ? <span>{moment(cellProps?.row?.placed_at).format('Do MMMM, YYYY')}</span> : "_"),
                 enableColumnFilter: false,
                 enableSorting: true,
             },
             {
                 header: "Order Status",
+                accessorKey: "status",
+
+                cell: (cellProps) => (cellProps?.row?.status ? <ProjectStatus status={cellProps?.row?.status} /> : "_"),
+
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Stock Status",
+                accessorKey: "stock_status",
+                cell: ({ row }) => {
+
+                    return row?.order_item?.product?.stock_status
+                        ? row?.order_item?.product?.stock_status.charAt(0).toUpperCase() + row?.order_item?.product?.stock_status.slice(1).toLowerCase()
+                        : "_";
+                },
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+
+        ],
+        [currentPage, pageSize] // Recalculate when pageSize or currentPage changes
+    );
+    const retuncolumns = useMemo(
+        () => [
+            {
+                header: "No.",
+                accessorKey: "id",
+                cell: (cellProps) => {
+
+                    const rowIndex = cellProps.rowIndex;
+                    if (rowIndex === undefined || isNaN(rowIndex)) {
+                        return "-";
+                    }
+                    const globalIndex = (currentPage - 1) * pageSize + rowIndex + 1;
+                    return globalIndex;
+                },
+                enableColumnFilter: false,
+                enableSorting: false,
+
+            },
+
+            {
+                header: "Image",
+                accessorKey: "image",
+                cell: (cellProps) => {
+
+                    const imageSrc = cellProps?.row?.order_return_items?.product?.image || bgimg1; // Fallback URL
+                    return (
+                        <img
+                            className="img-drop-area"
+                            height={50}
+                            width={50}
+                            src={imageSrc}
+                            alt="Product"
+                        />
+                    );
+                },
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Product Name",
+                accessorKey: "productname",
+                cell: ({ row }) => {
+                    return row?.order_return_items?.product?.productname
+                        ? row?.order_return_items?.product?.productname.charAt(0).toUpperCase() + row?.order_return_items?.product?.productname.slice(1).toLowerCase()
+                        : "_";
+                },
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Total",
+                accessorKey: "total",
+                cell: ({ row }) => {
+                    return (row?.order_return_items?.price ? <span><i className="bx bx-pound"></i>{row?.order_return_items?.price}</span> : "_")
+                },
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Date",
+                accessorKey: "date",
+                cell: (cellProps) => (cellProps?.row?.returned_at ? <span>{moment(cellProps?.row?.returned_at).format('Do MMMM, YYYY')}</span> : "_"),
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Order",
                 accessorKey: "status",
                 cell: ({ row }) => {
                     const status = row.status;
@@ -146,23 +240,15 @@ const SellingListPage = () => {
                 enableSorting: true,
             },
             {
-                header: "Stock Status",
-                accessorKey: "stock_status",
-                cell: ({ row }) => {
-
-                    return row?.cart_item?.product?.stock_status
-                        ? row?.cart_item?.product?.stock_status.charAt(0).toUpperCase() + row?.cart_item?.product?.stock_status.slice(1).toLowerCase()
-                        : "_";
-                },
-                enableColumnFilter: false,
-                enableSorting: true,
-            },
-            {
                 header: "Action",
                 accessorKey: "action",
                 cell: (cellProps) => (
                     <div className='text-center'>
-                        <button className="btn  btn-sm btn-primary rounded-0" onClick={() => handleVieworderdetail(cellProps.row.id)} style={{ cursor: 'pointer' }}> <AiTwotoneEye /></button>
+                        <button className="btn  btn-sm btn-primary rounded-0" 
+                        // onClick={() => handleVieworderdetail(cellProps.row.id)} 
+                        onClick={() =>navigate(`/manage-order/${cellProps.row.id}`)}
+                        
+                        style={{ cursor: 'pointer' }}> <AiTwotoneEye /></button>
                         &nbsp;
 
 
@@ -172,15 +258,15 @@ const SellingListPage = () => {
                 enableSorting: false,
             },
         ],
-        [currentPage, pageSize] // Recalculate when pageSize or currentPage changes
-    );
+        [currentPage, pageSize]
+    )
     const handleSearch = () => {
         var userData = {
 
             search: searchValue,
             per_page: pageSize
         }
-        console.log(pageSize, "currentPage")
+
         dispatch(getBuyingList(userData, currentPage === currentPage ? 1 : currentPage));
     };
     const handleVieworderdetail = async (details) => {
@@ -189,7 +275,28 @@ const SellingListPage = () => {
         setIsLoading(true)
         setViewModal(true);
     }
+    const handleTab = (selectedKey) => {
+        setKey(selectedKey)
+        const page = currentPage || 1;
+        const limit = pageSize || 15;
+        const payload = {
+            per_page: limit,
+            search: searchValue,
+        };
+        setIsLoading(true)
+        if (selectedKey === "selling") {
+            dispatch(getSellingList(payload, page));
+        }
+        else if (selectedKey === "orders") {
+            dispatch(getSellingList(payload, page));
+        }
+        else if (selectedKey === "returns") {
+            dispatch(getretunorderList(payload, page));
+        }
+        setIsLoading(false)
 
+
+    }
 
     if (isLoading || sellingproductloading) {
         return <Spinners setLoading={setIsLoading} />;
@@ -199,25 +306,61 @@ const SellingListPage = () => {
             <div className="container">
 
                 <div style={{ textAlign: 'center' }}>
-                    <h1 className="heading">Selling Product List</h1>
+                    {/*  */}
+                    <Tabs
+                        id="controlled-tab-example"
+                        activeKey={key}
+                        onSelect={(k) => handleTab(k)}
+                        // onSelect={(k) => setKey(k)}
+                        className="mb-3"
+                    >
+                        <Tab eventKey="selling" title="Selling">
+                            <h1 className="heading">Selling Product List</h1>
+                        </Tab>
+                        <Tab eventKey="orders" title="Orders">
+                            <h1 className="heading">Orders Product List</h1>
+                        </Tab>
+                        <Tab eventKey="returns" title="Returns">
+                            <h1 className="heading">Return Order Product List</h1>
+                        </Tab>
 
+                    </Tabs>
                 </div>
                 {isLoading ? <Spinners setLoading={setIsLoading} />
                     :
-
-                    <DataTable
-                        data={sellingproducts?.data || []}
-                        columns={columns} // Passing dynamic columns to DataTable
-                        pageSize={pageSize}
-                        totalItems={totalItems}
-                        currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
-                        setPageSize={setPageSize}
-                        searchValue={searchValue}
-                        setSearchValue={setSearchValue}
-                        handleSearch={handleSearch}
-                        SearchPlaceholder="Search..."
-                    />
+                    key === "selling" || key === "orders" ?
+                        <DataTable
+                            data={sellingproducts?.data || []}
+                            columns={columns} // Passing dynamic columns to DataTable
+                            pageSize={pageSize}
+                            totalItems={totalItems}
+                            currentPage={currentPage}
+                            setCurrentPage={setCurrentPage}
+                            setPageSize={setPageSize}
+                            searchValue={searchValue}
+                            setSearchValue={setSearchValue}
+                            handleSearch={handleSearch}
+                            SearchPlaceholder="Search..."
+                        />
+                        :
+                        <>
+                            {isLoading ? <Spinners setLoading={setIsLoading} />
+                                :
+                                <DataTable
+                                    data={returnorderproducts?.data || []}
+                                    columns={retuncolumns} // Passing dynamic columns to DataTable
+                                    pageSize={pageSize}
+                                    totalItems={totalItems}
+                                    currentPage={currentPage}
+                                    setCurrentPage={setCurrentPage}
+                                    setPageSize={setPageSize}
+                                    searchValue={searchValue}
+                                    setSearchValue={setSearchValue}
+                                    handleSearch={handleSearch}
+                                    SearchPlaceholder="Search..."
+                                />
+                            }
+                        </>
                 }
                 {ViewModal && (
 
@@ -260,16 +403,16 @@ const SellingListPage = () => {
                                                 <tr>
                                                     <th scope="row">
                                                         <div>
-                                                            <img src={showbuyingproducts?.products?.order?.cart_item?.product?.image ? showbuyingproducts?.products?.order?.cart_item?.product?.image : bgimg1} alt="" className="avatar-sm" width={50} />
+                                                            <img src={showbuyingproducts?.products?.order?.order_item?.product?.image ? showbuyingproducts?.products?.order?.order_item?.product?.image : bgimg1} alt="" className="avatar-sm" width={50} />
                                                         </div>
                                                     </th>
                                                     <td>
                                                         <div>
-                                                            <h5 className="text-truncate font-size-14">{showbuyingproducts?.products?.order?.cart_item?.product?.productname}</h5>
+                                                            <h5 className="text-truncate font-size-14">{showbuyingproducts?.products?.order?.order_item?.product?.productname}</h5>
 
                                                         </div>
                                                     </td>
-                                                    <td>$ {showbuyingproducts?.products?.order?.cart_item?.product?.price}</td>
+                                                    <td>$ {showbuyingproducts?.products?.order?.order_item?.product?.price}</td>
                                                 </tr>
 
                                                 <tr>
