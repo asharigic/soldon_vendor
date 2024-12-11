@@ -891,7 +891,7 @@ const EditProduct = props => {
                     </Col>
                     <div className="d-flex flex-wrap gap-2">
                       <Button type="submit" color="primary"> Save Changes  </Button>
-                      <Button type="button" color="secondary" onClick={() => navigate("/productlist")}> Cancel</Button>
+                      <Button type="button" color="secondary" onClick={() => navigate("/selling-list")}> Cancel</Button>
                     </div>
                   </Row>
                 </CardBody>
@@ -909,7 +909,7 @@ const EditProduct = props => {
           toggle={toggleModal1}
           title={successproduct ? "Updated" : "Alert"}
           message={successproduct ? "Product Updated Successfully." : error}
-          redirectTo={successproduct ? "/productlist" : toggleModal1} // Different navigation for this page
+          redirectTo={successproduct ? "/selling-list" : toggleModal1} // Different navigation for this page
           buttonText="Okay"
         />
       }

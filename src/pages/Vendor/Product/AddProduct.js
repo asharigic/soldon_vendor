@@ -779,7 +779,7 @@ const AddProduct = () => {
                       </Col>
                       <div className="d-flex flex-wrap gap-2">
                         <Button type="submit" color="primary"> Save  </Button>
-                        <Button type="button" color="secondary" onClick={() => navigate("/productlist")}> Cancel</Button>
+                        <Button type="button" color="secondary" onClick={() => navigate("/selling-list")}> Cancel</Button>
                       </div>
                     </Row>
                   </Form>
@@ -797,7 +797,7 @@ const AddProduct = () => {
           toggle={toggleModal1}
           title={successproduct ? "Success" : "Alert"}
           message={successproduct ? "Product Added Successfully." : error}
-          redirectTo={successproduct ? "/productlist" : toggleModal1} // Different navigation for this page
+          redirectTo={successproduct ? "/selling-list" : toggleModal1} // Different navigation for this page
           buttonText="Okay"
         />
       }

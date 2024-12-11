@@ -1,14 +1,17 @@
 import React, { Fragment, useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AiTwotoneEye } from "react-icons/ai";
-import { getBuyingList, showBuyingProduct } from '../../../../store/vendor/buyingproduct/action';
 import { getSellingList, getretunorderList } from '../../../../store/vendor/sellingproduct/action';
 import DataTable from '../../../../components/Common/DataTable';
-import { Link,useNavigate } from 'react-router-dom';
-import { Badge, Modal, Button, Table, Tabs, Tab } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { Badge, Tabs, Tab } from 'react-bootstrap';
 import bgimg1 from '../../../../assets/images/no-img.jpg';
 import Spinners from '../../../../components/Common/Spinner';
 import moment from 'moment/moment';
+import { getProductsList, deleteProduct as onDeleteClick } from '../../../../store/vendor/products/actions';
+import DeleteModal from '../../../../components/Common/DeleteModal';
+import { BsPencilFill } from "react-icons/bs";
+import { AiFillDelete } from "react-icons/ai";
 const ProjectStatus = ({ status }) => {
     switch (status) {
         case "pending":
@@ -33,33 +36,52 @@ const ProjectStatus = ({ status }) => {
 const SellingListPage = () => {
     document.title = "Selling | Quench";
     const { sellingproducts, sellingproductloading, returnorderproducts } = useSelector((state) => state.SellingProductData);
-    const { showbuyingproducts } = useSelector((state) => state.BuyingProduct);
+    const { products, productloading } = useSelector((state) => state.products);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [key, setKey] = useState('selling');
     const [isLoading, setIsLoading] = useState(true);
     const [totalItems, setTotalItems] = useState(0);
+    const [totalproductItems, setTotalproductItems] = useState(0);
+    const [totalreturnItems, setTotalreturnItems] = useState(0);
     const [pageSize, setPageSize] = useState(15); // Default page size
+    const [productpageSize, setProductPageSize] = useState(15);
+    const [returnpageSize, setReturnPageSize] = useState(15);
     const [currentPage, setCurrentPage] = useState(1);
+    const [productcurrentPage, setProductCurrentPage] = useState(1);
+    const [returncurrentPage, setReturnCurrentPage] = useState(1);
     const [searchValue, setSearchValue] = useState('');
-    const [ViewModal, setViewModal] = useState(false);
+    const [orderseachvalue, setordersearchvalue] = useState('');
+    const [returnseachvalue, setreturnsearchvalue] = useState('');
+    const [productList, setProductList] = useState([]);
+    const [deleteModal, setDeleteModal] = useState(false);
     useEffect(() => {
-        const page = currentPage || 1;
-        const limit = pageSize || 15;
+        const page = productcurrentPage || 1;
+        const limit = productpageSize || 15;
         const payload = {
             per_page: limit,
             search: searchValue,
         };
-        dispatch(getSellingList(payload, page));
-
+        dispatch(getProductsList(payload, page));
         // Dispatch action to fetch products list
-    }, [currentPage, pageSize, dispatch]);
+    }, [productcurrentPage, productpageSize, dispatch]);
 
     useEffect(() => {
         if (sellingproducts?.meta) {
             setTotalItems(sellingproducts.meta.total); // Update total items count for pagination
         }
     }, [sellingproducts]);
+    useEffect(() => {
+        if (returnorderproducts?.meta) {
+            setTotalreturnItems(returnorderproducts.meta.total); // Update total items count for pagination
+        }
+    }, [returnorderproducts]);
+
+    useEffect(() => {
+        if (products?.meta) {
+            setTotalproductItems(products.meta.total); // Update total items count for pagination
+        }
+    }, [products]);
 
     // Dynamic column definition
     const columns = useMemo(
@@ -244,11 +266,11 @@ const SellingListPage = () => {
                 accessorKey: "action",
                 cell: (cellProps) => (
                     <div className='text-center'>
-                        <button className="btn  btn-sm btn-primary rounded-0" 
-                        // onClick={() => handleVieworderdetail(cellProps.row.id)} 
-                        onClick={() =>navigate(`/manage-order/${cellProps.row.id}`)}
-                        
-                        style={{ cursor: 'pointer' }}> <AiTwotoneEye /></button>
+                        <button className="btn  btn-sm btn-primary rounded-0"
+                            // onClick={() => handleVieworderdetail(cellProps.row.id)} 
+                            onClick={() => navigate(`/manage-order/${cellProps.row.id}`)}
+
+                            style={{ cursor: 'pointer' }}> <AiTwotoneEye /></button>
                         &nbsp;
 
 
@@ -258,53 +280,198 @@ const SellingListPage = () => {
                 enableSorting: false,
             },
         ],
-        [currentPage, pageSize]
+        [productcurrentPage, productpageSize]
     )
+    //product List columns
+    const productcolumns = useMemo(
+        () => [
+            {
+                header: "No.",
+                accessorKey: "id",
+                cell: (cellProps) => {
+
+                    const rowIndex = cellProps.rowIndex;
+                    if (rowIndex === undefined || isNaN(rowIndex)) {
+                        return "-";
+                    }
+                    const globalIndex = (productcurrentPage - 1) * productpageSize + rowIndex + 1;
+                    return globalIndex;
+                },
+                enableColumnFilter: false,
+                enableSorting: false,
+
+            },
+
+            {
+                header: "Image",
+                accessorKey: "image",
+                cell: (cellProps) => {
+                    const imageSrc = cellProps.row.image || bgimg1; // Fallback URL
+                    return (
+                        <img
+                            className="img-drop-area"
+                            height={50}
+                            width={50}
+                            src={imageSrc}
+                            alt="Product"
+                        />
+                    );
+                },
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Product Name",
+                accessorKey: "productname",
+                cell: ({ row }) => {
+                    return row.productname
+                        ? row.productname.charAt(0).toUpperCase() + row.productname.slice(1).toLowerCase()
+                        : "_";
+                },
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Subtitle",
+                accessorKey: "subtitle",
+                cell: (cellProps) => cellProps.row.subtitle || "_",
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Price",
+                accessorKey: "price",
+                cell: (cellProps) => (cellProps.row.price ? <span><i className="bx bx-pound"></i>{cellProps.row.price}</span> : "_"),
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Status",
+                accessorKey: "status",
+                cell: ({ row }) => {
+                    const status = row.status;
+                    const capitalizedStatus = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+                    return (
+                        <>
+                            {
+                                status === 'pending' ?
+                                    <Link to="#"
+
+                                    >{capitalizedStatus ? <ProjectStatus status={row.status} /> : "_"}</Link >
+                                    :
+                                    <Link to="#" style={{ cursor: 'default' }}>{capitalizedStatus ? <ProjectStatus status={row.status} /> : "_"}</Link>
+                            }
+
+                        </>
+                    );
+                },
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
+            {
+                header: "Action",
+                accessorKey: "action",
+                cell: (cellProps) => (
+                    <div>
+                        <button className="btn  btn-sm btn-primary rounded-0" onClick={() => navigate(`/edit-product/${cellProps.row.id}`)} style={{ cursor: 'pointer' }}> <BsPencilFill /></button>
+                        &nbsp;
+                        <button className="btn  btn-sm btn-danger rounded-0"
+                            onClick={() => {
+                                setDeleteModal(true);
+                                setProductList(cellProps.row);
+                            }} style={{ cursor: 'pointer' }}><AiFillDelete /></button>
+                    </div>
+                ),
+                enableColumnFilter: false,
+                enableSorting: false,
+            },
+        ],
+        [productcurrentPage, productpageSize] // Recalculate when pageSize or currentPage changes
+    );
     const handleSearch = () => {
         var userData = {
 
             search: searchValue,
+            per_page: productpageSize
+        }
+
+        dispatch(getProductsList(userData, productcurrentPage === productcurrentPage ? 1 : productcurrentPage));
+    };
+    const handleOrdersSeach = () => {
+        var userData = {
+
+            search: orderseachvalue,
             per_page: pageSize
         }
 
-        dispatch(getBuyingList(userData, currentPage === currentPage ? 1 : currentPage));
-    };
-    const handleVieworderdetail = async (details) => {
-        setIsLoading(true)
-        await dispatch(showBuyingProduct(details));
-        setIsLoading(true)
-        setViewModal(true);
+        dispatch(getSellingList(userData, currentPage === currentPage ? 1 : currentPage));
+    }
+    const handleReturnSearch = () => {
+        var userData = {
+
+            search: returnseachvalue,
+            per_page: returnpageSize
+        }
+
+        dispatch(getretunorderList(userData, returncurrentPage === returncurrentPage ? 1 : returncurrentPage));
     }
     const handleTab = (selectedKey) => {
         setKey(selectedKey)
-        const page = currentPage || 1;
-        const limit = pageSize || 15;
-        const payload = {
-            per_page: limit,
-            search: searchValue,
-        };
         setIsLoading(true)
         if (selectedKey === "selling") {
-            dispatch(getSellingList(payload, page));
+            const page = productcurrentPage || 1;
+            const limit = productpageSize || 15;
+            const payload = {
+                per_page: limit,
+                search: searchValue,
+            };
+            dispatch(getProductsList(payload, page));
         }
         else if (selectedKey === "orders") {
+            const page = currentPage || 1;
+            const limit = pageSize || 15;
+            const payload = {
+                per_page: limit,
+                search: orderseachvalue,
+            };
             dispatch(getSellingList(payload, page));
         }
         else if (selectedKey === "returns") {
+            const page = returncurrentPage || 1;
+            const limit = returnpageSize || 15;
+            const payload = {
+                per_page: limit,
+                search: returnseachvalue,
+            };
             dispatch(getretunorderList(payload, page));
         }
         setIsLoading(false)
 
 
     }
+    const handleDeleteTag = () => {
+        if (productList && productList.id) {
+            dispatch(onDeleteClick(productList.id));
+            setDeleteModal(false);
+            setProductList([]);
+            dispatch(getProductsList({ page: currentPage, limit: pageSize }));
 
+        }
+    };
     if (isLoading || sellingproductloading) {
+        return <Spinners setLoading={setIsLoading} />;
+    }
+    if (isLoading || productloading) {
         return <Spinners setLoading={setIsLoading} />;
     }
     return (
         <Fragment>
             <div className="container">
-
+                <DeleteModal
+                    show={deleteModal}
+                    onDeleteClick={handleDeleteTag}
+                    onCloseClick={() => setDeleteModal(false)}
+                />
                 <div style={{ textAlign: 'center' }}>
                     {/*  */}
                     <Tabs
@@ -328,132 +495,63 @@ const SellingListPage = () => {
                 </div>
                 {isLoading ? <Spinners setLoading={setIsLoading} />
                     :
-                    key === "selling" || key === "orders" ?
+                    key === "selling" ?
+
                         <DataTable
-                            data={sellingproducts?.data || []}
-                            columns={columns} // Passing dynamic columns to DataTable
-                            pageSize={pageSize}
-                            totalItems={totalItems}
-                            currentPage={currentPage}
-                            setCurrentPage={setCurrentPage}
-                            setPageSize={setPageSize}
+                            data={products?.data || []}
+                            columns={productcolumns} // Passing dynamic columns to DataTable
+                            pageSize={productpageSize}
+                            totalItems={totalproductItems}
+                            isAddButton={true}
+                            currentPage={productcurrentPage}
+                            setCurrentPage={setProductCurrentPage}
+                            setPageSize={setProductPageSize}
                             searchValue={searchValue}
                             setSearchValue={setSearchValue}
                             handleSearch={handleSearch}
                             SearchPlaceholder="Search..."
                         />
                         :
-                        <>
-                            {isLoading ? <Spinners setLoading={setIsLoading} />
+
+                        key === "orders" ?
+                            isLoading ? <Spinners setLoading={setIsLoading} />
                                 :
                                 <DataTable
-                                    data={returnorderproducts?.data || []}
-                                    columns={retuncolumns} // Passing dynamic columns to DataTable
+                                    data={sellingproducts?.data || []}
+                                    columns={columns} // Passing dynamic columns to DataTable
                                     pageSize={pageSize}
                                     totalItems={totalItems}
                                     currentPage={currentPage}
                                     setCurrentPage={setCurrentPage}
                                     setPageSize={setPageSize}
-                                    searchValue={searchValue}
-                                    setSearchValue={setSearchValue}
-                                    handleSearch={handleSearch}
+                                    searchValue={orderseachvalue}
+                                    setSearchValue={setordersearchvalue}
+                                    handleSearch={handleOrdersSeach}
                                     SearchPlaceholder="Search..."
                                 />
-                            }
-                        </>
+
+                            :
+
+                            <>
+                                {isLoading ? <Spinners setLoading={setIsLoading} />
+                                    :
+                                    <DataTable
+                                        data={returnorderproducts?.data || []}
+                                        columns={retuncolumns} // Passing dynamic columns to DataTable
+                                        pageSize={returnpageSize}
+                                        totalItems={totalreturnItems}
+                                        currentPage={returncurrentPage}
+                                        setCurrentPage={setReturnCurrentPage}
+                                        setPageSize={setReturnPageSize}
+                                        searchValue={returnseachvalue}
+                                        setSearchValue={setreturnsearchvalue}
+                                        handleSearch={handleReturnSearch}
+                                        SearchPlaceholder="Search..."
+                                    />
+                                }
+                            </>
                 }
-                {ViewModal && (
-
-                    isLoading ? (
-                        <div className="loading-container" >
-                            <p style={{ color: 'red' }}>Loading...</p> {/* Loading state UI */}
-                        </div>
-                    ) : (
-                        <Modal
-                            show={ViewModal}
-                            onHide={() => setViewModal(false)}
-                            role="dialog"
-                            autoFocus={true}
-                            centered={true}
-                            className="exampleModal"
-                            tabIndex="-1"
-
-                        >
-
-                            <div className="modal-content">
-                                <Modal.Header closeButton><h4>Order Details</h4></Modal.Header>
-                                <Modal.Body>
-                                    <h6 className="mb-2">
-                                        Product id: <span className="text-primary">#{showbuyingproducts?.products?.order?.uuid}</span>
-                                    </h6>
-                                    <h6 className="mb-4">
-                                        Billing Name: <span className="text-primary">{showbuyingproducts?.products?.order?.user_name}</span>
-                                    </h6>
-
-                                    <div className="table-responsive">
-                                        <Table className="table align-middle table-nowrap">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Product</th>
-                                                    <th scope="col">Product Name</th>
-                                                    <th scope="col">Price</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row">
-                                                        <div>
-                                                            <img src={showbuyingproducts?.products?.order?.order_item?.product?.image ? showbuyingproducts?.products?.order?.order_item?.product?.image : bgimg1} alt="" className="avatar-sm" width={50} />
-                                                        </div>
-                                                    </th>
-                                                    <td>
-                                                        <div>
-                                                            <h5 className="text-truncate font-size-14">{showbuyingproducts?.products?.order?.order_item?.product?.productname}</h5>
-
-                                                        </div>
-                                                    </td>
-                                                    <td>$ {showbuyingproducts?.products?.order?.order_item?.product?.price}</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td colSpan="2">
-                                                        <h6 className="m-0 text-right">Sub Total:</h6>
-                                                    </td>
-                                                    <td>
-                                                        $ {showbuyingproducts?.products?.order?.subtotal}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan="2">
-                                                        <h6 className="m-0 text-right">Fees:</h6>
-                                                    </td>
-                                                    <td>
-                                                        ${showbuyingproducts?.products?.order?.fees}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan="2">
-                                                        <h6 className="m-0 text-right">Total:</h6>
-                                                    </td>
-                                                    <td>
-                                                        $  {showbuyingproducts?.products?.order?.total}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </Table>
-                                    </div>
-                                </Modal.Body>
-                                <Modal.Footer>
-                                    <Button type="button" color="secondary" onClick={() => setViewModal(false)}>
-                                        Close
-                                    </Button>
-                                </Modal.Footer>
-                            </div>
-
-                        </Modal>
-                    )
-                )
-                }
+               
             </div >
         </Fragment>
     );

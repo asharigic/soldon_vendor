@@ -231,7 +231,7 @@ const HomeProductListPage = () => {
                             toggle={toggleModal1}
                             title={homesuccessproduct ? "Success" : "Alert"}
                             message={homesuccessproduct ? "Product Cloned Successfully." : homeerror}
-                            redirectTo={homesuccessproduct ? "/productlist" : toggleModal1}
+                            redirectTo={homesuccessproduct ? "/selling-list" : toggleModal1}
                             buttonText="Okay"
                         />
                     }
