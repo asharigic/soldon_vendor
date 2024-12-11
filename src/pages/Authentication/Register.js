@@ -68,13 +68,15 @@ const Register = props => {
                 </div>
                 <CardBody className="pt-0">
                   <div className="text-center mt-2">
-                    <Link to="/" className="logo-light-element">
+                    {/* <Link to="/" className="logo-light-element">
                       <div className="avatar-md profile-user-wid mb-4">
-                        <span className="avatar-title rounded-circle bg-light ">
-                          <img src={logo} width={100} />
-                        </span>
+                        <span className="avatar-title rounded-circle bg-light "> */}
+       
+                          <h1 className="heading">Sign Up</h1>
+                          {/* <img src={logo} width={100} /> */}
+                        {/* </span>
                       </div>
-                    </Link>
+                    </Link> */}
                   </div>
                   <div>
                     <Link to="/">

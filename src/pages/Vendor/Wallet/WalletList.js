@@ -3,12 +3,33 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getSoldProductList, getWalletChartDateList, getWalletChartList, getWalletList } from '../../../store/vendor/wallet/actions';
 import Spinearea from './Spinearea';
-import { Card, CardBody, CardTitle, Col, Row } from 'reactstrap';
+import { Card, CardBody, CardTitle, Col, Row,Badge} from 'reactstrap';
 import Spinners from '../../../components/Common/Spinner';
 import Select from 'react-select';
 import DataTable from '../../../components/Common/DataTable';
-import { format } from 'date-fns';
 
+import { format } from 'date-fns';
+const ProjectStatus = ({ status }) => {
+    switch (status) {
+        case "pending":
+            return <Badge className="bg-warning"> Pending </Badge>;
+
+        case "approved":
+            return <Badge className="bg-success"> Approved </Badge>;
+
+        case "draft":
+            return <Badge className="bg-danger"> Draft </Badge>;
+        case "published":
+            return <Badge className="badge-soft-secondary"> Published </Badge>;
+        case "expired":
+            return <Badge className="badge-soft-secondary"> Expired</Badge>;
+        case "completed":
+            <Badge className="bg-success">Completed</Badge>
+
+        default:
+            return <Badge className="bg-success"> {status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()} </Badge>;
+    }
+};
 const WalletList = () => {
     document.title = 'Wallet | Quench';
 
@@ -108,7 +129,8 @@ const WalletList = () => {
             {
                 header: "Status",
                 accessorKey: "status",
-                cell: (cellProps) => (cellProps.row.status ? <span style={{ color: "#5bc7f0" }}>{cellProps.row.status}</span> : "_"),
+                cell: (cellProps) => (cellProps?.row?.status ? <ProjectStatus status={cellProps?.row?.status} /> : "_"),
+
                 enableColumnFilter: false,
                 enableSorting: true,
             },

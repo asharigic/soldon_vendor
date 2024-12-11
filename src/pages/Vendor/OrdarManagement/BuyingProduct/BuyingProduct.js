@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Badge, Modal, Button, Table } from 'react-bootstrap';
 import bgimg1 from '../../../../assets/images/no-img.jpg';
 import Spinners from '../../../../components/Common/Spinner';
+import moment from 'moment';
 const ProjectStatus = ({ status }) => {
     switch (status) {
         case "pending":
@@ -117,7 +118,8 @@ const BuyingListPage = () => {
             {
                 header: "Date",
                 accessorKey: "date",
-                cell: (cellProps) => (cellProps?.row?.placed_at ? <span>{cellProps?.row?.placed_at}</span> : "_"),
+                cell: (cellProps) => (cellProps?.row?.placed_at ? <span>{moment(cellProps?.row?.placed_at).format('Do MMMM, YYYY')}</span> : "_"),
+
                 enableColumnFilter: false,
                 enableSorting: true,
             },

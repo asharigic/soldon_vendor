@@ -63,11 +63,11 @@ const ReturnOrderById = props => {
                                     </div>
                                     <div className="mb-3 d-flex align-items-center">
                                         <h5 className="font-weight-bold me-2 mb-0">Price:</h5>
-                                        <p className="mb-0">{showreturnorderproduct?.order_return_items?.product?.price ? `$${showreturnorderproduct?.order_return_items?.product?.price}` : "_"}</p>
+                                        <p className="mb-0"><i className="bx bx-pound"></i>{showreturnorderproduct?.order_return_items?.product?.price ? `${showreturnorderproduct?.order_return_items?.product?.price}` : "_"}</p>
                                     </div>
                                     <div className="mb-3 d-flex align-items-center">
                                         <h5 className="font-weight-bold me-2 mb-0">Refund Amount:</h5>
-                                        <p className="mb-0">{showreturnorderproduct?.refund_amount ? `$${showreturnorderproduct?.refund_amount}` : "_"}</p>
+                                        <p className="mb-0"><i className="bx bx-pound"></i>{showreturnorderproduct?.refund_amount ? `${showreturnorderproduct?.refund_amount}` : "_"}</p>
                                     </div>
                                     <hr />
                                 </Col>

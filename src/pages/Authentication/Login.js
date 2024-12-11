@@ -227,13 +227,14 @@ const Login = props => {
                 </div>
                 <CardBody className="pt-0">
                   <div className="text-center mt-2">
-                    <Link to="/" className="logo-light-element">
+                    {/* <Link to="/" className="logo-light-element">
                       <div className="avatar-md profile-user-wid mb-4">
                         <span className="avatar-title rounded-circle bg-light ">
                           <img src={logo} width={100} />
                         </span>
                       </div>
-                    </Link>
+                    </Link> */}
+                       <h1 className="heading">Login</h1>
                   </div>
                   <div className="p-2">
                     <Form
