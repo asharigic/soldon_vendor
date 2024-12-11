@@ -38,25 +38,25 @@ const Header = () => {
                         <Link to="/">Home</Link>
                     </li>
                     <li>
-                        <Link to="/notifications">Notifications</Link>
-                    </li>
-                    <li>
-                        <Link to="/messages">Messages</Link>
-                    </li>
-                    <li>
-                        <Link to="/productlist">Products</Link>
-                    </li>
-                    <li>
-                        <Link to="/favourites">Favourites</Link>
-                    </li>
-                    <li>
                         <Link to="/buying-list">Buying</Link>
                     </li>
                     <li>
                         <Link to="/selling-list">Selling</Link>
                     </li>
+                    {/* <li>
+                        <Link to="/productlist">Products</Link>
+                    </li> */}
+                    <li>
+                        <Link to="/favourites">Wishlist</Link>
+                    </li>
                     <li>
                         <Link to="/reports">Reports</Link>
+                    </li>
+                    <li>
+                        <Link to="/messages">Messages</Link>
+                    </li>
+                    <li>
+                        <Link to="/notifications">Notifications</Link>
                     </li>
                     <li>
                         <Dropdown show={isOpen} onToggle={() => setIsOpen(!isOpen)}>
