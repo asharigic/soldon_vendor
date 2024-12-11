@@ -142,7 +142,7 @@ const FavouriteList = (props) => {
   return (
     <Fragment>
       <div className="container">
-        <h1 className="heading">Favourite Product List</h1>
+        <h1 className="heading">Wishlist Product List</h1>
         {/* {favouriteloading ? (
           <Spinners setLoading={setLoading} />
         ) : favourite?.data?.length > 0 ? (
