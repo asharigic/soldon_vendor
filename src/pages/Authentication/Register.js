@@ -107,7 +107,7 @@ const Register = props => {
                         <Alert color="danger">{registrationError}</Alert>
                       ) : null}
                       <div className="mb-3">
-                        <Label className="form-label">Firstname</Label>
+                        <Label className="form-label">Firstname <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                         <Input
                           name="firstname"
                           type="text"
@@ -124,7 +124,7 @@ const Register = props => {
                         ) : null}
                       </div>
                       <div className="mb-3">
-                        <Label className="form-label">Lastname</Label>
+                        <Label className="form-label">Lastname <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                         <Input
                           name="lastname"
                           type="text"
@@ -142,7 +142,7 @@ const Register = props => {
                       </div>
 
                       <div className="mb-3">
-                        <Label className="form-label">Username</Label>
+                        <Label className="form-label">Username <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                         <Input
                           name="username"
                           type="text"
@@ -159,7 +159,7 @@ const Register = props => {
                         ) : null}
                       </div>
                       <div className="mb-3">
-                        <Label className="form-label">Email</Label>
+                        <Label className="form-label">Email <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                         <Input
                           id="email"
                           name="email"
@@ -178,7 +178,7 @@ const Register = props => {
                         ) : null}
                       </div>
                       <div className="mb-3">
-                        <Label className="form-label">Password</Label>
+                        <Label className="form-label">Password <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
                         <div className="login-password position-relative">
                           <Input
                             name="password"
