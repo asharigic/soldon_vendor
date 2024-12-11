@@ -9,11 +9,11 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { Link } from "react-router-dom";
 import CommonModal from "../../components/Common/CommonModal";
-import withRouter from "../../components/Common/withRouter";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 // Formik validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { useNavigate, useLocation } from "react-router-dom";
+
 // actions
 import { resetforgotcodePassword } from "../../store/actions";
 
@@ -98,7 +98,7 @@ const ResetPassword = () => {
                                             <div className="mb-3">
 
                                                 <Label className="form-label">Password</Label>
-                                                <div className="login-password">
+                                                <div className="login-password position-relative">
                                                     <Input
                                                         name="password"
                                                         value={validation.values.password || ""}
@@ -113,8 +113,8 @@ const ResetPassword = () => {
                                                     {validation.touched.password && validation.errors.password ? (
                                                         <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
                                                     ) : null}
-                                                    <button onClick={() => setPasswordShow(!passwordShow)} className="btn btn-light " type="button" id="password-addon">
-                                                        <i className={passwordShow ? "mdi mdi-eye-outline" : "mdi mdi-eye-off-outline"}></i>
+                                                    <button onClick={() => setPasswordShow(!passwordShow)} className="btn btn-light p-0 start-100 position-absolute top-0 margin-start ms-n2 mt-1" type="button" id="password-addon">
+                                                        {passwordShow ? <FaEye /> : <FaEyeSlash />}
                                                     </button>
                                                 </div>
 
@@ -122,7 +122,7 @@ const ResetPassword = () => {
                                             <div className="mb-3">
 
                                                 <Label className="form-label">Confirm Password</Label>
-                                                <div className="login-password">
+                                                <div className="login-password position-relative">
                                                     <Input
                                                         name="password_confirmation"
                                                         value={validation.values.password_confirmation || ""}
@@ -137,8 +137,9 @@ const ResetPassword = () => {
                                                     {validation.touched.password_confirmation && validation.errors.password_confirmation ? (
                                                         <FormFeedback type="invalid">{validation.errors.password_confirmation}</FormFeedback>
                                                     ) : null}
-                                                    <button onClick={() => setconfirmpassword(!confirmpasswordshow)} className="btn btn-light " type="button" id="password-addon">
-                                                        <i className={confirmpasswordshow ? "mdi mdi-eye-outline" : "mdi mdi-eye-off-outline"}></i>
+                                                    <button onClick={() => setconfirmpassword(!confirmpasswordshow)} className="btn btn-light p-0 start-100 position-absolute top-0 margin-start ms-n2 mt-1" type="button" id="password-addon">
+
+                                                        {confirmpasswordshow ? <FaEye /> : <FaEyeSlash />}
                                                     </button>
                                                 </div>
 

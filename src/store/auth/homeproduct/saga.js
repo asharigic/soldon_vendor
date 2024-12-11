@@ -60,7 +60,7 @@ function* showhomeProduct(id) {
     if (response && response.data) {
       yield put(showHomeProductSuccess(response.data));
     } else {
-      throw new Error("Invalid response format.");
+      yield put(showHomeProductFail(response.data));
     }
   } catch (error) {
     yield put(showHomeProductFail(error.message));
@@ -70,7 +70,7 @@ function* HomeProductSaga() {
   yield takeEvery(GET_HOME_PRODUCTLIST, fetchHomeProducts);
   yield takeEvery(CLONE_PRODUCT, CloneProduct);
   yield takeEvery(SHOW_HOME_PRODUCTLIST, showhomeProduct);
-  
+
 
 };
 

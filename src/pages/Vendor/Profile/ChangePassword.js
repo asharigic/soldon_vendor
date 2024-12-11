@@ -20,7 +20,7 @@ import withRouter from "../../../components/Common/withRouter";
 //Import Breadcrumb
 
 import { changepassword } from "../../../store/vendor/profile/actions";
-import Breadcrumbs from "../../../components/Common/Breadcrumb"
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -75,8 +75,8 @@ const ChangePassword = props => {
                                     }}>
                                     <div className="mb-3">
 
-                                        <Label className="form-label">New Password <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
-                                        <div className="login-password">
+                                        <Label className="form-label">New Password <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
+                                        <div className="login-password position-relative">
                                             <Input
                                                 name="new_password"
                                                 value={validationType.values.new_password || ""}
@@ -91,8 +91,9 @@ const ChangePassword = props => {
                                             {validationType.touched.new_password && validationType.errors.new_password ? (
                                                 <FormFeedback type="invalid">{validationType.errors.new_password}</FormFeedback>
                                             ) : null}
-                                            <button onClick={() => setPasswordShow(!passwordShow)} className="btn btn-light " type="button" id="password-addon">
-                                                <i className={passwordShow ? "mdi mdi-eye-outline" : "mdi mdi-eye-off-outline"}></i>
+                                            <button onClick={() => setPasswordShow(!passwordShow)} className="btn btn-light p-0 start-100 position-absolute top-0 margin-start ms-n2 mt-1" type="button" id="password-addon">
+
+                                                {passwordShow ? <FaEye /> : <FaEyeSlash />}
                                             </button>
                                         </div>
 
@@ -100,8 +101,8 @@ const ChangePassword = props => {
 
                                     <div className="mb-3">
 
-                                        <Label className="form-label">Confirm Password <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
-                                        <div className="login-password">
+                                        <Label className="form-label">Confirm Password <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
+                                        <div className="login-password position-relative">
                                             <Input
                                                 name="new_password_confirmation"
                                                 value={validationType.values.new_password_confirmation || ""}
@@ -116,8 +117,10 @@ const ChangePassword = props => {
                                             {validationType.touched.new_password_confirmation && validationType.errors.new_password_confirmation ? (
                                                 <FormFeedback type="invalid">{validationType.errors.new_password_confirmation}</FormFeedback>
                                             ) : null}
-                                            <button onClick={() => setPasswordShow1(!passwordShow1)} className="btn btn-light " type="button" id="password-addon">
-                                                <i className={passwordShow1 ? "mdi mdi-eye-outline" : "mdi mdi-eye-off-outline"}></i>
+                                            <button onClick={() => setPasswordShow1(!passwordShow1)} className="btn btn-light p-0 start-100 position-absolute top-0 margin-start ms-n2 mt-1" type="button" id="password-addon">
+
+
+                                                {passwordShow1 ? <FaEye /> : <FaEyeSlash />}
                                             </button>
                                         </div>
 
