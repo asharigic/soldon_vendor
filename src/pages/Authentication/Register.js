@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { Row, Col, CardBody, Card, Alert, Container, Input, Label, Form, FormFeedback } from "reactstrap";
 
 // Formik Validation
@@ -13,7 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 
 import { Link } from "react-router-dom";
-
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import logo from '../../assets/images/QUENCHED-02-01-100x33.png'
 const Register = props => {
   //meta title
@@ -21,7 +21,7 @@ const Register = props => {
   const { registrationError, user, success } = useSelector((state) => state.Registration);
 
   const dispatch = useDispatch();
-
+  const [passwordShow, setPasswordShow] = useState(false);
 
   const validation = useFormik({
 
@@ -39,7 +39,7 @@ const Register = props => {
       lastname: Yup.string().required("Please Enter Your Lastname"),
       email: Yup.string().required("Please Enter Your Email"),
       username: Yup.string().required("Please Enter Your Username"),
-      password: Yup.string().required("Please Enter Your Password"),
+      password: Yup.string().min(8, "The password field must be at least 8 characters.").required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
       dispatch(registerUser(values));
@@ -53,7 +53,7 @@ const Register = props => {
     <React.Fragment>
       <div className="home-btn d-none d-sm-block">
         <Link to="/" className="text-dark">
-        
+
         </Link>
       </div>
       <div className="account-pages my-5 pt-sm-5">
@@ -99,6 +99,7 @@ const Register = props => {
                           Register User Successfully
                         </Alert>
                       ) : null}
+
 
                       {registrationError && registrationError ? (
                         <Alert color="danger">{registrationError}</Alert>
@@ -174,24 +175,35 @@ const Register = props => {
                           <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
                         ) : null}
                       </div>
-
-
                       <div className="mb-3">
                         <Label className="form-label">Password</Label>
-                        <Input
-                          name="password"
-                          type="password"
-                          placeholder="Enter Password"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.password || ""}
-                          invalid={
-                            validation.touched.password && validation.errors.password ? true : false
-                          }
-                        />
-                        {validation.touched.password && validation.errors.password ? (
-                          <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
-                        ) : null}
+                        <div className="login-password position-relative">
+                          <Input
+                            name="password"
+                            value={validation.values.password || ""}
+                            type={passwordShow ? "text" : "password"}
+                            placeholder="Enter Password"
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            invalid={
+                              validation.touched.password && validation.errors.password
+                                ? true
+                                : false
+                            }
+                          />
+                          {validation.touched.password && validation.errors.password ? (
+                            <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
+                          ) : null}
+                          <button
+                            onClick={() => setPasswordShow(!passwordShow)}
+                            className="btn btn-light p-0 start-100 position-absolute top-0 margin-start ms-n2 mt-1"
+                            type="button"
+                            id="password-addon"
+                          >
+                            {passwordShow ? <FaEye /> : <FaEyeSlash />}
+
+                          </button>
+                        </div>
                       </div>
 
                       <div className="mt-3 d-grid">

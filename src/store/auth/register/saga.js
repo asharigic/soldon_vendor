@@ -13,7 +13,7 @@ function* registerUser({ payload: { user } }) {
     yield put(registerUserSuccessful(response.data));
   } catch (error) {
     const errorMessage =
-      error.response?.data?.errors.email || "";
+      error.response?.data?.errors.username[0]|| "";
 
     yield put(registerUserFailed(errorMessage));
   }
