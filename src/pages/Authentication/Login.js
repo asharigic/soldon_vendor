@@ -13,6 +13,7 @@ import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 // Formik validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { FaEye, FaEyeSlash, FaClock } from 'react-icons/fa';
 
 // actions
 import { loginUser, verifycodePassword, resetcodePassword } from "../../store/actions";
@@ -166,7 +167,7 @@ const Login = props => {
       let userData = {
         "user_id": userId
       }
-
+      setError('')
       dispatch(resetcodePassword(userData));
       setresendModal(true)
     } else {
@@ -175,7 +176,7 @@ const Login = props => {
     }
   };
   useEffect(() => {
-   
+
     if (success === true && !loginError) {
       if (user?.user && user?.user?.vendor_setting?.is_2fa_enabled === "0") {
         setModalShow(false);
@@ -229,7 +230,7 @@ const Login = props => {
                     <Link to="/" className="logo-light-element">
                       <div className="avatar-md profile-user-wid mb-4">
                         <span className="avatar-title rounded-circle bg-light ">
-                          <img src={logo} width={100}/>
+                          <img src={logo} width={100} />
                         </span>
                       </div>
                     </Link>
@@ -243,12 +244,12 @@ const Login = props => {
                         return false;
                       }}
                     >
-                 
+
                       {loginError && (
-                       
-                          < Alert color="danger" className="text-center">
-                            These credentials do not match.
-                          </Alert>
+
+                        < Alert color="danger" className="text-center">
+                          These credentials do not match.
+                        </Alert>
                       )}
 
 
@@ -277,7 +278,7 @@ const Login = props => {
                       {/* Password Field */}
                       <div className="mb-3">
                         <Label className="form-label">Password</Label>
-                        <div className="login-password">
+                        <div className="login-password position-relative">
                           <Input
                             name="password"
                             value={validation.values.password || ""}
@@ -296,11 +297,12 @@ const Login = props => {
                           ) : null}
                           <button
                             onClick={() => setPasswordShow(!passwordShow)}
-                            className="btn btn-light"
+                            className="btn btn-light p-0 start-100 position-absolute top-0 margin-start ms-n2 mt-1"
                             type="button"
                             id="password-addon"
                           >
-                            <i className={passwordShow ? "mdi mdi-eye-outline" : "mdi mdi-eye-off-outline"}></i>
+                            {passwordShow ? <FaEye /> : <FaEyeSlash />}
+
                           </button>
                         </div>
                       </div>
@@ -338,15 +340,16 @@ const Login = props => {
           </Row>
         </Container>
       </div>
-
-      {/* Modal for OTP Verification */}
-      <Modal isOpen={ModalShow} toggle={toggle} backdrop="static">
+      <Modal isOpen={ModalShow} toggle={toggle} backdrop="static" centered>
         <ModalBody>
           <div className="modal-container otp-popup">
-            <h1>OTP Verification</h1>
-            <p>{username}</p>
-            <div className="otp-input">
+          <h1 className="heading">OTP Verification</h1>
+            <p className="text-center mb-4">{username}</p>
+
+            {/* OTP Input */}
+            <div className="otp-input row justify-content-center mb-3">
               {OTP.map((digit, index) => (
+                <div className="col-3">
                 <input
                   key={index}
                   id={`otp-input-${index}`} // Unique ID for each input
@@ -355,55 +358,54 @@ const Login = props => {
                   onChange={(e) => handleChange(e, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
                   maxLength={1}
+                  // className="otp-input-field w-100 text-center"
+                  className="form-control form-control-lg text-center two-step"
                 />
+                </div>
               ))}
             </div>
-            {
-              !forgetError && error ?
-                <div
-                  className="alert alert-danger text-center mb-4"
-                  role="alert"
-                > Please provide a valid OTP. </div>
-                : ""
-            }
-            {forgetError && (
-
-              <Alert color="danger" className="text-center">
-                {forgetError}
-              </Alert>
-
-
-            )}
-
-            <button onClick={() => verifyOTP()} className='otp-button btn btn-primary dz-xs-flex m-r5'>
+            <div className="text-center">
+            <button
+              onClick={() => verifyOTP()}
+              className="otp-button btn btn-primary btn-block mb-3"
+            >
               Verify
             </button>
-            <div className="resend-text">
+            </div>
+            {(!forgetError && error) && (
+              <div className="alert alert-danger text-center mb-3 p-1">
+                Please provide a valid OTP.
+              </div>
+            )}
 
+            {forgetError && (
+              <Alert color="danger" className="text-center mb-3 p-1">
+                {forgetError}
+              </Alert>
+            )}
+            {/* Resend OTP */}
+            <div className="resend-text text-center">
               <p>
-                Did&apos;t receive a code ?{" "}
-                {
-                  isResendEnabled ?
-                    <a onClick={resendOTP}
-                      disabled={isResendEnabled} className="fw-medium text-primary " >
-                      {" "}
-                      Resend OTP
-                    </a>
-                    :
-                    <a onClick={resendOTP}
-                      className="fw-medium text-primary " style={{ cursor: "default" }}>
-                      {" "}
-                      Resend OTP in {formatTime(countdown)}
-                    </a>
-                }
-
-
+                Didn&apos;t receive a code?{' '}
+                {isResendEnabled ? (
+                  <a
+                    onClick={resendOTP}
+                    className="fw-medium text-primary"
+                    style={{cursor:'pointer'}}
+                  >
+                    Resend OTP
+                  </a>
+                ) : (
+                  <>
+                    <FaClock className="mr-2" />
+                    Resend OTP in {formatTime(countdown)}
+                  </>
+                )}
               </p>
             </div>
           </div>
         </ModalBody>
       </Modal>
-
       <Modal isOpen={verifyModal} toggle={toggle1} backdrop="static">
         <ModalHeader>Success</ModalHeader>
         <ModalBody>
