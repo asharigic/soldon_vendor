@@ -1,261 +1,200 @@
-import React, { useEffect, useState, Fragment } from "react";
-import Spinners from '../../components/Common/Spinner';
-import { showHomeProduct } from '../../store/auth/homeproduct/actions';
-import { Row, Col, Card, CardBody, NavItem, Nav, NavLink, Table,TabContent,TabPane } from "react-bootstrap";
-//redux
+import React, { useEffect, useState } from "react";
+import { Row, Col, Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane, Button, Table } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Spinners from '../../components/Common/Spinner';
+import { showHomeProduct, cloneProduct } from '../../store/auth/homeproduct/actions';
+import classnames from "classnames";
 import withRouter from "../../components/Common/withRouter";
-
+import CommonModal from '../../components/Common/CommonModal';
 const HomeProductDetail = props => {
     document.title = "Product Details | Quench";
-    const { showproductdetails, homeproductloading } = useSelector((state) => state.HomeProductData);
+    const { showproductdetails, homeproductloading, homesuccessproduct, homeerror } = useSelector((state) => state.HomeProductData);
+
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState("1");
+    const [activeImage, setActiveImage] = useState("");  // Track active image
+    const [modal1, setModal1] = useState(false);
+    const toggleModal1 = () => setModal1(!modal1);
     useEffect(() => {
         dispatch(showHomeProduct(props.router.params.id));
     }, [dispatch]);
+
     if (isLoading || homeproductloading) {
-        return <Spinners setLoading={setIsLoading} />;  // Display loading state while data is being fetched
+        return <Spinners setLoading={setIsLoading} />;
+    }
+
+    // Thumbnail click handler to change main image
+    const imageShow = (img) => {
+        setActiveImage(img);
     };
-    const imageShow = (img, id) => {
-        const expandImg = document.getElementById("expandedImg" + id);
-        expandImg.src = img;
+
+    // Default image if no active image is selected
+    const subImages = showproductdetails?.products?.product?.images || [];
+    const mainImage = activeImage || subImages[0]?.image || "";
+
+    const handleCloneProduct = (productId) => {
+        if (!localStorage.getItem("vendoruser")) {
+            navigate('/login');
+        } else {
+            dispatch(cloneProduct(productId));
+            toggleModal1();
+        }
     };
+    if (isLoading || homeproductloading) {
+        return <Spinners setLoading={setIsLoading} />;
+    }
     return (
-
-        <Fragment>
-            <Row>
-                <Col>
-                    <Card>
-                        <CardBody>
-                            <Row>
-                                <Col xl={6}>
-                                    <div className="product-detai-imgs">
-                                        <Row>
-                                            <Col md={2} sm={3} className="col-4">
-                                                <Nav className="flex-column" pills>
-                                                    <NavItem>
-                                                        <NavLink >
-                                                            {/* <img src={showproductdetails?.products?.product?.images["subImage"][0]} alt=""
-                                                                onClick={() => {
-                                                                    imageShow(showproductdetails?.products?.product?.images["subImage"][0], 1);
-                                                                }}
-                                                                 className="img-fluid mx-auto d-block rounded"
-                                                            /> */}
-                                                        </NavLink>
-                                                    </NavItem>
-                                                    {/* <NavItem>
-                                                        <NavLink className={classnames({ active: activeTab === "2", })} onClick={() => { toggleTab("2"); }}>
-                                                            <img src={productDetail["subImage"][1]} alt=""
-                                                                onClick={() => {
-                                                                    imageShow(productDetail["subImage"][1], 2);
-                                                                }}
-                                                                className="img-fluid mx-auto d-block rounded"
-                                                            />
-                                                        </NavLink>
-                                                    </NavItem>
-                                                    <NavItem>
-                                                        <NavLink className={classnames({ active: activeTab === "3", })} onClick={() => { toggleTab("3"); }}>
-                                                            <img src={productDetail["subImage"][2]} alt=""
-                                                                onClick={() => {
-                                                                    imageShow(productDetail["subImage"][2], 3);
-                                                                }}
-                                                                className="img-fluid mx-auto d-block rounded"
-                                                            />
-                                                        </NavLink>
-                                                    </NavItem> */}
-                                                </Nav>
-                                            </Col>
-                                            <Col md={7} sm={9} className="offset-md-1 col-8">
-                                                {
-                                                    showproductdetails?.products?.product?.images.map((element) => {
-                                                        <TabContent>
-                                                            <TabPane tabId="1">
-                                                                <div>
-                                                                    <img src={element.image} alt="" id="expandedImg1" className="img-fluid mx-auto d-block" />
-                                                                </div>
-                                                            </TabPane>
-                                                        </TabContent>
-                                                    })
-
-                                                }
-
-                                            </Col>
-                                            {/*
-                                                <TabContent activeTab={activeTab}>
-                                                    <TabPane tabId="1">
-                                                        <div>
-                                                            <img src={productDetail.image} alt="" id="expandedImg1" className="img-fluid mx-auto d-block" />
-                                                        </div>
-                                                    </TabPane>
-                                                    <TabPane tabId="2">
-                                                        <div>
-                                                            <img src={productDetail.image} id="expandedImg2" alt="" className="img-fluid mx-auto d-block" />
-                                                        </div>
-                                                    </TabPane>
-                                                    <TabPane tabId="3">
-                                                        <div>
-                                                            <img src={productDetail.image} id="expandedImg3" alt="" className="img-fluid mx-auto d-block" />
-                                                        </div>
-                                                    </TabPane>
-                                                    <TabPane tabId="4">
-                                                        <div>
-                                                            <img src={productDetail.image} id="expandedImg4" alt="" className="img-fluid mx-auto d-block" />
-                                                        </div>
-                                                    </TabPane>
-                                                </TabContent>
-                                                <div className="text-center">
-                                                    <Button
-                                                        type="button"
-                                                        color="primary"
-                                                        className="btn mt-2 me-1"
-                                                    >
-                                                        <i className="bx bx-cart me-2" /> Add to cart
-                                                    </Button>
-                                                    <Button
-                                                        type="button"
-                                                        color="success"
-                                                        className="ms-1 btn mt-2"
-                                                    >
-                                                        <i className="bx bx-shopping-bag me-2" />
-                                                        Buy now
-                                                    </Button>
-                                                </div>
-                                            </Col> */}
-                                        </Row>
-                                    </div>
-                                </Col>
-
-                                <Col xl="6">
-                                    <div className="mt-4 mt-xl-3">
-                                        <Link to="#" className="text-primary">
-                                            {showproductdetails?.products?.product?.productname}
-                                        </Link>
-                                        <h4 className="mt-1 mb-3">{showproductdetails?.products?.product?.subtitle}</h4>
-                                        <h5 className="mb-4">
-                                            Price :{" "}
-                                            <span className="text-muted me-2">
-                                                <del>${showproductdetails?.products?.product?.price} USD</del>
-                                            </span>{" "}
-                                            <b>${showproductdetails?.products?.product?.price} USD</b>
-                                        </h5>
-                                        <p className="text-muted mb-4" dangerouslySetInnerHTML={{ __html: showproductdetails?.products?.product?.description }}>
-
-                                        </p>
-                                        {/* <div className="text-muted float-start me-3">
-                                            <StarRatings
-                                                rating={4}
-                                                starRatedColor="#F1B44C"
-                                                starEmptyColor="#74788d"
-                                                numberOfStars={5}
-                                                name="rating"
-                                                starDimension="14px"
-                                                starSpacing="3px"
-                                            />
-                                        </div>
-                                        <p className="text-muted mb-4">
-                                            ( {productDetail.reviews} Customers Review )
-                                        </p>
-
-                                        {!!productDetail.isOffer && (
-                                            <h6 className="text-success text-uppercase">
-                                                {productDetail.offer} % Off
-                                            </h6>
-                                        )}
-                                       
-                                        <p className="text-muted mb-4">
-                                            To achieve this, it would be necessary to have
-                                            uniform grammar pronunciation and more common words
-                                            If several languages coalesce
-                                        </p>
-                                        <Row className="mb-3">
-                                            <Col md="6">
-                                                {productDetail.features &&
-                                                    productDetail.features.map((item, i) => (
-                                                        <div key={i}>
-                                                            <p className="text-muted">
-                                                                <i
-                                                                    className={classnames(
-                                                                        item.icon,
-                                                                        "font-size-16 align-middle text-primary me-2"
-                                                                    )}
-                                                                />
-                                                                {item.type && `${item.type}: `}
-                                                                {item.value}
-                                                            </p>
-                                                        </div>
-                                                    ))}
-                                            </Col>
-                                            <Col md="6">
-                                                {productDetail.features &&
-                                                    productDetail.features.map((item, i) => (
-                                                        <div key={i}>
-                                                            <p className="text-muted">
-                                                                <i
-                                                                    className={classnames(
-                                                                        item.icon,
-                                                                        "font-size-16 align-middle text-primary me-2"
-                                                                    )}
-                                                                />
-                                                                {item.type && `${item.type}:`}
-                                                                {item.value}
-                                                            </p>
-                                                        </div>
-                                                    ))}
-                                            </Col>
-                                        </Row>
-
-                                        <div className="product-color">
-                                            <h5 className="font-size-15">Color :</h5>
-                                            {productDetail.colorOptions &&
-                                                productDetail.colorOptions.map((option, i) => {
-                                                    return (
-                                                        <Link to="#" className="active" key={i}>
-                                                            <div className="product-color-item border rounded">
-                                                                <img
-                                                                    src={option.image}
-                                                                    alt=""
-                                                                    className="avatar-md"
-                                                                />
-                                                            </div>
-                                                            <p>{option.color}</p>
-                                                        </Link>
-                                                    )
+        <div >
+        
+        <Row className="my-5">
+        <h1 className="heading">Product Detail</h1>
+            <Col xl={6}>
+                {/* Product Image Gallery */}
+                <Card className="shadow-sm">
+                    <CardBody>
+                        <Row>
+                            <Col md={2} sm={3}>
+                                <Nav className="flex-column" pills>
+                                    {subImages.map((image, index) => (
+                                        <NavItem key={image.id}>
+                                            <NavLink
+                                                className={classnames({
+                                                    active: activeTab === String(index + 1),
                                                 })}
-                                        </div> */}
-                                    </div>
-                                </Col>
-                            </Row>
-                        </CardBody>
-                    </Card>
-                </Col>
-            </Row>
-            <div className="mt-5">
-                <h5 className="mb-3">Specifications :</h5>
+                                                onClick={() => {
+                                                    setActiveTab(String(index + 1));
+                                                    imageShow(image.image);
+                                                }}
+                                            >
+                                                <img
+                                                    src={image.image_thumbnail_1}
+                                                    alt={`Thumbnail ${index + 1}`}
+                                                    className="img-fluid mx-auto d-block rounded"
+                                                    style={{ cursor: "pointer" }}
+                                                />
+                                            </NavLink>
+                                        </NavItem>
+                                    ))}
+                                </Nav>
+                            </Col>
+                            <Col md={7} sm={9} className="offset-md-1">
+                                <div className="text-center">
+                                    <img
+                                        src={mainImage}
+                                        alt="Product Image"
+                                        className="img-fluid rounded"
+                                        style={{ maxHeight: "400px", objectFit: "contain" }}
+                                    />
+                                </div>
+                                <TabContent activeTab={activeTab}>
+                                    {subImages.map((image, index) => (
+                                        <TabPane tabId={String(index + 1)} key={image.id}>
 
-                <div className="table-responsive">
-                    <Table className="table mb-0 table-bordered">
-                        <tbody>
-                            {showproductdetails?.products?.product?.categories &&
-                                showproductdetails?.products?.product?.categories.map((specification, i) => (
-                                    <tr key={i}>
-                                        <th
-                                            scope="row"
-                                            style={{ width: "400px" }}
-                                            className={"text-capitalize"}
-                                        >
-                                            {specification.name}
-                                        </th>
-                                        <td>{specification.name}</td>
-                                    </tr>
-                                ))}
-                        </tbody>
-                    </Table>
-                </div>
-            </div>
+                                        </TabPane>
+                                    ))}
+                                </TabContent>
+                            </Col>
+                        </Row>
+                    </CardBody>
+                </Card>
+            </Col>
 
-        </Fragment>
+            <Col xl={6}>
+                {/* Product Information */}
+                <Card className="shadow-sm">
+                    <CardBody>
+                        <h3 className="text-primary">{showproductdetails?.products?.product?.productname}</h3>
+                        <h5 className="text-muted">{showproductdetails?.products?.product?.subtitle}</h5>
+                        <h4 className="my-3">
+                            {/* <span className="text-muted text-decoration-line-through">${showproductdetails?.products?.product?.price}</span>{" "} */}
+                            <b className="text-success">${showproductdetails?.products?.product?.price}</b>
+                        </h4>
+                        <p
+                            className="text-muted mb-4"
+                            dangerouslySetInnerHTML={{
+                                __html: showproductdetails?.products?.product?.description,
+                            }}
+                        ></p>
+
+                        {/* Buttons */}
+                        <div className="d-flex justify-content-start">
+                            <Button variant="primary" className="me-2" size="md"
+                                onClick={() => {
+                                    handleCloneProduct(showproductdetails?.products?.product?.id)
+                                }}>
+                                <i className="bx bx-copy me-2"></i>  Sell One Of These
+                            </Button>
+                            <Button variant="success" size="md" disabled>
+                                <i className="bx bx-shopping-bag me-2"></i> Buy Now
+                            </Button>
+                        </div>
+                    </CardBody>
+                </Card>
+
+                {/* Product Specifications */}
+                <Card className="mt-4 shadow-sm">
+                    <CardBody>
+                        <h5 className="mb-3">Specifications:</h5>
+                        <Table responsive className="table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th style={{ width: "30%" }}>Product Condition</th>
+                                    <td>{showproductdetails?.products?.product?.info.productcondition
+                                        ? showproductdetails?.products?.product?.info.
+                                            productcondition.charAt(0).toUpperCase() + showproductdetails?.products?.product?.info.productcondition.slice(1).toLowerCase() :
+                                        "_"}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style={{ width: "30%" }}>Model</th>
+                                    <td>{showproductdetails?.products?.product?.info.model
+                                        ? showproductdetails?.products?.product?.info.model :
+                                        "_"}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style={{ width: "30%" }}>Packaging Condition</th>
+                                    <td>{showproductdetails?.products?.product?.info.packaging_condition
+                                        ?
+                                        showproductdetails?.products?.product?.info.
+                                            packaging_condition.charAt(0).toUpperCase() + showproductdetails?.products?.product?.info.
+                                                packaging_condition.slice(1).toLowerCase() :
+                                        "_"}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style={{ width: "30%" }}>Additional Condition</th>
+                                    <td>{showproductdetails?.products?.product?.info.additional_condition
+                                        ?
+                                        showproductdetails?.products?.product?.info.
+                                            additional_condition.charAt(0).toUpperCase() + showproductdetails?.products?.product?.info.
+                                                additional_condition.slice(1).toLowerCase() :
+                                        "_"}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </CardBody>
+                </Card>
+            </Col>
+            {
+                modal1 && !homeproductloading &&
+                <CommonModal
+                    isOpen={modal1}
+                    toggle={toggleModal1}
+                    title={homesuccessproduct ? "Success" : "Alert"}
+                    message={homesuccessproduct ? "Product Cloned Successfully." : homeerror}
+                    redirectTo={homesuccessproduct ? "/selling-list" : toggleModal1}
+                    buttonText="Okay"
+                />
+            }
+
+        </Row >
+        </div>
+
     );
 };
 

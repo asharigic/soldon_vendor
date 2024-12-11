@@ -24,7 +24,7 @@ const ProjectStatus = ({ status }) => {
 
 
         default:
-            return <Badge className="bg-success"> {status} </Badge>;
+            return <Badge className="bg-success"> {status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()} </Badge>;
     }
 };
 const BuyingListPage = () => {

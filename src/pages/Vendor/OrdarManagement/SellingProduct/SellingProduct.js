@@ -161,10 +161,20 @@ const SellingListPage = () => {
                 header: "Stock Status",
                 accessorKey: "stock_status",
                 cell: ({ row }) => {
-
-                    return row?.order_item?.product?.stock_status
-                        ? row?.order_item?.product?.stock_status.charAt(0).toUpperCase() + row?.order_item?.product?.stock_status.slice(1).toLowerCase()
+                    const stockStatus = row?.order_item?.product?.stock_status;
+                    const formattedStatus = stockStatus
+                        ? stockStatus.charAt(0).toUpperCase() + stockStatus.slice(1).toLowerCase()
                         : "_";
+                    console.log(formattedStatus,"formattedStatus")
+                    return (
+                        <span
+                        style={{ textDecoration: 'none' }}
+                        dangerouslySetInnerHTML={{ __html: formattedStatus }}
+                    />
+                    );
+                    // return row?.order_item?.product?.stock_status
+                    //     ? row?.order_item?.product?.stock_status.charAt(0).toUpperCase() + row?.order_item?.product?.stock_status.slice(1).toLowerCase()
+                    //     : "_";
                 },
                 enableColumnFilter: false,
                 enableSorting: true,
@@ -551,7 +561,7 @@ const SellingListPage = () => {
                                 }
                             </>
                 }
-               
+
             </div >
         </Fragment>
     );

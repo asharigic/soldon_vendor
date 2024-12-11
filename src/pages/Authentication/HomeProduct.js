@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Nouislider from "nouislider-react";
 import "nouislider/distribute/nouislider.css";
 import CommonModal from '../../components/Common/CommonModal';
-import { BsHeart } from 'react-icons/bs';
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { deleteFavouriteProduct } from '../../store/vendor/favourite/actions';
 import bg1 from '../../assets/images/no-img.jpg'
 const HomeProductListPage = () => {
@@ -164,44 +164,52 @@ const HomeProductListPage = () => {
                                 {homeproducts.data.map((product) => (
                                     <Col key={product.id} sm={12} md={6} lg={4}>
                                         <Card className="mb-4 inner-card text-center">
-                                            <Card.Body onClick={()=>{navigate(`/product-details/${product.product_id}`)}}>
+                                            <Card.Body
+                                            >
 
-                                                <Card.Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: 'none' }}>
+                                                <Card.Header style={{
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center', border: 'none',
+                                                    background: 'none'
+                                                }}>
                                                     <h5 style={{ margin: 0, border: 'none' }}></h5>
 
                                                     {
                                                         product.is_added_to_favorite === 0 ?
-                                                            <BsHeart style={{ cursor: 'pointer' }} onClick={() => handleWishlist(product.product_id)} />
+                                                            <BsHeart style={{ cursor: 'pointer' }}
+                                                                onClick={() =>
+                                                                    handleWishlist(product.product_id)} />
                                                             :
-                                                            <BsHeart style={{ cursor: 'pointer', color: 'red' }} onClick={() => handleWishlist(product.product_id)} />
+                                                            <BsHeartFill
+                                                                style={{ cursor: 'pointer', color: 'red' }}
+                                                                onClick={() =>
+                                                                    handleWishlist(product.product_id)} />
                                                     }
 
                                                 </Card.Header>
-                                                <Card.Img src={product.image ? process.env.REACT_APP_URL + product.image : bg1} />
+                                                <Card.Img
+                                                    style={{ cursor: 'pointer' }}
+                                                    onClick={() => {
+                                                        navigate(`/product-details/${product.product_id}`)
+                                                    }}
+                                                    src={product.image ? process.env.REACT_APP_URL +
+                                                        product.image : bg1} />
 
 
-                                                <Card.Body>
+                                                <Card.Body style={{ cursor: 'pointer' }}
+                                                    onClick={() => {
+                                                        navigate(`/product-details/${product.product_id}`)
+                                                    }}>
                                                     <Card.Title>{product.name}</Card.Title>
-                                                    <Card.Subtitle className="mb-2 text-muted">{product.subtitle}</Card.Subtitle>
-                                                    <Card.Text style={{ fontWeight: 'bold', color: 'green' }}>${product.price}</Card.Text>
+                                                    <Card.Subtitle className="mb-2 text-muted">
+                                                        {product.subtitle}
+                                                    </Card.Subtitle>
+                                                    <Card.Text style={{
+                                                        fontWeight: 'bold', color: 'green'
+                                                    }}>${product.price}
+                                                    </Card.Text>
                                                 </Card.Body>
-
-
-                                                <div className="button-container">
-                                                    {product.stock_status === "out_of_stock" ? (
-                                                        <button className="button" disabled style={{ cursor: "not-allowed", fontSize: 12 }}>Buy Unavailable</button>
-                                                    ) : (
-                                                        <button className="button" style={{ backgroundColor: "white", color: "black", fontSize: 12 }}>Buy Available</button>
-                                                    )}
-                                                    <button
-                                                        className="button"
-                                                        style={{ backgroundColor: "white", color: "black", fontSize: 12 }}
-                                                        onClick={() => { handleCloneProduct(product.product_id) }}
-                                                    >
-                                                        Sell One Of These
-                                                    </button>
-                                                </div>
-
                                             </Card.Body>
                                         </Card>
                                     </Col>
@@ -213,12 +221,14 @@ const HomeProductListPage = () => {
 
                                 <Pagination>
                                     <Pagination.Prev
-                                        onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                                        onClick={() => currentPage > 1 &&
+                                            handlePageChange(currentPage - 1)}
                                         disabled={currentPage === 1}
                                     />
                                     {renderPagination()}
                                     <Pagination.Next
-                                        onClick={() => currentPage < totalItems && handlePageChange(currentPage + 1)}
+                                        onClick={() => currentPage < totalItems &&
+                                            handlePageChange(currentPage + 1)}
                                         disabled={currentPage === totalItems}
                                     />
                                 </Pagination>
