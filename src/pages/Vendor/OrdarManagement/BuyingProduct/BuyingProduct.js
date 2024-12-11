@@ -76,7 +76,17 @@ const BuyingListPage = () => {
                 enableSorting: false,
 
             },
-
+            {
+                header: "Order ID",
+                accessorKey: "uuid",
+                cell: ({ row }) => {
+                    return row?.uuid
+                        ? row?.uuid.charAt(0).toUpperCase() + row?.uuid.slice(1).toLowerCase()
+                        : "_";
+                },
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
             {
                 header: "Image",
                 accessorKey: "image",

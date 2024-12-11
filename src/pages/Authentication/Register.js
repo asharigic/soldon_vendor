@@ -67,7 +67,7 @@ const Register = props => {
                   </Row>
                 </div>
                 <CardBody className="pt-0">
-                  <div className="text-center mt-2">
+                  <div className="text-center mt-4">
                     {/* <Link to="/" className="logo-light-element">
                       <div className="avatar-md profile-user-wid mb-4">
                         <span className="avatar-title rounded-circle bg-light "> */}

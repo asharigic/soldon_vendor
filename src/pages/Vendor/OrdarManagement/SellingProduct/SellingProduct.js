@@ -102,7 +102,17 @@ const SellingListPage = () => {
                 enableSorting: false,
 
             },
-
+            {
+                header: "Order ID",
+                accessorKey: "uuid",
+                cell: ({ row }) => {
+                    return row?.uuid
+                        ? row?.uuid.charAt(0).toUpperCase() + row?.uuid.slice(1).toLowerCase()
+                        : "_";
+                },
+                enableColumnFilter: false,
+                enableSorting: true,
+            },
             {
                 header: "Image",
                 accessorKey: "image",
@@ -165,12 +175,12 @@ const SellingListPage = () => {
                     const formattedStatus = stockStatus
                         ? stockStatus.charAt(0).toUpperCase() + stockStatus.slice(1).toLowerCase()
                         : "_";
-                    console.log(formattedStatus,"formattedStatus")
+                    console.log(formattedStatus, "formattedStatus")
                     return (
                         <span
-                        style={{ textDecoration: 'none' }}
-                        dangerouslySetInnerHTML={{ __html: formattedStatus }}
-                    />
+                            style={{ textDecoration: 'none' }}
+                            dangerouslySetInnerHTML={{ __html: formattedStatus }}
+                        />
                     );
                     // return row?.order_item?.product?.stock_status
                     //     ? row?.order_item?.product?.stock_status.charAt(0).toUpperCase() + row?.order_item?.product?.stock_status.slice(1).toLowerCase()
@@ -178,6 +188,25 @@ const SellingListPage = () => {
                 },
                 enableColumnFilter: false,
                 enableSorting: true,
+            },
+            {
+                header: "Action",
+                accessorKey: "action",
+                cell: (cellProps) => (
+
+                    <div className='text-center'>
+                        <button className="btn  btn-sm btn-primary rounded-0"
+                            // onClick={() => handleVieworderdetail(cellProps.row.id)} style={{ cursor: 'pointer' }}
+                            onClick={() => navigate(`/view-order/${cellProps.row.id}`)}
+                        >
+                            <AiTwotoneEye /></button>
+                        &nbsp;
+
+
+                    </div >
+                ),
+                enableColumnFilter: false,
+                enableSorting: false,
             },
 
         ],

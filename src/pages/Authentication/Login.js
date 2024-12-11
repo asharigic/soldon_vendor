@@ -226,7 +226,7 @@ const Login = props => {
                   <Row></Row>
                 </div>
                 <CardBody className="pt-0">
-                  <div className="text-center mt-2">
+                  <div className="text-center mt-4">
                     {/* <Link to="/" className="logo-light-element">
                       <div className="avatar-md profile-user-wid mb-4">
                         <span className="avatar-title rounded-circle bg-light ">
@@ -328,7 +328,7 @@ const Login = props => {
 
                       {/* Forgot Password Link */}
                       <div className="mt-4 text-center">
-                        <Link to="/forgot-password" className="text-muted">
+                        <Link to="/forgot-password" className="text-muted text-decoration-none">
                           <i className="mdi mdi-lock me-1" />
                           Forgot your password?
                         </Link>

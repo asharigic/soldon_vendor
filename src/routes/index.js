@@ -29,6 +29,7 @@ import ReportList from "../pages/Vendor/Reports/ReportList";
 import WalletList from "../pages/Vendor/Wallet/WalletList";
 import ReturnOrderById from "../pages/Vendor/OrdarManagement/SellingProduct/ReturnOrderById";
 import ShowBuyingProduct from "../pages/Vendor/OrdarManagement/BuyingProduct/ShowBuyingProduct";
+import ViewOrderById from "../pages/Vendor/OrdarManagement/SellingProduct/ViewOrderById";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: '/', component: <HomeProductListPage /> },
@@ -48,6 +49,8 @@ const authProtectedRoutes = [
   { path: "/wallet", component: <WalletList /> },
   { path: "/manage-order/:id", component: <ReturnOrderById /> },
   { path: "/buying-order/:id", component: <ShowBuyingProduct /> },
+  { path: "/view-order/:id", component: <ViewOrderById /> },
+  
 
 
 ];
