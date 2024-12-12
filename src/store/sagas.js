@@ -20,7 +20,7 @@ import SellingProductSaga from "./vendor/sellingproduct/saga";
 import HomeProductSaga from "./auth/homeproduct/saga";
 import reportsSaga from "./vendor/reports/saga";
 import walletSaga from "./vendor/wallet/saga";
-
+import TicketListSaga from "./vendor/tickets/saga";
 export default function* rootSaga() {
   yield all([
     //public
@@ -41,6 +41,7 @@ export default function* rootSaga() {
     fork(SellingProductSaga),
     fork(HomeProductSaga),
     fork(reportsSaga),
-    fork(walletSaga)
+    fork(walletSaga),
+    fork(TicketListSaga)
   ]);
 }

@@ -32,6 +32,7 @@ import ShowBuyingProduct from "../pages/Vendor/OrdarManagement/BuyingProduct/Sho
 import ViewOrderById from "../pages/Vendor/OrdarManagement/SellingProduct/ViewOrderById";
 import TicketList from "../pages/Vendor/TicketSystem/TicketList";
 import AddTicket from "../pages/Vendor/TicketSystem/AddTicket";
+import ShowTicket from "../pages/Vendor/TicketSystem/ShowTicket";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: '/', component: <HomeProductListPage /> },
@@ -54,6 +55,8 @@ const authProtectedRoutes = [
   { path: "/view-order/:id", component: <ViewOrderById /> },
   { path: "/ticket-list", component: <TicketList /> },
   { path: '/add-ticket', component: <AddTicket /> },
+  { path: "/show-ticket/:id", component: <ShowTicket /> },
+  
 
 
 ];

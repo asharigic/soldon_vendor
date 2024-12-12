@@ -20,7 +20,7 @@ import SellingProductReducer from "./vendor/sellingproduct/reducer";
 import HomeProductsReducer from "./auth/homeproduct/reducer";
 import reportsReducer from "./vendor/reports/reducer";
 import walletReducer from "./vendor/wallet/reducer";
-
+import TicketReducer from "./vendor/tickets/reducer";
 const rootReducer = combineReducers({
   Layout,
   Login: Login,
@@ -40,7 +40,8 @@ const rootReducer = combineReducers({
   SellingProductData: SellingProductReducer,
   HomeProductData:HomeProductsReducer,
   ReportsData: reportsReducer,
-  WalletData: walletReducer
+  WalletData: walletReducer,
+  TicketData: TicketReducer
 });
 
 export default rootReducer;

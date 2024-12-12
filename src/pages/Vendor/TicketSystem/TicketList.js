@@ -1,17 +1,41 @@
 import React, { Fragment, useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { deleteFavouriteProduct, getFavouriteList } from '../../../store/vendor/favourite/actions';
+import { Badge } from 'react-bootstrap';
 import Spinners from '../../../components/Common/Spinner';
-
+import { getticketslist } from '../../../store/vendor/tickets/action';
 import DataTable from '../../../components/Common/DataTable';
-import bgimg1 from '../../../assets/images/no-img.jpg';
+import moment from 'moment';
+import { AiTwotoneEye } from "react-icons/ai";
+const ProjectStatus = ({ status }) => {
+  switch (status) {
+    case "pending":
+      return <Badge className="bg-warning"> Pending </Badge>;
+
+    case "approved":
+      return <Badge className="bg-success"> Approved </Badge>;
+    case "active":
+      return <Badge className="bg-success"> Active </Badge>;
+
+    case "draft":
+      return <Badge className="bg-danger"> Draft </Badge>;
+    case "published":
+      return <Badge className="badge-soft-secondary"> Published </Badge>;
+    case "expired":
+      return <Badge className="badge-soft-secondary"> Expired</Badge>;
+    case "completed":
+      <Badge className="bg-success">Completed</Badge>
+
+    default:
+      return <Badge className="bg-success"> {status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()} </Badge>;
+  }
+};
 const TicketList = (props) => {
   document.title = "Tickets | Quench";
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { favourite, favouriteloading, favouritesuccess } = useSelector((state) => state.FavouriteData);
-  const [isLoading, setLoading] = useState(favouriteloading);
+  const { getticketlists, ticketloading } = useSelector((state) => state.TicketData)
+  const [isLoading, setLoading] = useState(ticketloading);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(15); // Default page size
@@ -26,16 +50,16 @@ const TicketList = (props) => {
         per_page: limit,
         search: searchValue,
       };
-      dispatch(getFavouriteList(payload, page));
+      dispatch(getticketslist(payload, page));
       setLoading(false);
     }
   }, [props.success, currentPage, pageSize, dispatch]);
   useEffect(() => {
-    if (favourite?.meta) {
-      setTotalItems(favourite.meta.total); // Update total items count for pagination
+    if (getticketlists?.meta) {
+      setTotalItems(getticketlists.meta.total); // Update total items count for pagination
     }
-  }, [favourite]);
-  
+  }, [getticketlists]);
+
   const columns = useMemo(
     () => [
       {
@@ -56,45 +80,24 @@ const TicketList = (props) => {
       },
 
       {
-        header: "Item",
-        accessorKey: "item",
-        cell: (cellProps) => {
-          const imageSrc = cellProps.row.product_image || bgimg1; // Fallback URL
-          return (
-            <img
-              className="img-drop-area"
-              height={50}
-              width={50}
-              src={imageSrc}
-              alt={imageSrc === "" ? "" : cellProps.row.product_name}
-            />
-          );
-        },
+        header: "Subject",
+        accessorKey: "subject",
+        cell: (cellProps) => (cellProps.row.subject ? <span>{cellProps.row.subject}</span> : "_"),
         enableColumnFilter: false,
         enableSorting: true,
       },
       {
-        header: "Product Name",
-        accessorKey: "productname",
-        cell: ({ row }) => {
-          return row.product_name
-            ? row.product_name.charAt(0).toUpperCase() + row.product_name.slice(1).toLowerCase()
-            : "_";
-        },
+        header: "Date",
+        accessorKey: "date",
+        cell: (cellProps) => (cellProps?.row?.created_at ? <span>{moment(cellProps?.row?.created_at).format('Do MMMM, YYYY')}</span> : "_"),
         enableColumnFilter: false,
         enableSorting: true,
       },
       {
-        header: "Price",
-        accessorKey: "price",
-        cell: (cellProps) => (cellProps.row.product_price ? <span><i className="bx bx-pound"></i>{cellProps.row.product_price}</span> : "_"),
-        enableColumnFilter: false,
-        enableSorting: true,
-      },
-      {
-        header: "Stock",
-        accessorKey: "stock",
-        cell: (cellProps) => (cellProps.row.product_stock_status ? <span>{cellProps.row.product_stock_status}</span> : "_"),
+        header: "Status",
+        accessorKey: "status",
+
+        cell: (cellProps) => (cellProps?.row?.status ? <ProjectStatus status={cellProps?.row?.status} /> : "_"),
 
         enableColumnFilter: false,
         enableSorting: true,
@@ -103,16 +106,17 @@ const TicketList = (props) => {
         header: "Action",
         accessorKey: "action",
         cell: (cellProps) => (
-          <div className="button-container">
-            <button className="button" disabled style={{ cursor: "not-allowed" }}>Buy</button>
-            <button
-              className="button"
-              style={{ backgroundColor: "white", color: "black" }}
-              onClick={() => handleRemoveFavourite(cellProps.row.product_id)}
+
+          <div className='text-center'>
+            <button className="btn  btn-sm btn-primary rounded-0"
+              // onClick={() => handleVieworderdetail(cellProps.row.id)} style={{ cursor: 'pointer' }}
+              onClick={() => navigate(`/show-ticket/${cellProps.row.id}`)}
             >
-              Remove
-            </button>
-          </div>
+              <AiTwotoneEye /></button>
+            &nbsp;
+
+
+          </div >
         ),
         enableColumnFilter: false,
         enableSorting: false,
@@ -120,12 +124,7 @@ const TicketList = (props) => {
     ],
     [currentPage, pageSize] // Recalculate when pageSize or currentPage changes
   );
-  const handleRemoveFavourite = (productId) => {
-    dispatch(deleteFavouriteProduct(productId));
-    if (favouritesuccess) {
-      dispatch(getFavouriteList());
-    }
-  };
+
   const handleSearch = () => {
     var userData = {
 
@@ -133,9 +132,9 @@ const TicketList = (props) => {
       per_page: pageSize
     }
 
-    dispatch(getFavouriteList(userData, currentPage === currentPage ? 1 : currentPage));
+    dispatch(getticketslist(userData, currentPage === currentPage ? 1 : currentPage));
   };
-  if (isLoading || favouriteloading) {
+  if (isLoading || ticketloading) {
     return <Spinners setLoading={setLoading} />;
   }
 
@@ -143,26 +142,26 @@ const TicketList = (props) => {
     <Fragment>
       <div className="container">
         <h1 className="heading">Ticket List</h1>
-     
-          {isLoading ? <Spinners setLoading={setLoading} />
-              :
-              <DataTable
-                data={favourite?.data || []}
-                columns={columns} // Passing dynamic columns to DataTable
-                pageSize={pageSize}
-                isAddButton={true}
-                totalItems={totalItems}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                setPageSize={setPageSize}
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                handleSearch={handleSearch}
-                SearchPlaceholder="Search..."
-                addButtonText="Add Ticket"
-                 navigateTo="/add-ticket"
-              />
-            }
+
+        {isLoading ? <Spinners setLoading={setLoading} />
+          :
+          <DataTable
+            data={getticketlists?.data || []}
+            columns={columns} // Passing dynamic columns to DataTable
+            pageSize={pageSize}
+            isAddButton={true}
+            totalItems={totalItems}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            setPageSize={setPageSize}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            handleSearch={handleSearch}
+            SearchPlaceholder="Search..."
+            addButtonText="Add Ticket"
+            navigateTo="/add-ticket"
+          />
+        }
       </div>
     </Fragment>
   );

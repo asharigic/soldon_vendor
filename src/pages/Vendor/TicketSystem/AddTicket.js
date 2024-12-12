@@ -13,18 +13,18 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CommonModal from "../../../components/Common/CommonModal";
-import Spinners from "../../../components/Common/Spinner";
 
 
+import { createticketlist } from "../../../store/vendor/tickets/action";
 const AddTicket = () => {
 
   //meta title
   document.title = "Add Ticket | Quench";
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [modal1, setModal1] = useState(false);
   const [editorContent, setEditorContent] = useState('');
-
+  const {ticketloading,successticket,ticketerror}= useSelector((state) => state.TicketData)
 
   const toggleModal1 = () => setModal1(!modal1);
 
@@ -34,15 +34,15 @@ const AddTicket = () => {
     enableReinitialize: true,
     initialValues: {
       subject: '',
-      content: '',
+      description: '',
     },
     validationSchema: Yup.object().shape({
       subject: Yup.string().required("Please Enter Subject"),
-      content: Yup.string().required("Please Enter Content"),
+      description: Yup.string().required("Please Enter Description"),
     }),
     onSubmit: (values) => {
-      values.content = editorContent
-  
+      values.description = editorContent
+      dispatch(createticketlist(values));
       toggleModal1();
     }
   });
@@ -50,11 +50,11 @@ const AddTicket = () => {
   const handleEditorChange = (event, editor) => {
     const data = editor.getData();
     setEditorContent(data); // Update local state for CKEditor
-    validationType.setFieldValue('content', data); // Update Formik content value
+    validationType.setFieldValue('description', data); // Update Formik content value
   };
 
   const handleEditorBlur = () => {
-    validationType.setFieldTouched('content', true); // Mark content as touched
+    validationType.setFieldTouched('description', true); // Mark content as touched
   };
   return (
     <Fragment>
@@ -94,7 +94,7 @@ const AddTicket = () => {
                          </Row>
                         <Row>
                           <Col md={12} style={{ marginTop: "10px" }}>
-                            <Label className="form-label">Content <span className="errorsymbol">*</span></Label>
+                            <Label className="form-label">Description <span className="errorsymbol">*</span></Label>
                             <CKEditor
                               editor={ClassicEditor}
                               config={{
@@ -102,13 +102,13 @@ const AddTicket = () => {
                                 licenseKey: 'yb9cohmfnwpo4zlbubfkoeyzgj99jhzjo4gp5yie0ribr5y9',
                             }
                             }
-                              data={validationType.values.content}
+                              data={validationType.values.description}
 
                               onChange={handleEditorChange} // Update Formik's content field
                               onBlur={handleEditorBlur} // Formik onBlur for validation
                             />
-                            {validationType.touched.content && validationType.errors.content && (
-                              <div className="error">{validationType.errors.content}</div>
+                            {validationType.touched.description && validationType.errors.description && (
+                              <div className="error">{validationType.errors.description}</div>
                             )}
                           </Col>
                         </Row>
@@ -131,16 +131,16 @@ const AddTicket = () => {
         
 
         {/* Alert Popup */}
-        {/* {!loadingemail &&
+        {!ticketloading &&
           <CommonModal
             isOpen={modal1}
             toggle={toggleModal1}
-            title={successemail ? "Success" : "Alert"}
-            message={successemail ? "Email Template Added Successfully." : erroremail}
-            redirectTo={successemail ? "/emailtemplate" : toggleModal1} // Different navigation for this page
+            title={successticket ? "Success" : "Alert"}
+            message={successticket ? "Ticket Added Successfully." : ticketerror}
+            redirectTo={successticket ? "/ticket-list" : toggleModal1} // Different navigation for this page
             buttonText="Okay"
           />
-        } */}
+        }
       </div>
     </Fragment>
   );
