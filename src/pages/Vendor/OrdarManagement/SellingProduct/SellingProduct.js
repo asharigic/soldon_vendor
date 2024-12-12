@@ -175,7 +175,7 @@ const SellingListPage = () => {
                     const formattedStatus = stockStatus
                         ? stockStatus.charAt(0).toUpperCase() + stockStatus.slice(1).toLowerCase()
                         : "_";
-                    console.log(formattedStatus, "formattedStatus")
+                  
                     return (
                         <span
                             style={{ textDecoration: 'none' }}
@@ -549,6 +549,8 @@ const SellingListPage = () => {
                             setSearchValue={setSearchValue}
                             handleSearch={handleSearch}
                             SearchPlaceholder="Search..."
+                            addButtonText="Add Product" 
+                            navigateTo="/add-product"
                         />
                         :
 

@@ -16,7 +16,9 @@ const DataTable = ({
   handleSearch,
   searchValue,
   setSearchValue,
-  SearchPlaceholder
+  SearchPlaceholder,
+  addButtonText,
+  navigateTo
 }) => {
   const totalPages = Math.ceil(totalItems / pageSize);
 
@@ -95,7 +97,7 @@ const DataTable = ({
           </div>
           {isAddButton && (
             <div>
-              <button className="btn btn-dark" onClick={() => navigate('/add-product')}>Add Product</button>
+              <button className="btn btn-dark"  onClick={() => navigate(navigateTo)}>{addButtonText} </button>
             </div>
           )}
         </div>

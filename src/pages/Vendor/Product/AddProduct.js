@@ -52,14 +52,12 @@ const AddProduct = () => {
   const [isLoading, setIsLoading] = useState(loading);
   const [isTermTextVisible, setIsTermTextVisible] = useState(false);
   const [TermText, setTermText] = useState('');
+  const [buttonType, setButtonType] = useState('');
 
   // Model
   const [isTagModal, setIsTagModal] = useState(false);
   const [isCategoryModal, setIsCategoryModal] = useState(false);
   const [isTermModal, setIsTermModal] = useState(false);
-
-
-  const [selectedStatusId, setSelectedStatusId] = useState('');
   const [selectedsealed, setselectedsealed] = useState(null);
   const [selectedsealedId, setselectedsealedId] = useState('');
   const [productcondition, setProductcondition] = useState('new');
@@ -106,14 +104,6 @@ const AddProduct = () => {
     }
   }, [dispatch, successterm]);
 
-  const statusType = [
-    { value: 'pending', label: 'Pending' },
-    { value: 'published', label: 'Published' },
-    { value: 'approved', label: 'Approved' },
-    { value: 'draft', label: 'Draft' },
-    { value: 'expired', label: 'Expired' },
-  ];
-
   const sealedType = [
     { value: 'yes', label: 'Yes' },
     { value: 'no', label: 'No' },
@@ -138,15 +128,7 @@ const AddProduct = () => {
     { value: "na", label: "N/A" }
   ];
 
-  const handleSelectStatus = (selectedOption) => {
-    setSelectedStatus(selectedOption);
-    setSelectedStatusId(selectedOption ? selectedOption.value : ''); // Update selectedStatusId
-    metaData.setFieldValue('status', selectedOption ? selectedOption.value : '');
 
-    if (selectedOption && selectedOption.value) {
-      metaData.setFieldError('status', undefined); // Clear any validation error
-    }
-  };
 
   const handleSelectsealed = (selectedOption) => {
     setselectedsealed(selectedOption);
@@ -230,7 +212,6 @@ const AddProduct = () => {
       subtitle: "",
       price: '',
       description: '',
-      status: "",
       image: "",
       manufacturer: "",
       model: "",
@@ -253,13 +234,13 @@ const AddProduct = () => {
       productname: yup.string().required('Please Enter Your Product Name'),
       price: yup.string().required('Please Enter Price'),
       description: yup.string().required('Please Enter Description'),
-      status: yup.string().required('Please Select Status'),
       sealed: yup.string().required('Please Select Sealed'),
       tags_id: yup.array().of(yup.string()).required("Please Select Products Tags"),
       category_id: yup.array().of(yup.string()).required("Please Select Products Category"),
       term_id: yup.array().of(yup.string()).required("Please Select Products Term"),
     }),
     onSubmit: (values) => {
+
       const images = productgallery
         ? productgallery.map(element => {
           // Split the base64 string at the first comma and return the second part
@@ -274,7 +255,7 @@ const AddProduct = () => {
           "subtitle": values.subtitle ? values.subtitle : "",
           "price": values.price,
           "description": editorContent,
-          "status": values.status = selectedStatusId,
+          "status": buttonType === "draft" ? 'draft' : '',
           "stock_status": values.stock_status = selectedStockId ? selectedStockId : "",
           "image": productimage ? productimage.split(',')[1] : ""
         },
@@ -416,7 +397,7 @@ const AddProduct = () => {
                     <Row>
                       <Col sm="6">
                         <div className="mb-3">
-                          <Label htmlFor="productname">Product Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                          <Label htmlFor="productname">Product Name <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                           <Input
                             id="productname"
                             name="productname"
@@ -433,7 +414,7 @@ const AddProduct = () => {
                           ) : null}
                         </div>
                         <div className="mb-3">
-                          <Label htmlFor="price">Price <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                          <Label htmlFor="price">Price <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                           <Input
                             id="price"
                             name="price"
@@ -449,20 +430,7 @@ const AddProduct = () => {
                             <FormFeedback type="invalid">{metaData.errors.price}</FormFeedback>
                           ) : null}
                         </div>
-                        <div className="mb-3">
-                          <Label className="control-label">Status <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
-                          <Select
-                            name="status"
-                            options={statusType}
-                            value={selectedStatus ? selectedStatus : ""}
-                            placeholder="Select Status"
-                            onChange={(selectedOption) => handleSelectStatus(selectedOption)}
-                            classNamePrefix="react-select"
-                            className={`select2 ${metaData.touched.status && metaData.errors.status ? 'is-invalid' : ''}`} />
-                          {metaData.errors.status && metaData.touched.status ? (
-                            <span className="text-danger">{metaData.errors.status}</span>
-                          ) : null}
-                        </div>
+
                         <div className="mb-3">
                           <Label className="form-label">Product Image</Label>
 
@@ -486,7 +454,7 @@ const AddProduct = () => {
                           </div>
                         </div>
                         <div className="mb-3">
-                          <Label className="control-label">Product Categories <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                          <Label className="control-label">Product Categories <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                           <Select
                             name="category_id"
                             value={selectedCategory}
@@ -504,7 +472,7 @@ const AddProduct = () => {
                           <Link className="mt-2 d-block" to="#" onClick={() => setIsCategoryModal(true)}>+ Add New Category</Link>
                         </div>
                         <div className="mb-3">
-                          <Label className="control-label">Product Tags <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                          <Label className="control-label">Product Tags <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                           <Select
                             name="tags_id"
                             value={selectedtag}
@@ -539,7 +507,7 @@ const AddProduct = () => {
                         <div className="mb-3">
 
                           <Label htmlFor="description">
-                            Product Description <span className="errorsymbol" style={{color: "red"}}>*</span>
+                            Product Description <span className="errorsymbol" style={{ color: "red" }}>*</span>
                           </Label>
                           <Col lg="12">
                             <CKEditor
@@ -576,7 +544,7 @@ const AddProduct = () => {
                           </div>
                         </div>
                         <div className="mb-3">
-                          <Label className="control-label">Product Term <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                          <Label className="control-label">Product Term <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                           <Select
                             name="term_id"
                             value={selectedterm}
@@ -616,10 +584,10 @@ const AddProduct = () => {
                       </Col>
                       <Col sm="6">
                         <div className="mb-3">
-                          <Label htmlFor="packagingcondition">Product Condition <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                          <Label htmlFor="packagingcondition">Product Condition <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                           <div className="productradiobutton d-flex" >
                             {productconditionoptions.map((option) => (
-                              <div key={option.value} className="form-check form-check-left mb-3" style={{paddingRight: "20px"}}>
+                              <div key={option.value} className="form-check form-check-left mb-3" style={{ paddingRight: "20px" }}>
                                 <input
                                   type="radio"
                                   id={`productCondition_${option.value}`}  // Unique id for this group
@@ -637,10 +605,10 @@ const AddProduct = () => {
                           </div>
                         </div>
                         <div className="mb-3">
-                          <Label htmlFor="metatitle">Packaging Condition Grade <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                          <Label htmlFor="metatitle">Packaging Condition Grade <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                           <div className="productradiobutton d-flex">
                             {productgradeOptions.map((option) => (
-                              <div key={option.value} className="form-check form-check-left mb-3" style={{paddingRight: "20px"}}>
+                              <div key={option.value} className="form-check form-check-left mb-3" style={{ paddingRight: "20px" }}>
                                 <input
                                   type="radio"
                                   id={`productGrade_${option.value}`}  // Unique id for this group
@@ -706,7 +674,7 @@ const AddProduct = () => {
                       </Col>
                       <Col sm="6">
                         <div className="mb-3">
-                          <Label className="control-label">Sealed <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                          <Label className="control-label">Sealed <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                           <Select
                             name="sealed"
                             options={sealedType}
@@ -778,7 +746,8 @@ const AddProduct = () => {
                         </div>
                       </Col>
                       <div className="d-flex flex-wrap gap-2">
-                        <Button type="submit" color="primary"> Save  </Button>
+                        <Button type="submit" color="primary" value="draft" onClick={() => setButtonType('draft')}> Save Draft </Button>
+                        <Button type="submit" color="primary" value="submit" onClick={() => setButtonType('submit')}> Submit  </Button>
                         <Button type="button" color="secondary" onClick={() => navigate("/selling-list")}> Cancel</Button>
                       </div>
                     </Row>
@@ -819,7 +788,7 @@ const AddProduct = () => {
           }}>
             <div className="modal-body">
               <div className="mb-3">
-                <Label className="form-label">Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                <Label className="form-label">Name <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                 <Input
                   name="name"
                   placeholder="Enter Name"
@@ -861,7 +830,7 @@ const AddProduct = () => {
           }}>
             <div className="modal-body">
               <div className="mb-3">
-                <Label className="form-label">Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                <Label className="form-label">Name <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                 <Input
                   name="name"
                   placeholder="Enter Name"
@@ -921,7 +890,7 @@ const AddProduct = () => {
           }}>
             <div className="modal-body">
               <div className="mb-3">
-                <Label className="form-label">Term Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                <Label className="form-label">Term Name <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                 <Input
                   name="name"
                   placeholder="Type Term Name"
@@ -938,7 +907,7 @@ const AddProduct = () => {
                 ) : null}
               </div>
               <div className="mb-3">
-                <Label className="form-label">Select Attribute <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                <Label className="form-label">Select Attribute <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                 <Select
                   name="attribute_id"
                   value={selectedAttribute}

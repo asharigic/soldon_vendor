@@ -6,11 +6,16 @@ import { showBuyingProduct } from '../../../../store/vendor/buyingproduct/action
 import { useSelector, useDispatch } from "react-redux";
 import bgimg1 from '../../../../assets/images/no-img.jpg';
 import withRouter from "../../../../components/Common/withRouter";
+import { createshipmentorder } from "../../../../store/vendor/sellingproduct/action";
 
+import CommonModal from "../../../../components/Common/CommonModal";
 const ViewOrderByIdProduct = props => {
     document.title = "Show Return Order | Quench";
     const { buyingproductloading, showbuyingproducts } = useSelector((state) => state.BuyingProduct);
+    const { successsellingproduct, sellingproductloading ,sellingerror} = useSelector((state) => state.SellingProductData);
     const dispatch = useDispatch();
+    const [modal1, setModal1] = useState(false);
+    const toggleModal1 = () => setModal1(!modal1);
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         dispatch(showBuyingProduct(props.router.params.id));
@@ -19,6 +24,13 @@ const ViewOrderByIdProduct = props => {
     if (isLoading || buyingproductloading) {
         return <Spinners setLoading={setIsLoading} />;  // Display loading state while data is being fetched
     };
+    const handleshipmentorder = () => {
+        var payload = {
+            order_id: props.router.params.id
+        }
+        dispatch(createshipmentorder(payload))
+        console.log(payload, "shipment")
+    }
     return (
 
         <Fragment>
@@ -70,15 +82,31 @@ const ViewOrderByIdProduct = props => {
                                     <hr />
                                     <div className="mb-3 d-flex align-items-center">
                                         <h5 className="font-weight-bold me-2 mb-0">Total:</h5>
-                                        <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.total ?  showbuyingproducts?.products?.order?.total : "_"}</p>
+                                        <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.total ? showbuyingproducts?.products?.order?.total : "_"}</p>
                                     </div>
                                     <hr />
-
+                                    <div className="mb-3 d-flex align-items-center">
+                                        <button className="btn btn-primary" onClick={() => handleshipmentorder()}>Create Shipment</button>
+                                    </div>
+                                    <hr />
                                 </Col>
                             </Row>
                         </CardBody>
                     )}
                 </Card>
+                {
+                    modal1 && !sellingproductloading &&
+                    <CommonModal
+                        isOpen={modal1}
+                        toggle={toggleModal1}
+                        title={successsellingproduct ? "Success" : "Alert"}
+                        message={successsellingproduct ? "Order Return Successfully." : sellingerror}
+                        redirectTo={successsellingproduct ? "/buying-list" : toggleModal1}
+                        buttonText="Okay"
+                    />
+
+
+                }
             </div>
         </Fragment>
     );

@@ -40,15 +40,13 @@ const EditProduct = props => {
   const { categories, successcategory } = useSelector((state) => state.categories);
   const { attributes } = useSelector((state) => state.attributes);
   const { tags, loading, successtag } = useSelector((state) => state.tags);
-
+  const [buttonType, setButtonType] = useState('');
   const [modal1, setModal1] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState(null);
   const [selectedstock, setSelectedStock] = useState(null);
   const [selectedStockId, setSelectedStockId] = useState('');
   const [selectedsealed, setselectedsealed] = useState(null);
   const [selectedsealedId, setselectedsealedId] = useState('');
   const [productimage, setproductimage] = useState('')
-  const [selectedStatusId, setSelectedStatusId] = useState('');
   const [productgallery, setProductGallery] = useState([])
   const [isLoading, setIsLoading] = useState(true);
   const [productcondition, setProductcondition] = useState('new');
@@ -188,14 +186,6 @@ const EditProduct = props => {
     }
   }, [tags, showproducts]);
 
-  const statusType = [
-    { value: 'pending', label: 'Pending' },
-    { value: 'published', label: 'Published' },
-    { value: 'approved', label: 'Approved' },
-    { value: 'draft', label: 'Draft' },
-    { value: 'expired', label: 'Expired' },
-  ];
-
   const stockType = [
     { value: 'in_stock', label: 'In Stock' },
     { value: 'out_of_stock', label: 'Out Of Stock' },
@@ -235,7 +225,6 @@ const EditProduct = props => {
       subtitle: showproducts && showproducts.product ? showproducts.product.subtitle : "",
       price: showproducts && showproducts.product ? showproducts.product.price : "",
       description: showproducts && showproducts.product ? showproducts.product.description : "",
-      status: showproducts && showproducts.product ? showproducts.product.status : "",
       stock_status: showproducts && showproducts.product ? showproducts.product.stock_status : "",
       sealed: showproducts && showproducts.product ? showproducts.product.info === null ? "" : showproducts.product.info.sealed : "",
       image: "",
@@ -266,11 +255,9 @@ const EditProduct = props => {
       productname: yup.string().required('Please Enter Your Product Name'),
       price: yup.string().required('Please Enter Price'),
       description: yup.string().required('Please Enter Description'),
-      status: yup.string().required('Please Select Status'),
       tags_id: yup.array().of(yup.string()).required("Please Select Products Tags"),
       category_id: yup.array().of(yup.string()).required("Please Select Products Category"),
       term_id: yup.array().of(yup.string()).required("Please Select Products Term"),
-      status: yup.string().required('Please Select Status'),
       sealed: yup.string().required('Please Select Sealed'),
     }),
     onSubmit: (values) => {
@@ -299,7 +286,7 @@ const EditProduct = props => {
             "subtitle": values.subtitle ? values.subtitle : "",
             "price": values.price,
             "description": editorContent ? editorContent : values.description,
-            "status": selectedStatusId ? selectedStatusId : showproducts && showproducts.product ? showproducts.product.status : "",
+            "status": buttonType === "draft" ? 'draft' : 'save',
             "image": productimage ? (productimage.startsWith('data:image') ? productimage.split(',')[1] : "") : "",
             "stock_status": selectedStockId ? selectedStockId : showproducts && showproducts.product ? showproducts.product.stock_status : "",
           },
@@ -330,12 +317,12 @@ const EditProduct = props => {
             ids: selectedTagId ? selectedTagId : '',
           },
         }
-         dispatch(editProduct(props.router.params.id, product));
-      toggleModal1();
+        dispatch(editProduct(props.router.params.id, product));
+        toggleModal1();
       }
 
 
-    
+
     }
   });
 
@@ -403,17 +390,6 @@ const EditProduct = props => {
       validationTypeTerm.setFieldError('attribute_id', undefined); // Clear any validation error
     }
   };
-
-  const handleSelectStatus = (selectedOption) => {
-    setSelectedStatus(selectedOption);
-    setSelectedStatusId(selectedOption ? selectedOption.value : ''); // Update selectedStatusId
-    metaData.setFieldValue('status', selectedOption ? selectedOption.value : '');
-
-    if (selectedOption && selectedOption.value) {
-      metaData.setFieldError('status', undefined); // Clear any validation error
-    }
-  };
-
   const handleSelectStock = (selectedOption) => {
     setSelectedStock(selectedOption);
     setSelectedStockId(selectedOption ? selectedOption.value : ''); // Update selectedStatusId
@@ -521,7 +497,7 @@ const EditProduct = props => {
                   <Row>
                     <Col sm="6">
                       <div className="mb-3">
-                        <Label htmlFor="productname">Product Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <Label htmlFor="productname">Product Name <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <Input
                           id="productname"
                           name="productname"
@@ -538,7 +514,7 @@ const EditProduct = props => {
                         ) : null}
                       </div>
                       <div className="mb-3">
-                        <Label htmlFor="price">Price <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <Label htmlFor="price">Price <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <Input
                           id="price"
                           name="price"
@@ -554,21 +530,6 @@ const EditProduct = props => {
                           <FormFeedback type="invalid">{metaData.errors.price}</FormFeedback>
                         ) : null}
                       </div>
-                      <div className="mb-3">
-                        <Label className="control-label">Status <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
-                        <Select
-                          name="status"
-                          options={statusType}
-                          placeholder="Select Status"
-                          value={selectedStatus || statusType.find(option => option.value === metaData.values.status)}
-                          onChange={(selectedOption) => handleSelectStatus(selectedOption)}
-                          classNamePrefix="react-select"
-                          className={`select2 ${metaData.touched.status && metaData.errors.status ? 'is-invalid' : ''}`} />
-                        {metaData.errors.status && metaData.touched.status ? (
-                          <span className="text-danger">{metaData.errors.status}</span>
-                        ) : null}
-                      </div>
-
                       <div className="mb-3">
                         <Label className="form-label">Product Image</Label>
 
@@ -591,7 +552,7 @@ const EditProduct = props => {
                         </div>
                       </div>
                       <div className="mb-3">
-                        <Label className="control-label">Product Categories <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <Label className="control-label">Product Categories <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <Select
                           name="category_id"
                           value={selectedCategory}
@@ -610,7 +571,7 @@ const EditProduct = props => {
                         <Link className="mt-2 d-block" to="#" onClick={() => setIsCategoryModal(true)}>+Add New Category</Link>
                       </div>
                       <div className="mb-3">
-                        <Label className="control-label">Product Tags <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <Label className="control-label">Product Tags <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <Select
                           name="tags_id"
                           value={selectedtag}
@@ -645,7 +606,7 @@ const EditProduct = props => {
                       <div className="mb-3">
 
                         <Label htmlFor="description">
-                          Product Description <span className="errorsymbol" style={{color: "red"}}>*</span>
+                          Product Description <span className="errorsymbol" style={{ color: "red" }}>*</span>
                         </Label>
                         <Col lg="12">
                           <CKEditor
@@ -683,7 +644,7 @@ const EditProduct = props => {
                         </div>
                       </div>
                       <div className="mb-3">
-                        <Label className="control-label">Product Term <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <Label className="control-label">Product Term <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <Select
                           name="term_id"
                           id="term_id"
@@ -728,10 +689,10 @@ const EditProduct = props => {
                     </Col>
                     <Col sm="6">
                       <div className="mb-3">
-                        <Label htmlFor="packagingcondition">Product Condition <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <Label htmlFor="packagingcondition">Product Condition <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <div className="productradiobutton d-flex">
                           {productconditionoptions.map((option) => (
-                            <div key={option.value} className="form-check form-check-left mb-3" style={{paddingRight: "20px"}}>
+                            <div key={option.value} className="form-check form-check-left mb-3" style={{ paddingRight: "20px" }}>
                               <input
                                 type="radio"
                                 id={`productcondition${option.value}`} // Unique id for each radio button
@@ -749,10 +710,10 @@ const EditProduct = props => {
                         </div>
                       </div>
                       <div className="mb-3">
-                        <Label htmlFor="metatitle">Packaging Condition Grade <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <Label htmlFor="metatitle">Packaging Condition Grade <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <div className="productradiobutton d-flex">
                           {productgradeOptions.map((option) => (
-                            <div key={option.value} className="form-check form-check-left mb-3" style={{paddingRight: "20px"}}>
+                            <div key={option.value} className="form-check form-check-left mb-3" style={{ paddingRight: "20px" }}>
                               <input
                                 type="radio"
                                 id={`productGrade_${option.value}`}  // Unique id for this group
@@ -818,7 +779,7 @@ const EditProduct = props => {
                     </Col>
                     <Col sm="6">
                       <div className="mb-3">
-                        <Label className="control-label">Sealed <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <Label className="control-label">Sealed <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <Select
                           name="sealed"
                           options={sealedType}
@@ -890,7 +851,8 @@ const EditProduct = props => {
                       </div>
                     </Col>
                     <div className="d-flex flex-wrap gap-2">
-                      <Button type="submit" color="primary"> Save Changes  </Button>
+                      <Button type="submit" color="primary" value="draft" onClick={() => setButtonType('draft')}> Save Draft </Button>
+                      <Button type="submit" color="primary" value="submit" onClick={() => setButtonType('submit')}> Submit  </Button>
                       <Button type="button" color="secondary" onClick={() => navigate("/selling-list")}> Cancel</Button>
                     </div>
                   </Row>
@@ -931,7 +893,7 @@ const EditProduct = props => {
           }}>
             <div className="modal-body">
               <div className="mb-3">
-                <Label className="form-label">Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                <Label className="form-label">Name <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                 <Input
                   name="name"
                   placeholder="Enter Name"
@@ -973,7 +935,7 @@ const EditProduct = props => {
           }}>
             <div className="modal-body">
               <div className="mb-3">
-                <Label className="form-label">Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                <Label className="form-label">Name <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                 <Input
                   name="name"
                   placeholder="Enter Name"
@@ -1034,7 +996,7 @@ const EditProduct = props => {
           }}>
             <div className="modal-body">
               <div className="mb-3">
-                <Label className="form-label">Term Name <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                <Label className="form-label">Term Name <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                 <Input
                   name="name"
                   placeholder="Type Term Name"
@@ -1051,7 +1013,7 @@ const EditProduct = props => {
                 ) : null}
               </div>
               <div className="mb-3">
-                <Label className="form-label">Select Attribute <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                <Label className="form-label">Select Attribute <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                 <Select
                   name="attribute_id"
                   value={selectedAttribute}

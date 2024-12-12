@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { deleteFavouriteProduct, getFavouriteList } from '../../../store/vendor/favourite/actions';
 import Spinners from '../../../components/Common/Spinner';
-import './FavouriteList.css';
+
 import DataTable from '../../../components/Common/DataTable';
 import bgimg1 from '../../../assets/images/no-img.jpg';
-const FavouriteList = (props) => {
-  document.title = "Favourites | Quench";
+const TicketList = (props) => {
+  document.title = "Tickets | Quench";
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { favourite, favouriteloading, favouritesuccess } = useSelector((state) => state.FavouriteData);
@@ -142,15 +142,15 @@ const FavouriteList = (props) => {
   return (
     <Fragment>
       <div className="container">
-        <h1 className="heading">Wishlist Product List</h1>
+        <h1 className="heading">Ticket List</h1>
      
           {isLoading ? <Spinners setLoading={setLoading} />
               :
               <DataTable
                 data={favourite?.data || []}
                 columns={columns} // Passing dynamic columns to DataTable
-                // isAddButton={true}
                 pageSize={pageSize}
+                isAddButton={true}
                 totalItems={totalItems}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
@@ -159,6 +159,8 @@ const FavouriteList = (props) => {
                 setSearchValue={setSearchValue}
                 handleSearch={handleSearch}
                 SearchPlaceholder="Search..."
+                addButtonText="Add Ticket"
+                 navigateTo="/add-ticket"
               />
             }
       </div>
@@ -166,4 +168,4 @@ const FavouriteList = (props) => {
   );
 };
 
-export default FavouriteList;
+export default TicketList;

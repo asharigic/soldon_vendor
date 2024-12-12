@@ -34,3 +34,13 @@
 .ms-n2{
   margin-left: -2rem;
 }
+.errorsymbol{
+  color: red
+}
+.error{
+ 
+  width: 100%;
+  margin-top: .25rem;
+  font-size: .875em;
+  color: var(--bs-form-invalid-color);
+}

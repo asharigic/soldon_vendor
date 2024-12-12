@@ -5,7 +5,8 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import {
     GET_SELLINGLIST,
     GET_RETURNORDERLIST,
-    SHOW_RETURNORDERLIST
+    SHOW_RETURNORDERLIST,
+    CREATE_SHIPMENT_ORDER
 } from "./actionType";
 import {
     getSellingListSuccess,
@@ -13,7 +14,9 @@ import {
     getretunorderListSuccess,
     getretunorderListFail,
     showretunorderListSuccess,
-    showretunorderListFail
+    showretunorderListFail,
+    createshipmentorderSuccess,
+    createshipmentorderFail
 } from "./action";
 import axiosInstance from "../../axiosInstance";
 
@@ -64,25 +67,23 @@ function* fetchshowOrderProducts(orderid) {
     } catch (error) {
         yield put(showretunorderListFail(error.message));
     }
-    // console.log(orderid.payload,
-    //     "orderid"
-    // )
-    // try {
-    //     const response = yield call(
-    //         axiosInstance.get,
-
-    //         `${process.env.REACT_APP_API}vendor/cart/order-returns-list/${orderid.payload}`, );
-
-    //     yield put(showretunorderListSuccess(response.data.return_order));
-
-    // } catch (error) {
-    //     yield put(showretunorderListFail(error.message));
-    // }
 };
+
+//Return Product
+function* fetchshipmentorder({ payload: orderId }) {
+    try {
+        const response = yield call(axiosInstance.post, `${process.env.REACT_APP_API}vendor/shipping-label/create`, orderId);
+        yield put(createshipmentorderSuccess(response.data));
+    } catch (error) {
+        yield put(createshipmentorderFail(error.response.data.message));
+    }
+}
 function* SellingProductSaga() {
     yield takeEvery(GET_SELLINGLIST, fetchSellingProducts);
     yield takeEvery(GET_RETURNORDERLIST, fetchReturnOrderProducts);
     yield takeEvery(SHOW_RETURNORDERLIST, fetchshowOrderProducts);
+    yield takeEvery(CREATE_SHIPMENT_ORDER, fetchshipmentorder);
+
 
 
 };

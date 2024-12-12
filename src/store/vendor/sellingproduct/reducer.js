@@ -9,7 +9,10 @@ import {
     GET_RETURNORDERLIST_FAIL,
     SHOW_RETURNORDERLIST,
     SHOW_RETURNORDERLIST_SUCCESS,
-    SHOW_RETURNORDERLIST_FAIL
+    SHOW_RETURNORDERLIST_FAIL,
+    CREATE_SHIPMENT_ORDER,
+    CREATE_SHIPMENT_ORDER_SUCCESS,
+    CREATE_SHIPMENT_ORDER_FAIL
 
 } from "./actionType";
 
@@ -17,6 +20,7 @@ const initialState = {
     sellingproducts: [],
     returnorderproducts: null,
     showreturnorderproduct: null,
+    shipmentorder: null,
     sellingproductloading: false,
     sellingerror: null,
     successsellingproduct: false,
@@ -90,6 +94,28 @@ const SellingProductReducer = (state = initialState, action) => {
                 ...state,
                 sellingerror: action.payload,
                 sellingproductloading: false
+            };
+        //shiment order
+        case CREATE_SHIPMENT_ORDER:
+            return {
+                ...state,
+                sellingproductloading: true
+            };
+
+        case CREATE_SHIPMENT_ORDER_SUCCESS:
+            return {
+                ...state,
+                sellingproductloading: false,
+                showreturnorderproduct: action.payload,
+                successsellingproduct: true
+            };
+
+        case CREATE_SHIPMENT_ORDER_FAIL:
+            return {
+                ...state,
+                sellingproductloading: false,
+                sellingerror: action.payload,
+                successsellingproduct: false,
             };
 
         default:
