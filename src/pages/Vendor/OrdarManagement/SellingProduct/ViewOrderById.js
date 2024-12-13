@@ -11,8 +11,8 @@ import { createshipmentorder } from "../../../../store/vendor/sellingproduct/act
 import CommonModal from "../../../../components/Common/CommonModal";
 const ViewOrderByIdProduct = props => {
     document.title = "Show Return Order | Quench";
-    const { buyingproductloading, showbuyingproducts } = useSelector((state) => state.BuyingProduct);
-    const { successsellingproduct, sellingproductloading ,sellingerror} = useSelector((state) => state.SellingProductData);
+    const { buyingproductloading, showbuyingproducts ,} = useSelector((state) => state.BuyingProduct);
+    const { successsellingproduct, sellingproductloading ,sellingerror,showreturnorderproduct} = useSelector((state) => state.SellingProductData);
     const dispatch = useDispatch();
     const [modal1, setModal1] = useState(false);
     const toggleModal1 = () => setModal1(!modal1);
@@ -20,7 +20,13 @@ const ViewOrderByIdProduct = props => {
     useEffect(() => {
         dispatch(showBuyingProduct(props.router.params.id));
     }, [dispatch]);
-
+    useEffect(()=>{
+        if(showreturnorderproduct)
+        {
+            {console.log(showreturnorderproduct,"showreturnorderproduct")}
+            window.open(showreturnorderproduct, '_blank');
+        }
+    },[showreturnorderproduct])
     if (isLoading || buyingproductloading) {
         return <Spinners setLoading={setIsLoading} />;  // Display loading state while data is being fetched
     };
@@ -29,8 +35,10 @@ const ViewOrderByIdProduct = props => {
             order_id: props.router.params.id
         }
         dispatch(createshipmentorder(payload))
-        console.log(payload, "shipment")
+        
     }
+   
+  
     return (
 
         <Fragment>

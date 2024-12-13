@@ -200,7 +200,10 @@ const Dashboard = props => {
                                     </Row>
                                 </div>
                             </Col>
-                            <Col sm="8">
+                           
+                        </Row>
+                    <Row>
+                    <Col sm="8">
                                 <Row>
                                     <Col md="4">
                                         <Card className="mini-stats-wid">
@@ -260,8 +263,7 @@ const Dashboard = props => {
 
 
                             </Col>
-                        </Row>
-
+                    </Row>
                     </CardBody>
                 </Card>
 
