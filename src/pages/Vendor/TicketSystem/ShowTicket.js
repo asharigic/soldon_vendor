@@ -157,7 +157,7 @@ const TicketById = props => {
                                                             </div>
                                                             <div className="d-flex flex-wrap gap-2 justify-end">
                                                                 <Button type="submit" color="primary" onClick={() => setFormOpen(true)}>
-                                                                    Replay
+                                                                    Reply
                                                                 </Button>{" "}
 
                                                                 <Button type="reset" color="secondary" onClick={() => navigate("/ticket-list")}>

@@ -73,7 +73,7 @@ const Dashboard = props => {
                 per_page: limit,
                 search: searchValue,
             };
-              dispatch(getWalletList());
+            dispatch(getWalletList());
             dispatch(getrecentsoldproductslist(payload, page));
             dispatch(getdataordersummarylist())
             dispatch(getsellingdatalist())
@@ -180,6 +180,8 @@ const Dashboard = props => {
                                         <p><i className="bx bx-pound"></i>{wallet?.data?.available_balance}</p>
                                         <p>since the start of the current month</p>
                                     </CardBody>
+                                </Card>
+                                <Card style={{ marginTop: "20px" }}>
                                     <CardTitle style={{ backgroundColor: '#ede9e4', textAlign: 'left', padding: '10px 0' }}>
                                         <h5 style={{ marginLeft: "50px" }}>Earnings this month</h5>
                                     </CardTitle>
@@ -189,20 +191,20 @@ const Dashboard = props => {
                                     </CardBody>
                                 </Card>
                             </Col>
-                            <Col sm="5">
-                                <div className="mt-4 mt-sm-0" >
-                                    <Row>
-                                        <Col md="12">
-                                            <Pie data={data} className="chartjs-chart" />
+                            <Col sm="8">
+                                <div className="mt-4 mt-sm-0">
+                                    <Row sm={12}>
+                                        <Col sm="12">
+                                            <div className="mt-4 mt-sm-0" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px' }}>
+                                                <Pie data={data} className="chartjs-chart" />
+                                            </div>
                                         </Col>
-
                                     </Row>
                                 </div>
                             </Col>
-                           
                         </Row>
-                    <Row>
-                    <Col sm="8">
+                        <Row style={{ marginTop: "20px" }}>
+                            <Col sm="8">
                                 <Row>
                                     <Col md="4">
                                         <Card className="mini-stats-wid">
@@ -262,7 +264,7 @@ const Dashboard = props => {
 
 
                             </Col>
-                    </Row>
+                        </Row>
                     </CardBody>
                 </Card>
 
