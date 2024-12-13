@@ -123,9 +123,7 @@ const PasswordverificationCode = (props) => {
 
 
   const handleToggle = () => {
-    console.log(forgetpasswordSuccessMsg, "for")
     if (verifyforgotcode) {
-      console.log(verifyforgotcode, "verifycode")
       if (verifyforgotcode.status === true) {
         localStorage.setItem('verifycode', verifyforgotcode.code)
         localStorage.removeItem('countdown')

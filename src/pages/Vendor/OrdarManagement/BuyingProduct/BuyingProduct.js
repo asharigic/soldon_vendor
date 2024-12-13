@@ -185,7 +185,6 @@ const BuyingListPage = () => {
             search: searchValue,
             per_page: pageSize
         }
-        console.log(pageSize, "currentPage")
         dispatch(getBuyingList(userData, currentPage === currentPage ? 1 : currentPage));
     };
     const handleVieworderdetail = async (details) => {

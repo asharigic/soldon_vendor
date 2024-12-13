@@ -140,7 +140,6 @@ const Dashboard = props => {
 
         dispatch(getrecentsoldproductslist(userData, currentPage === currentPage ? 1 : currentPage));
     }
-    console.log(sellingdatasummary?.data?.total_orders, " orderdatasummary?.data?.completed")
     if (isLoading || dashboardloading) {
         return <Spinners setLoading={setLoading} />;
     };

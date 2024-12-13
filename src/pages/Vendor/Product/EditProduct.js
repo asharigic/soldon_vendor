@@ -567,7 +567,6 @@ const EditProduct = props => {
                         {metaData.errors.category_id && metaData.touched.category_id ? (
                           <span className="text-danger">{metaData.errors.category_id}</span>
                         ) : null}
-                        {console.log(metaData.touched.category_id, "metaData.errors.category_id")}
                         <Link className="mt-2 d-block" to="#" onClick={() => setIsCategoryModal(true)}>+Add New Category</Link>
                       </div>
                       <div className="mb-3">

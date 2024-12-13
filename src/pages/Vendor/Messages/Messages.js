@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { getMessagesList, sendMessage } from '../../../store/vendor/messages/actions';
 import { Breadcrumb, Container } from 'react-bootstrap';
-import { Button, Card, Col, Dropdown, DropdownMenu, DropdownToggle, Form, FormGroup, Input, InputGroup, Modal, ModalBody, ModalHeader, Nav, NavItem, NavLink, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
+import { Button, Card, Col, Dropdown, DropdownMenu, DropdownToggle, Form, FormGroup, Input, InputGroup, Label, Modal, ModalBody, ModalFooter, ModalHeader, Nav, NavItem, NavLink, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
 import classnames from "classnames";
 import Spinners from '../../../components/Common/Spinner';
 import SimpleBar from "simplebar-react";
@@ -12,6 +12,7 @@ import { map } from "lodash";
 import EmojiPicker from 'emoji-picker-react';
 import { getProfile } from "../../../store/vendor/profile/actions";
 import bgimg1 from '../../../assets/images/no-img.jpg';
+
 const Messages = (props) => {
     document.title = "Messages | Quench";
     const navigate = useNavigate();
@@ -22,7 +23,10 @@ const Messages = (props) => {
     const [isLoading, setLoading] = useState(true);
     const [userProfileImage, setUserProfileImage] = useState(null);
     const [userName, setUserName] = useState(null);
-    const [activeTab, setactiveTab] = useState("1");
+    const [activeTab, setActiveTab] = useState("1");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [message, setMessage] = useState("");
+    const [receiver, setReceiver] = useState("Admin");
     const [Chat_Box_Username, setChat_Box_Username] = useState("");
     const [currentParentId, setCurrentParentId] = useState(null);
     const [currentReceiverId, setCurrentReceiverId] = useState(null);
@@ -88,9 +92,39 @@ const Messages = (props) => {
         setDisable(true)
     };
 
-    const toggleTab = tab => {
+    const toggleTab = (tab) => {
         if (activeTab !== tab) {
-            setactiveTab(tab);
+            setActiveTab(tab);
+            if (tab === "2") {
+                setIsModalOpen(true); // Open the modal when "Compose" is clicked
+            }
+        }
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false); // Close the modal
+    };
+
+    const handleSend = () => {
+        if(message == ""){
+            return;
+        } else {
+            const newMessage = {
+                receiver: 1,
+                subject: "Message from vendor",
+                message: message,
+                parent_msg_id: null
+            };
+            dispatch(sendMessage(newMessage));
+            if (messagessuccess) {
+                dispatch(getMessagesList());
+                closeModal();
+                setActiveTab("1");
+            }
+            setCurMessage("");
+            setDisable(false)
+            setEmoji(false);
+            setSelectedImage(null);
         }
     };
 
@@ -174,7 +208,7 @@ const Messages = (props) => {
             setCurMessage("");
             setDisable(false)
             setEmoji(false);
-            setSelectedImage(null)
+            setSelectedImage(null);
         }
     };
 
@@ -295,21 +329,42 @@ const Messages = (props) => {
                                         </div>
 
                                         <div className="chat-leftsidebar-nav position-relative">
-                                            <Nav pills justified>
-                                                <NavItem>
-                                                    <NavLink
-                                                        className={classnames({
-                                                            active: activeTab === "1",
-                                                        })}
-                                                        onClick={() => {
-                                                            toggleTab("1");
-                                                        }}
-                                                    >
-                                                        <i className="bx bx-chat font-size-20 d-sm-none" />
-                                                        <span className="d-none d-sm-block">Chat</span>
-                                                    </NavLink>
-                                                </NavItem>
-                                            </Nav>
+                                            <div className="d-flex justify-content-between align-items-center" style={{ width: "100%" }}>
+                                                <div style={{ width: "40%", textAlign: "left", border: "1px solid #ddd", borderRadius: "7px" }}>
+                                                    <Nav pills justified>
+                                                        <NavItem>
+                                                            <NavLink
+                                                                className={classnames({
+                                                                    active: activeTab === "1",
+                                                                })}
+                                                                onClick={() => {
+                                                                    toggleTab("1");
+                                                                }}
+                                                            >
+                                                                <i className="bx bx-chat font-size-20 d-sm-none" />
+                                                                <span className="d-none d-sm-block">Chat</span>
+                                                            </NavLink>
+                                                        </NavItem>
+                                                    </Nav>
+                                                </div>
+                                                <div style={{ width: "40%", textAlign: "right", border: "1px solid #ddd", borderRadius: "7px" }}>
+                                                    <Nav pills justified>
+                                                        <NavItem>
+                                                            <NavLink
+                                                                className={classnames({
+                                                                    active: activeTab === "2",
+                                                                })}
+                                                                onClick={() => {
+                                                                    toggleTab("2");
+                                                                }}
+                                                            >
+                                                                <i className="bx bx-chat font-size-20 d-sm-none" />
+                                                                <span className="d-none d-sm-block">Compose</span>
+                                                            </NavLink>
+                                                        </NavItem>
+                                                    </Nav>
+                                                </div>
+                                            </div>
 
                                             <TabContent activeTab={activeTab} className="py-4">
                                                 <TabPane tabId="1">
@@ -329,6 +384,7 @@ const Messages = (props) => {
                                                                                     onClick={() => {
                                                                                         userChatOpen(chat);
                                                                                     }}
+                                                                                    style={{ textDecorationLine: "none" }}
                                                                                 >
                                                                                     <div className="d-flex">
                                                                                         {chat?.profileimage == "" ?
@@ -625,7 +681,7 @@ const Messages = (props) => {
                                                             type="button"
                                                             color="primary"
                                                             disabled={!isdisable}
-                                                            onClick={() => addMessage()}
+                                                            onClick={() => messages?.data?.length > 0 ? addMessage() : ""}
                                                             className="btn btn-primary btn-rounded chat-send w-md "
                                                         >
                                                             <span className="d-none d-sm-inline-block me-2">
@@ -643,6 +699,51 @@ const Messages = (props) => {
                         </Col>
                     </Row >
                 </Container>
+
+                {/* Modal */}
+                <Modal isOpen={isModalOpen} toggle={closeModal}>
+                    <ModalHeader toggle={closeModal}>Compose Message</ModalHeader>
+                    <ModalBody>
+                        <Row>
+                            <Col xl={6}>
+                                <div className="d-flex align-items-center">
+                                    <Label htmlFor="receiver" className="me-2 mb-0">
+                                        Receiver
+                                    </Label>
+                                    <Input
+                                        name="receiver"
+                                        id="receiver"
+                                        type="text"
+                                        disabled
+                                        style={{ flex: "1" }}
+                                        value={receiver}
+                                        onChange={(e) => setReceiver(e.target.value)}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row className="mt-3">
+                            <Col xl={12}>
+                                <Label htmlFor="message">Message</Label>
+                                <textarea
+                                    name="message"
+                                    id="message"
+                                    rows="4"
+                                    className="form-control" // Use Bootstrap class for styling
+                                    value={message}
+                                    onChange={(e) => setMessage(e.target.value)} // Bind to state
+                                    placeholder="Enter your message"
+                                />
+                            </Col>
+                        </Row>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="secondary" onClick={closeModal}>
+                            Close
+                        </Button>
+                        <Button color="primary" onClick={handleSend}>Send</Button>
+                    </ModalFooter>
+                </Modal>
             </div >
         </Fragment >
     );

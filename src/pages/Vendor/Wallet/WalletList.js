@@ -166,7 +166,6 @@ const WalletList = () => {
     if (isLoading || loading) {
         return <Spinners setLoading={setLoading} />;
     };
-    console.log("soldproducts:", soldproducts);
 
     return (
         <Fragment>
