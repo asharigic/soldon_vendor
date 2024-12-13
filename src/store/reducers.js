@@ -21,6 +21,7 @@ import HomeProductsReducer from "./auth/homeproduct/reducer";
 import reportsReducer from "./vendor/reports/reducer";
 import walletReducer from "./vendor/wallet/reducer";
 import TicketReducer from "./vendor/tickets/reducer";
+import DashboardReducer from "./vendor/dashboard/reducer";
 const rootReducer = combineReducers({
   Layout,
   Login: Login,
@@ -41,7 +42,8 @@ const rootReducer = combineReducers({
   HomeProductData:HomeProductsReducer,
   ReportsData: reportsReducer,
   WalletData: walletReducer,
-  TicketData: TicketReducer
+  TicketData: TicketReducer,
+  DashboardData:DashboardReducer
 });
 
 export default rootReducer;

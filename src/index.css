@@ -44,3 +44,27 @@
   font-size: .875em;
   color: var(--bs-form-invalid-color);
 }
+
+.avatar-sm {
+  height: 3rem;
+  width: 3rem !important;
+}
+
+.avatar-title {
+  align-items: center;
+  background-color: #556ee6;
+  color: #fff;
+  display: flex;
+  font-weight: 500;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+.text-muted{
+  color: #74788d;
+}
+.fw-medium {
+  font-weight: 500 !important;
+}
+

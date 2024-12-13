@@ -43,7 +43,7 @@ const Login = props => {
 
   useEffect(() => {
     if (localStorage.getItem("vendoruser")) {
-      navigate('/')
+      navigate('/dashboard')
 
     }
   }, [props.success]);
@@ -182,7 +182,7 @@ const Login = props => {
         setModalShow(false);
         localStorage.setItem('vendorusertoken', JSON.stringify(user.token));
         localStorage.setItem('vendoruser', JSON.stringify(user.user));
-        navigate('/')
+        navigate('/dashboard')
       }
       else {
 
