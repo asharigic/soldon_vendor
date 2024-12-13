@@ -14,8 +14,8 @@ import {
 const INIT_STATE = {
     soldproductdata: [],
     orderdatasummary: [],
-    sellingdatasummary: '',
-    sellingproducts: '',
+    sellingdatasummary: [],
+    
     dashboarderror: null,
     dashboardloading: false,
     dashboardsuccess: false,
@@ -80,7 +80,6 @@ const DashboardReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 sellingdatasummary: action.payload,
-                sellingproducts: 'testing',
                 dashboardloading: true,
                 dashboarderror: null,
             };
@@ -89,7 +88,6 @@ const DashboardReducer = (state = INIT_STATE, action) => {
                 ...state,
                 dashboardloading: false,
                 sellingdatasummary: action.payload,
-                sellingproducts: 'testing',
             };
         case GET_SELLING_DATA_LIST_FAIL:
             return {
