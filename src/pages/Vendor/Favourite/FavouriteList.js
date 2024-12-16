@@ -135,7 +135,7 @@ const FavouriteList = (props) => {
   //   }
   // };
   const handleRemoveFavourite = () => {
-    console.log(FavouriteList.id, "data")
+   
     if (FavouriteList && FavouriteList.product_id) {
 
       dispatch(onDeleteClick(FavouriteList.product_id));
