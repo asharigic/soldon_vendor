@@ -7,6 +7,7 @@ import { getticketslist } from '../../../store/vendor/tickets/action';
 import DataTable from '../../../components/Common/DataTable';
 import moment from 'moment';
 import { AiTwotoneEye } from "react-icons/ai";
+
 const ProjectStatus = ({ status }) => {
   switch (status) {
     case "pending":
@@ -87,17 +88,27 @@ const TicketList = (props) => {
         enableSorting: true,
       },
       {
-        header: "Date",
-        accessorKey: "date",
-        cell: (cellProps) => (cellProps?.row?.created_at ? <span>{moment(cellProps?.row?.created_at).format('Do MMMM, YYYY')}</span> : "_"),
-        enableColumnFilter: false,
-        enableSorting: true,
-      },
-      {
         header: "Status",
         accessorKey: "status",
 
         cell: (cellProps) => (cellProps?.row?.status ? <ProjectStatus status={cellProps?.row?.status} /> : "_"),
+
+        enableColumnFilter: false,
+        enableSorting: true,
+      },
+      {
+        header: "Created Date",
+        accessorKey: "created_at",
+        cell: (cellProps) => (cellProps?.row?.created_at ? <span>{moment(cellProps?.row?.created_at).format('Do MMMM, YYYY')}</span> : "_"),
+        enableColumnFilter: false,
+        enableSorting: true,
+      },
+
+      {
+        header: "Updated Date",
+        accessorKey: "last_updated_at",
+
+        cell: (cellProps) => (cellProps?.row?.status ? <span>{moment(cellProps?.row?.last_updated_at).format('Do MMMM, YYYY')}</span> : "_"),
 
         enableColumnFilter: false,
         enableSorting: true,

@@ -7,10 +7,12 @@ import { useSelector, useDispatch } from "react-redux";
 import bgimg1 from '../../../../assets/images/no-img.jpg';
 import withRouter from "../../../../components/Common/withRouter";
 import CommonModal from "../../../../components/Common/CommonModal";
+import { useNavigate } from "react-router-dom";
 const ShowBuyingIdProduct = props => {
     document.title = "Show Return Order | Quench";
     const { buyingproductloading, showbuyingproducts, successbuyingproduct, buyingerror } = useSelector((state) => state.BuyingProduct);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const [modal1, setModal1] = useState(false);
     const toggleModal1 = () => setModal1(!modal1);
@@ -35,7 +37,13 @@ const ShowBuyingIdProduct = props => {
 
         <Fragment>
             <div className="container py-5">
-                <h1 className="heading">Buying Product Detail</h1>
+
+                <div className="d-flex justify-content-between" style={{ cursor: 'pointer' }}>
+
+
+                    <h1 className="heading d-flex align-items-center" onClick={() => navigate('/buying-list')}><i className="bx bx-chevron-left h2 m-0" ></i>Back</h1>
+                    <h1 className="heading">Buying Product Detail</h1>
+                </div>
                 <Card>
                     {isLoading ? (
                         <Spinners setLoading={setIsLoading} />
@@ -44,7 +52,7 @@ const ShowBuyingIdProduct = props => {
                             <Row>
                                 {/* Left Column - Product Image and Name */}
                                 <Col xl={6} className="d-flex flex-column align-items-center">
-                                    <h2 className="mb-3">{showbuyingproducts?.products?.order?.order_item?.product?.productname ? showbuyingproducts?.products?.order?.order_item?.product?.productname : "_"}</h2>
+                                    <h5 className="mb-3">{showbuyingproducts?.products?.order?.order_item?.product?.productname ? showbuyingproducts?.products?.order?.order_item?.product?.productname : "_"}</h5>
                                     <h6>{showbuyingproducts?.products?.order?.order_item?.product?.subtitle ? showbuyingproducts?.products?.order?.order_item?.product?.subtitle : "_"}</h6>
                                     <img
                                         className="img-fluid mb-3" // Using Bootstrap's img-fluid for responsive images
@@ -58,19 +66,27 @@ const ShowBuyingIdProduct = props => {
                                 <Col xl={6}>
 
                                     <div className="mb-3 d-flex align-items-center">
-                                        <h5 className="font-weight-bold me-2 mb-0">Order:</h5>
-                                        <p className="mb-0">{showbuyingproducts?.products?.order?.uuid ? showbuyingproducts?.products?.order?.uuid : "_"}</p>
+                                        <h6 className="font-weight-bold">Order ID:</h6>&nbsp;
+                                        {
+                                            showbuyingproducts?.products?.order?.uuid ?
+                                                <h6> #{showbuyingproducts?.products?.order?.uuid}</h6>
+
+                                                : "_"
+
+                                        }
+
                                     </div>
                                     <div className="mb-3 d-flex align-items-center">
-                                        <h5 className="font-weight-bold me-2 mb-0">Status:</h5>
-                                        <p className="mb-0">{showbuyingproducts?.products?.order?.status ? showbuyingproducts?.products?.order?.status.charAt(0).toUpperCase() + showbuyingproducts?.products?.order?.status.slice(1).toLowerCase() : "_"}</p>
+                                        <h6 className="font-weight-bold">Status:</h6>&nbsp;
+                                        <h6>{showbuyingproducts?.products?.order?.status ? showbuyingproducts?.products?.order?.status.charAt(0).toUpperCase() + showbuyingproducts?.products?.order?.status.slice(1).toLowerCase() : "_"}</h6>
                                     </div>
                                     <hr />
                                     <div className="mb-3 d-flex align-items-center">
-                                        <h5 className="font-weight-bold me-2 mb-0">Price:</h5>
+
+                                        <h6 className="font-weight-bold">Price:</h6>&nbsp;
                                         {
                                             showbuyingproducts?.products?.order?.order_item?.product?.price ?
-                                                <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.order_item?.product?.price}</p>
+                                                <h6><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.order_item?.product?.price}</h6>
 
                                                 : "_"
 
@@ -78,10 +94,11 @@ const ShowBuyingIdProduct = props => {
                                     </div>
 
                                     <div className="mb-3 d-flex align-items-center">
-                                        <h5 className="font-weight-bold me-2 mb-0">Sub Total:</h5>
+                                        <h6 className="font-weight-bold">Sub Total:</h6>&nbsp;
+
                                         {
                                             showbuyingproducts?.products?.order?.subtotal ?
-                                                <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.subtotal}</p>
+                                                <h6><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.subtotal}</h6>
 
                                                 : "_"
 
@@ -89,10 +106,11 @@ const ShowBuyingIdProduct = props => {
 
                                     </div>
                                     <div className="mb-3 d-flex align-items-center">
-                                        <h5 className="font-weight-bold me-2 mb-0">Fees:</h5>
+                                        <h6 className="font-weight-bold">Fees:</h6>&nbsp;
+
                                         {
                                             showbuyingproducts?.products?.order?.fees ?
-                                                <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.fees}</p>
+                                                <h6 className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.fees}</h6>
 
                                                 : "_"
 
@@ -100,10 +118,11 @@ const ShowBuyingIdProduct = props => {
                                     </div>
                                     <hr />
                                     <div className="mb-3 d-flex align-items-center">
-                                        <h5 className="font-weight-bold me-2 mb-0">Total:</h5>
+                                        <h6 className="font-weight-bold">Total:</h6>&nbsp;
+
                                         {
                                             showbuyingproducts?.products?.order?.total ?
-                                                <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.total}</p>
+                                                <h6><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.total}</h6>
 
                                                 : "_"
 

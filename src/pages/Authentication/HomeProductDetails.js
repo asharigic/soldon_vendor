@@ -46,11 +46,11 @@ const HomeProductDetail = props => {
             navigate('/login');
         } else {
             dispatch(cloneProduct(productId));
+  toggleModal1();
+            // navigate(`/edit-product/${cloneproduct?.products?.data}`)
 
-            navigate(`/edit-product/${cloneproduct?.products?.data}`)
 
-
-            // toggleModal1();
+          
         }
     };
 
@@ -64,10 +64,10 @@ const HomeProductDetail = props => {
                 <h1 className="heading">Product Detail</h1>
                 <Col xl={6}>
                     {/* Product Image Gallery */}
-                    <Card className="shadow-sm">
+                    <Card className="shadow-sm h-100">
                         <CardBody>
                             <Row>
-                                <Col md={2} sm={3}>
+                                <Col md={2} sm={3} >
                                     <Nav className="flex-column" pills>
                                         {subImages.map((image, index) => (
                                             <NavItem key={image.id}>
@@ -97,7 +97,7 @@ const HomeProductDetail = props => {
                                             src={mainImage}
                                             alt="Product Image"
                                             className="img-fluid rounded"
-                                            style={{ maxHeight: "400px", objectFit: "contain" }}
+                                            style={{ maxHeight: "600px", objectFit: "contain" }}
                                         />
                                     </div>
                                     <TabContent activeTab={activeTab}>
@@ -212,8 +212,10 @@ const HomeProductDetail = props => {
                         isOpen={modal1}
                         toggle={toggleModal1}
                         title={homesuccessproduct ? "Success" : "Alert"}
-                        message={homesuccessproduct ? "Product Cloned Successfully." : homeerror}
-                        redirectTo={homesuccessproduct ? `/edit-product/${props.router.params.id}` : toggleModal1}
+                        message={homesuccessproduct ? "Product Added Successfully." : homeerror}
+                        // redirectTo={homesuccessproduct ? `/edit-product/${props.router.params.id}` : toggleModal1}
+                        redirectTo={homesuccessproduct ? `/edit-product/${cloneproduct?.products?.data}` : toggleModal1}
+                        
                         buttonText="Okay"
                     />
                 }

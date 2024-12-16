@@ -422,7 +422,7 @@ const Messages = (props) => {
                                                                                         <div className="flex-grow-1 overflow-hidden">
                                                                                             <h4 style={{ fontSize: "16px", margin: 0 }}>{chat?.username?.charAt(0).toUpperCase() + chat?.username?.slice(1)}</h4>
                                                                                             <p style={{ fontSize: "12px", color: "#888", margin: "5px 0" }}>{chat.timing}</p>
-                                                                                            <span>{chat.subject}</span>
+                                                                                            {/* <span>{chat.subject}</span> */}
                                                                                         </div>
                                                                                     </div>
                                                                                 </Link>

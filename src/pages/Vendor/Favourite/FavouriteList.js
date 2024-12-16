@@ -107,7 +107,7 @@ const FavouriteList = (props) => {
         accessorKey: "action",
         cell: (cellProps) => (
           <div className="button-container">
-            <button className="button" disabled style={{ cursor: "not-allowed" }}>Buy</button>
+            <button className="button"  disabled >Add To Cart</button>
             <button
               className="button"
               style={{ backgroundColor: "white", color: "black" }}
