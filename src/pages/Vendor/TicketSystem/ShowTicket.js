@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import CommonModal from "../../../components/Common/CommonModal";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import moment from "moment";
 const TicketById = props => {
     document.title = "Show Return Order | Quench";
     const { showticketlist, ticketloading, successticket, ticketerror } = useSelector((state) => state.TicketData)
@@ -59,7 +60,7 @@ const TicketById = props => {
     if (isLoading || ticketloading) {
         return <Spinners setLoading={setIsLoading} />;  // Display loading state while data is being fetched
     };
-    const handleToggle1=()=>{
+    const handleToggle1 = () => {
         setFormOpen(false)
         toggleModal1();
     }
@@ -100,7 +101,12 @@ const TicketById = props => {
                                                                             <h5 className="font-size-14 mb-1">
                                                                                 {showticketlist?.ticket?.created_by_detail?.username ? showticketlist?.ticket?.created_by_detail?.username : ""}
                                                                                 <small className="text-muted float-end">
-                                                                                    2 hrs Ago
+                                                                                    {
+                                                                                        showticketlist?.ticket?.created_at ?
+                                                                                            moment(showticketlist?.ticket?.created_at).format('Do MMMM, YYYY')
+                                                                                            : "_"
+                                                                                    }
+
                                                                                 </small>
                                                                             </h5>
                                                                             <p
@@ -136,7 +142,12 @@ const TicketById = props => {
                                                                                 <h5 className="font-size-14 mb-1">
                                                                                     {element?.created_by_detail?.username ? element?.created_by_detail?.username : "_"}
                                                                                     <small className="text-muted float-end">
-                                                                                        {element?.created_at ? element?.created_at : "_"}
+                                                                                        {
+                                                                                            element?.created_at ?
+                                                                                                moment(element?.created_at).format('Do MMMM, YYYY')
+                                                                                                : "_"
+                                                                                        }
+
                                                                                     </small>
                                                                                 </h5>
                                                                                 <p
@@ -182,7 +193,7 @@ const TicketById = props => {
             </div>
             {FormOpen === true ?
                 <Modal isOpen={FormOpen} toggle={toggle1} backdrop="static">
-                    <ModalHeader style={{justifyContent:"center"}}> Return Message</ModalHeader>
+                    <ModalHeader style={{ justifyContent: "center" }}> Return Message</ModalHeader>
                     <ModalBody>
                         <Form
                             onSubmit={(e) => {
