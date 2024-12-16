@@ -97,7 +97,7 @@ const FavouriteList = (props) => {
       {
         header: "Stock",
         accessorKey: "stock",
-        cell: (cellProps) => (cellProps.row.product_stock_status ? <span>{cellProps.row.product_stock_status}</span> : "_"),
+        cell: (cellProps) => (cellProps.row.product_stock_status_label ? <span>{cellProps.row.product_stock_status_label}</span> : "_"),
 
         enableColumnFilter: false,
         enableSorting: true,
