@@ -172,6 +172,85 @@ const Dashboard = props => {
                         </CardTitle>
                         <Row>
                             <Col sm={4}>
+                                <Card className="mini-stats-wid mb-3">
+                                    <CardBody>
+                                        <div className="d-flex">
+                                            <div className="flex-grow-1">
+                                                <p className="text-muted fw-medium small ">
+                                                    <b>Total Orders:</b>
+                                                </p>
+                                                <h4 className="mb-0">{sellingdatasummary?.data?.total_orders ? sellingdatasummary?.data?.total_orders : "0"}</h4>
+                                            </div>
+                                            <div className="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
+                                                <span class="avatar-title rounded-circle bg-primary"><i class="bx bx-copy-alt font-size-24"></i></span>
+                                            </div>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                                <Card className="mini-stats-wid mb-3">
+                                    <CardBody>
+                                        <div className="d-flex">
+                                            <div className="flex-grow-1">
+                                                <p className="text-muted fw-medium small">
+                                                    <b> Total Customers:</b>
+                                                </p>
+                                                <h4 className="mb-0">{sellingdatasummary?.data?.total_customers ? sellingdatasummary?.data?.total_customers : "0"}</h4>
+                                            </div>
+                                            <div className="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
+                                                <span class="avatar-title rounded-circle bg-primary"><i class="bx bx-archive-in font-size-24"></i></span>
+                                            </div>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                                <Card className="mini-stats-wid mb-3">
+                                    <CardBody>
+                                        <div className="d-flex">
+                                            <div className="flex-grow-1">
+                                                <p className="text-muted fw-medium small">
+                                                    <b>   Total Products:</b>
+                                                </p>
+                                                <h4 className="mb-0">{sellingdatasummary?.data?.total_products ? sellingdatasummary?.data?.total_products : "0"}</h4>
+                                            </div>
+                                            <div className="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
+                                                <span class="avatar-title rounded-circle bg-primary"><i class="bx bx-purchase-tag-alt font-size-24"></i></span>
+                                            </div>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                            <Col sm={8}>
+                                <Row>
+                                    <Col sm={6}>
+                                        <Card>
+                                            <CardTitle style={{ backgroundColor: 'rgb(51 51 51)', textAlign: 'left', padding: '10px 0', color: ' #FFFFFF' }}>
+                                                <h5 className="text-center" style={{ marginLeft: "0", marginBottom: '0' }}>Balance available</h5>
+                                            </CardTitle>
+                                            <CardBody>
+                                                <p><i className="bx bx-pound"></i>{wallet?.data?.available_balance}</p>
+                                                <p>since the start of the current month</p>
+                                            </CardBody>
+                                        </Card>
+
+                                    </Col>
+                                    <Col sm={6}>
+                                        <Card >
+                                            <CardTitle style={{ backgroundColor: 'rgb(51 51 51)', textAlign: 'left', padding: '10px 0', color: ' #FFFFFF' }}>
+                                                <h5 className="text-center" style={{ marginLeft: "0", marginBottom: '0' }}>Earnings this month</h5>
+                                            </CardTitle>
+                                            <CardBody>
+                                                <p><i className="bx bx-pound"></i>{wallet?.data?.available_balance}</p>
+                                                <p>Currently available for payouts</p>
+                                            </CardBody>
+                                        </Card>
+                                    </Col>
+                                    <Col className="mt-3">
+                                        <div className="mt-4 mt-sm-0" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px' }}>
+                                            <Pie data={data} className="chartjs-chart" />
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            {/* <Col sm={4}>
                                 <Card>
                                     <CardTitle style={{ backgroundColor: '#ede9e4', textAlign: 'left', padding: '10px 0' }}>
                                         <h5 style={{ marginLeft: "50px" }}>Balance available</h5>
@@ -201,9 +280,9 @@ const Dashboard = props => {
                                         </Col>
                                     </Row>
                                 </div>
-                            </Col>
+                            </Col> */}
                         </Row>
-                        <Row style={{ marginTop: "20px" }}>
+                        {/* <Row style={{ marginTop: "20px" }}>
                             <Col sm="8">
                                 <Row>
                                     <Col md="4">
@@ -264,7 +343,7 @@ const Dashboard = props => {
 
 
                             </Col>
-                        </Row>
+                        </Row> */}
                     </CardBody>
                 </Card>
 
@@ -273,15 +352,16 @@ const Dashboard = props => {
                         <Card>
                             <CardTitle
                                 style={{
-                                    backgroundColor: '#ede9e4',
+                                    backgroundColor: 'rgb(51 51 51)',
                                     textAlign: 'left',
                                     padding: '10px 0',
                                     display: 'flex',
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
+                                    color: ' #FFFFFF'
                                 }}
                             >
-                                <h5 style={{ marginLeft: "50px" }}>Recent Orders</h5>
+                                <h5 style={{ marginLeft: "50px", marginTop:"10px"}}>Recent Orders</h5>
                             </CardTitle>
                             <CardBody>
                                 {isLoading ? <Spinners setLoading={setLoading} />

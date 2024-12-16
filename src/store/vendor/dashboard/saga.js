@@ -1,11 +1,11 @@
 // walletSaga.js
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { 
+import {
     GET_RECENT_SOLD_PRODUCT_LISTS,
     GET_DATA_ORDER_SUMMARY_LIST,
     GET_SELLING_DATA_LIST,
 
- } from './actionTypes';
+} from './actionTypes';
 import {
     getrecentsoldproductslistSuccess,
     getrecentsoldproductslistListFail,
@@ -13,7 +13,7 @@ import {
     getdataordersummarylistListFail,
     getsellingdatalistSuccess,
     getsellingdatalistListFail,
- 
+
 
 } from './actions';
 import axiosInstance from '../../axiosInstance';
@@ -40,10 +40,10 @@ function* fetchordersummaryList() {
 function* fetchsellingsummaryList() {
     try {
         const response = yield call(axiosInstance.get, `${process.env.REACT_APP_API}vendor/dashboard/selling-data-summary`);
-       
-        yield put(getsellingdatalistListFail(response.data));
+      
+        yield put(getsellingdatalistSuccess(response.data));
     } catch (error) {
-        yield put(getsellingdatalistSuccess(error.message));
+        yield put(getsellingdatalistListFail(error.message));
     }
 };
 function* DashboardSaga() {
