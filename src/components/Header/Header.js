@@ -1,20 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';  // For navigation with React Router
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from '../../store/actions';
 import logo from '../../assets/images/logo.png';
 import { Dropdown, ModalFooter } from 'react-bootstrap';
-
+import { getMarkAsAllReadNotification, getNotificationsList, getUnreadNotificationCount } from '../../store/vendor/notifications/actions';
 import './Header.css'
 const Header = () => {
     const [ModalShow, setModalShow] = useState(false);
     const navigate = useNavigate();
     var userDetails = JSON.parse(localStorage.getItem('vendoruser'))
+    // const { notifications, notificationsloading } = useSelector((state) => state.NotificationsData);
+    const { unreadnotificationcount, notifications, markasallreadnotification, notificationsloading, errornotification, successnotification } = useSelector((state) => state.NotificationsData)
+    const [isLoading, setLoading] = useState(notificationsloading);
     const [isOpen, setIsOpen] = useState(false);
     const dispatch = useDispatch()
     const toggle1 = () => setModalShow(!ModalShow);
+    useEffect(() => {
+        if ((unreadnotificationcount && !unreadnotificationcount.length) || markasallreadnotification?.status === true) {
+            dispatch(getUnreadNotificationCount());
+        }
+    }, [dispatch, markasallreadnotification]);
+    useEffect(() => {
+        if (notifications && !notifications.length) {
+            dispatch(getNotificationsList());
+        }
+    }, [dispatch]);
+
+    const handleMarkAsAllRead = () => {
+        if (unreadnotificationcount?.count > 0) {
+            dispatch(getMarkAsAllReadNotification());
+        }
+        // setMenu(!menu);
+    };
+
+    useEffect(() => {
+        if (!localStorage.getItem("vendoruser")) {
+            navigate('/login');
+        } else {
+            dispatch(getNotificationsList());
+            setLoading(false);
+        }
+    }, []);
+
     const handlelogout = () => {
 
         localStorage.removeItem("vendoruser")
@@ -58,11 +88,23 @@ const Header = () => {
                     <li>
                         <Link to="/messages">Messages</Link>
                     </li>
-                    <li>
-                        <Link to="/notifications">Notifications</Link>
+                    <li
+                        // onClick={() => {
+                        //     handleMarkAsAllRead(),
+                        //         navigate('/')
+                        // }}
+                        onClick={() => {
+                            handleMarkAsAllRead();
+                            navigate('/notifications');
+                        }}
+                    >
+                        {unreadnotificationcount?.count > 0 ? <i className="bx bx-bell bx-tada h5 m-0" /> : <i className="bx bx-bell h5 m-0" />}
+                        {unreadnotificationcount?.count > 0 &&
+                            <span className="badge bg-danger rounded-pill">{unreadnotificationcount?.count}</span>}
+                        
                     </li>
-                    <li>
-                        <Dropdown show={isOpen} onToggle={() => setIsOpen(!isOpen)}>
+                    <li className='ms-0'>
+                        <Dropdown show={isOpen} onToggle={() => setIsOpen(!isOpen)} >
                             <Dropdown.Toggle as="li" onClick={() => setIsOpen(!isOpen)} style={{ cursor: 'pointer', padding: '10px' }}>
                                 <span>{userDetails?.username}</span>
                             </Dropdown.Toggle>
