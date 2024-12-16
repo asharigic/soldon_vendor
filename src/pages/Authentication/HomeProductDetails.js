@@ -116,7 +116,7 @@ const HomeProductDetail = props => {
                             <h5 className="text-muted">{showproductdetails?.products?.product?.subtitle}</h5>
                             <h4 className="my-3">
                                 {/* <span className="text-muted text-decoration-line-through">${showproductdetails?.products?.product?.price}</span>{" "} */}
-                                <b className="text-success">${showproductdetails?.products?.product?.price}</b>
+                                <b className="text-success"><i className="bx bx-pound"></i>{showproductdetails?.products?.product?.price}</b>
                             </h4>
                             <p
                                 className="text-muted mb-4"

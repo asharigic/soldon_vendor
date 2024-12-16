@@ -207,7 +207,7 @@ const HomeProductListPage = () => {
                                                     </Card.Subtitle>
                                                     <Card.Text style={{
                                                         fontWeight: 'bold', color: 'green'
-                                                    }}>${product.price}
+                                                    }}><i className="bx bx-pound"></i>{product.price}
                                                     </Card.Text>
                                                 </Card.Body>
                                             </Card.Body>
