@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, CardBody, Card, Alert, Container, Input, Label, Form, FormFeedback } from "reactstrap";
 
 // Formik Validation
@@ -11,18 +11,19 @@ import { registerUser } from "../../store/actions";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
-
+import CommonModal from '../../components/Common/CommonModal';
 import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import logo from '../../assets/images/QUENCHED-02-01-100x33.png'
 const Register = props => {
   //meta title
   document.title = "Register | Quench";
-  const { registrationError, user, success } = useSelector((state) => state.Registration);
+  const { registrationError, user, success, loading } = useSelector((state) => state.Registration);
 
   const dispatch = useDispatch();
   const [passwordShow, setPasswordShow] = useState(false);
-
+  const [modal1, setModal1] = useState(false);
+  const toggleModal1 = () => setModal1(!modal1);
   const validation = useFormik({
 
     enableReinitialize: true,
@@ -43,10 +44,16 @@ const Register = props => {
     }),
     onSubmit: (values) => {
       dispatch(registerUser(values));
+      toggleModal1()
     }
   });
 
-
+  if (loading) {
+    console.log(user && user, "user")
+    console.log(registrationError && registrationError, "registrationError")
+    console.log(success, "success")
+    console.log(loading, "loging")
+  }
 
 
   return (
@@ -71,10 +78,10 @@ const Register = props => {
                     {/* <Link to="/" className="logo-light-element">
                       <div className="avatar-md profile-user-wid mb-4">
                         <span className="avatar-title rounded-circle bg-light "> */}
-       
-                          <h1 className="heading">Sign Up</h1>
-                          {/* <img src={logo} width={100} /> */}
-                        {/* </span>
+
+                    <h1 className="heading">Sign Up</h1>
+                    {/* <img src={logo} width={100} /> */}
+                    {/* </span>
                       </div>
                     </Link> */}
                   </div>
@@ -96,18 +103,9 @@ const Register = props => {
                         return false;
                       }}
                     >
-                      {user && user ? (
-                        <Alert color="success">
-                          Register User Successfully
-                        </Alert>
-                      ) : null}
 
-
-                      {registrationError && registrationError ? (
-                        <Alert color="danger">{registrationError}</Alert>
-                      ) : null}
                       <div className="mb-3">
-                        <Label className="form-label">Firstname <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <Label className="form-label">Firstname <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <Input
                           name="firstname"
                           type="text"
@@ -124,7 +122,7 @@ const Register = props => {
                         ) : null}
                       </div>
                       <div className="mb-3">
-                        <Label className="form-label">Lastname <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <Label className="form-label">Lastname <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <Input
                           name="lastname"
                           type="text"
@@ -142,7 +140,7 @@ const Register = props => {
                       </div>
 
                       <div className="mb-3">
-                        <Label className="form-label">Username <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <Label className="form-label">Username <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <Input
                           name="username"
                           type="text"
@@ -159,7 +157,7 @@ const Register = props => {
                         ) : null}
                       </div>
                       <div className="mb-3">
-                        <Label className="form-label">Email <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <Label className="form-label">Email <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <Input
                           id="email"
                           name="email"
@@ -178,7 +176,7 @@ const Register = props => {
                         ) : null}
                       </div>
                       <div className="mb-3">
-                        <Label className="form-label">Password <span className="errorsymbol" style={{color: "red"}}>*</span></Label>
+                        <Label className="form-label">Password <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <div className="login-password position-relative">
                           <Input
                             name="password"
@@ -232,6 +230,16 @@ const Register = props => {
 
               </div>
             </Col>
+            {!loading &&
+              <CommonModal
+                isOpen={modal1}
+                toggle={toggleModal1}
+                title={success ? "Success" : "Alert"}
+                message={success ? "Register User Successfully." : registrationError}
+                redirectTo={success ? "/login" : toggleModal1}
+                buttonText="Okay"
+              />
+            }
           </Row>
         </Container>
       </div>

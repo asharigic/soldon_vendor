@@ -7,40 +7,43 @@ import {
 const initialState = {
   user: null,
   loading: false,
-  message: null,
-  success: false,
   registrationError: null,
+  success: false,
+
 }
 
 const account = (state = initialState, action) => {
   switch (action.type) {
     case REGISTER_USER:
-      state = {
+      return {
         ...state,
-        user: action.payload,
+        // user: action.payload,
         loading: true,
-        registrationError: null,
+        // registrationError: null,
       }
-      break
+
     case REGISTER_USER_SUCCESSFUL:
-      state = {
+      return {
         ...state,
         loading: false,
         user: action.payload,
         success: true,
       }
-      break
+
     case REGISTER_USER_FAILED:
-      state = {
+      return {
         ...state,
-        user:null,
+        loading: false,
+        success: false,
+        // user: null,
         registrationError: action.payload,
-        loading: false,       
+
+
       }
-      break
+
     default:
       state = { ...state }
-      break
+
   }
   return state
 }
