@@ -9,8 +9,8 @@ import withRouter from "../../components/Common/withRouter";
 import CommonModal from '../../components/Common/CommonModal';
 const HomeProductDetail = props => {
     document.title = "Product Details | Quench";
-    const { showproductdetails, homeproductloading, homesuccessproduct, homeerror ,cloneproduct} = useSelector((state) => state.HomeProductData);
-    console.log(homesuccessproduct,"homesuccessproduct")
+    const { showproductdetails, homeproductloading, homesuccessproduct, homeerror, cloneproduct } = useSelector((state) => state.HomeProductData);
+    console.log(homesuccessproduct, "homesuccessproduct")
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
@@ -46,10 +46,14 @@ const HomeProductDetail = props => {
             navigate('/login');
         } else {
             dispatch(cloneProduct(productId));
-            navigate(`/edit-product/${cloneproduct?.products.data}`)
+
+            navigate(`/edit-product/${cloneproduct?.products?.data}`)
+
+
             // toggleModal1();
         }
     };
+
     if (isLoading || homeproductloading) {
         return <Spinners setLoading={setIsLoading} />;
     }
