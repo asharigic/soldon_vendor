@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { deleteFavouriteProduct, getFavouriteList } from '../../../store/vendor/favourite/actions';
+import { deleteFavouriteProduct as onDeleteClick, getFavouriteList } from '../../../store/vendor/favourite/actions';
 import Spinners from '../../../components/Common/Spinner';
 import './FavouriteList.css';
 import DataTable from '../../../components/Common/DataTable';
 import bgimg1 from '../../../assets/images/no-img.jpg';
+import DeleteModal from '../../../components/Common/DeleteModal';
 const FavouriteList = (props) => {
   document.title = "Favourites | Quench";
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ const FavouriteList = (props) => {
   const [searchValue, setSearchValue] = useState('');
   const [pageSize, setPageSize] = useState(15); // Default page size
   const [totalItems, setTotalItems] = useState(0);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [FavouriteList, setFavouriteList] = useState([]);
   useEffect(() => {
     if (!localStorage.getItem("vendoruser")) {
       navigate('/login');
@@ -35,7 +38,7 @@ const FavouriteList = (props) => {
       setTotalItems(favourite.meta.total); // Update total items count for pagination
     }
   }, [favourite]);
-  
+
   const columns = useMemo(
     () => [
       {
@@ -59,7 +62,7 @@ const FavouriteList = (props) => {
         header: "Item",
         accessorKey: "item",
         cell: (cellProps) => {
-          const imageSrc = cellProps.row.product_image || bgimg1; // Fallback URL
+          const imageSrc =  process.env.REACT_APP_LOCAL_IMAGE+cellProps.row.product_image || bgimg1; // Fallback URL
           return (
             <img
               className="img-drop-area"
@@ -108,7 +111,12 @@ const FavouriteList = (props) => {
             <button
               className="button"
               style={{ backgroundColor: "white", color: "black" }}
-              onClick={() => handleRemoveFavourite(cellProps.row.product_id)}
+              onClick={() => {
+
+                setDeleteModal(true);
+                setFavouriteList(cellProps.row);
+              }}
+            // onClick={() => handleRemoveFavourite(cellProps.row.product_id)}
             >
               Remove
             </button>
@@ -120,12 +128,30 @@ const FavouriteList = (props) => {
     ],
     [currentPage, pageSize] // Recalculate when pageSize or currentPage changes
   );
-  const handleRemoveFavourite = (productId) => {
-    dispatch(deleteFavouriteProduct(productId));
-    if (favouritesuccess) {
-      dispatch(getFavouriteList());
+  // const handleRemoveFavourite = (productId) => {
+  //   dispatch(deleteFavouriteProduct(productId));
+  //   if (favouritesuccess) {
+  //     dispatch(getFavouriteList());
+  //   }
+  // };
+  const handleRemoveFavourite = () => {
+    console.log(FavouriteList.id, "data")
+    if (FavouriteList && FavouriteList.product_id) {
+
+      dispatch(onDeleteClick(FavouriteList.product_id));
+      setDeleteModal(false);
+      setFavouriteList([]);
+      const page = currentPage || 1;
+      const limit = pageSize || 15;
+      const payload = {
+        per_page: limit,
+        search: searchValue,
+      };
+      dispatch(getFavouriteList(payload, page));
+
     }
   };
+
   const handleSearch = () => {
     var userData = {
 
@@ -143,24 +169,28 @@ const FavouriteList = (props) => {
     <Fragment>
       <div className="container">
         <h1 className="heading">Wishlist Product List</h1>
-     
-          {isLoading ? <Spinners setLoading={setLoading} />
-              :
-              <DataTable
-                data={favourite?.data || []}
-                columns={columns} // Passing dynamic columns to DataTable
-                // isAddButton={true}
-                pageSize={pageSize}
-                totalItems={totalItems}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                setPageSize={setPageSize}
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                handleSearch={handleSearch}
-                SearchPlaceholder="Search..."
-              />
-            }
+        <DeleteModal
+          show={deleteModal}
+          onDeleteClick={handleRemoveFavourite}
+          onCloseClick={() => setDeleteModal(false)}
+        />
+        {isLoading ? <Spinners setLoading={setLoading} />
+          :
+          <DataTable
+            data={favourite?.data || []}
+            columns={columns} // Passing dynamic columns to DataTable
+            // isAddButton={true}
+            pageSize={pageSize}
+            totalItems={totalItems}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            setPageSize={setPageSize}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            handleSearch={handleSearch}
+            SearchPlaceholder="Search..."
+          />
+        }
       </div>
     </Fragment>
   );

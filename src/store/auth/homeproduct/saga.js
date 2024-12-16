@@ -41,7 +41,7 @@ function* fetchHomeProducts({ payload: { seachproduct, page } }) {
 function* CloneProduct(id) {
   try {
     const response = yield call(axiosInstance.get, `${process.env.REACT_APP_API}vendor/product/clone/${id.payload.id}`);
-
+    console.log(response.data,"saag");
     if (response && response.data) {
       yield put(cloneProductSuccess(response.data));
     } else {

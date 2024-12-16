@@ -68,21 +68,47 @@ const ShowBuyingIdProduct = props => {
                                     <hr />
                                     <div className="mb-3 d-flex align-items-center">
                                         <h5 className="font-weight-bold me-2 mb-0">Price:</h5>
-                                        <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.order_item?.product?.price ? showbuyingproducts?.products?.order?.order_item?.product?.price : "_"}</p>
+                                        {
+                                            showbuyingproducts?.products?.order?.order_item?.product?.price ?
+                                                <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.order_item?.product?.price}</p>
+
+                                                : "_"
+
+                                        }
                                     </div>
 
                                     <div className="mb-3 d-flex align-items-center">
                                         <h5 className="font-weight-bold me-2 mb-0">Sub Total:</h5>
-                                        <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.subtotal ? showbuyingproducts?.products?.order?.subtotal : "_"}</p>
+                                        {
+                                            showbuyingproducts?.products?.order?.subtotal ?
+                                                <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.subtotal}</p>
+
+                                                : "_"
+
+                                        }
+
                                     </div>
                                     <div className="mb-3 d-flex align-items-center">
                                         <h5 className="font-weight-bold me-2 mb-0">Fees:</h5>
-                                        <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.fees ? showbuyingproducts?.products?.order?.fees : "_"}</p>
+                                        {
+                                            showbuyingproducts?.products?.order?.fees ?
+                                                <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.fees}</p>
+
+                                                : "_"
+
+                                        }
                                     </div>
                                     <hr />
                                     <div className="mb-3 d-flex align-items-center">
                                         <h5 className="font-weight-bold me-2 mb-0">Total:</h5>
-                                        <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.total ?  showbuyingproducts?.products?.order?.total : "_"}</p>
+                                        {
+                                            showbuyingproducts?.products?.order?.total ?
+                                                <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.total}</p>
+
+                                                : "_"
+
+                                        }
+
                                     </div>
                                     <hr />
 

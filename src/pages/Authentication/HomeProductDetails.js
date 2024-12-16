@@ -9,8 +9,8 @@ import withRouter from "../../components/Common/withRouter";
 import CommonModal from '../../components/Common/CommonModal';
 const HomeProductDetail = props => {
     document.title = "Product Details | Quench";
-    const { showproductdetails, homeproductloading, homesuccessproduct, homeerror } = useSelector((state) => state.HomeProductData);
-
+    const { showproductdetails, homeproductloading, homesuccessproduct, homeerror ,cloneproduct} = useSelector((state) => state.HomeProductData);
+    console.log(homesuccessproduct,"homesuccessproduct")
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
@@ -46,7 +46,8 @@ const HomeProductDetail = props => {
             navigate('/login');
         } else {
             dispatch(cloneProduct(productId));
-            toggleModal1();
+            navigate(`/edit-product/${cloneproduct?.products.data}`)
+            // toggleModal1();
         }
     };
     if (isLoading || homeproductloading) {
@@ -131,10 +132,11 @@ const HomeProductDetail = props => {
                                     localStorage.getItem("vendoruser") ?
                                         <>
                                             {userID === showproductdetails?.products?.product?.user_id ?
-                                                <Button variant="primary" className="me-2" size="md"
-                                                    disabled>
-                                                    <i className="bx bx-copy me-2"></i> This is Your Product!
-                                                </Button>
+                                                // <Button variant="primary" className="me-2" size="md"
+                                                //     disabled>
+                                                //     <i className="bx bx-copy me-2"></i> This is Your Product!
+                                                // </Button>
+                                                ''
                                                 :
                                                 <Button variant="primary" className="me-2" size="md"
                                                     onClick={() => {

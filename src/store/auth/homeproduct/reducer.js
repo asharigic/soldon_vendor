@@ -14,9 +14,10 @@ const initialState = {
     homeproducts: [],
     homeproductloading: false,
     showproductdetails: null,
+    cloneproduct: null,
     homeerror: null,
     homesuccessproduct: false,
-    cloneproduct: null
+   
 }
 
 const HomeProductsReducer = (state = initialState, action) => {
@@ -54,7 +55,7 @@ const HomeProductsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 homeproductloading: false,
-                cloneproduct: action.payload.homeproducts,
+                cloneproduct: action.payload,
                 homesuccessproduct: true
             };
 
