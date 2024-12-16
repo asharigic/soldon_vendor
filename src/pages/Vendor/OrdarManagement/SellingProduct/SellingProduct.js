@@ -175,7 +175,7 @@ const SellingListPage = () => {
                     const formattedStatus = stockStatus
                         ? stockStatus.charAt(0).toUpperCase() + stockStatus.slice(1).toLowerCase()
                         : "_";
-                  
+
                     return (
                         <span
                             style={{ textDecoration: 'none' }}
@@ -281,18 +281,13 @@ const SellingListPage = () => {
                 header: "Order",
                 accessorKey: "status",
                 cell: ({ row }) => {
-                    const status = row.status;
-                    const capitalizedStatus = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+
                     return (
                         <>
-                            {
-                                status === 'pending' ?
-                                    <Link to="#"
+                            <Link to="#"
 
-                                    >{capitalizedStatus ? <ProjectStatus status={row.status} /> : "_"}</Link >
-                                    :
-                                    <Link to="#" style={{ cursor: 'default' }}>{capitalizedStatus ? <ProjectStatus status={capitalizedStatus} /> : "_"}</Link>
-                            }
+                            >{row?.status ? <ProjectStatus status={row.status} /> : "_"}</Link >
+
 
                         </>
                     );
@@ -549,7 +544,7 @@ const SellingListPage = () => {
                             setSearchValue={setSearchValue}
                             handleSearch={handleSearch}
                             SearchPlaceholder="Search..."
-                            addButtonText="Add Product" 
+                            addButtonText="Add Product"
                             navigateTo="/add-product"
                         />
                         :

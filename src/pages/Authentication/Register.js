@@ -36,10 +36,10 @@ const Register = props => {
       password: '',
     },
     validationSchema: Yup.object({
-      firstname: Yup.string().required("Please Enter Your Firstname"),
-      lastname: Yup.string().required("Please Enter Your Lastname"),
+      firstname: Yup.string().required("Please Enter Your First Name"),
+      lastname: Yup.string().required("Please Enter Your Last Name"),
       email: Yup.string().required("Please Enter Your Email"),
-      username: Yup.string().required("Please Enter Your Username"),
+      username: Yup.string().required("Please Enter Your User Name"),
       password: Yup.string().min(8, "The password field must be at least 8 characters.").required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
@@ -105,11 +105,11 @@ const Register = props => {
                     >
 
                       <div className="mb-3">
-                        <Label className="form-label">Firstname <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
+                        <Label className="form-label">First Name <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <Input
                           name="firstname"
                           type="text"
-                          placeholder="Enter firstname"
+                          placeholder="Enter First Name"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           value={validation.values.firstname || ""}
@@ -122,11 +122,11 @@ const Register = props => {
                         ) : null}
                       </div>
                       <div className="mb-3">
-                        <Label className="form-label">Lastname <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
+                        <Label className="form-label">Last Name <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <Input
                           name="lastname"
                           type="text"
-                          placeholder="Enter lastname"
+                          placeholder="Enter Last Name"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           value={validation.values.lastname || ""}
@@ -140,11 +140,11 @@ const Register = props => {
                       </div>
 
                       <div className="mb-3">
-                        <Label className="form-label">Username <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
+                        <Label className="form-label">User Name <span className="errorsymbol" style={{ color: "red" }}>*</span></Label>
                         <Input
                           name="username"
                           type="text"
-                          placeholder="Enter username"
+                          placeholder="Enter User Name"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           value={validation.values.username || ""}
@@ -162,7 +162,7 @@ const Register = props => {
                           id="email"
                           name="email"
                           className="form-control"
-                          placeholder="Enter email"
+                          placeholder="Enter Email"
                           type="email"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}

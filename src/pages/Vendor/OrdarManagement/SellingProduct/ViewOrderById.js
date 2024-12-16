@@ -11,8 +11,8 @@ import { createshipmentorder } from "../../../../store/vendor/sellingproduct/act
 import CommonModal from "../../../../components/Common/CommonModal";
 const ViewOrderByIdProduct = props => {
     document.title = "Show Return Order | Quench";
-    const { buyingproductloading, showbuyingproducts ,} = useSelector((state) => state.BuyingProduct);
-    const { successsellingproduct, sellingproductloading ,sellingerror,showreturnorderproduct} = useSelector((state) => state.SellingProductData);
+    const { buyingproductloading, showbuyingproducts, } = useSelector((state) => state.BuyingProduct);
+    const { successsellingproduct, sellingproductloading, sellingerror, showreturnorderproduct } = useSelector((state) => state.SellingProductData);
     const dispatch = useDispatch();
     const [modal1, setModal1] = useState(false);
     const toggleModal1 = () => setModal1(!modal1);
@@ -20,13 +20,18 @@ const ViewOrderByIdProduct = props => {
     useEffect(() => {
         dispatch(showBuyingProduct(props.router.params.id));
     }, [dispatch]);
-    useEffect(()=>{
-        if(showreturnorderproduct)
-        {
-            {console.log(showreturnorderproduct,"showreturnorderproduct")}
-            window.open(showreturnorderproduct, '_blank');
+    useEffect(() => {
+        if (showreturnorderproduct) {
+            const blob = new Blob([showreturnorderproduct], { type: 'application/pdf' });
+            const blobUrl = URL.createObjectURL(blob);
+            window.open(blobUrl, '_blank');
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = 'Shipment.pdf'; // You can customize the filename
+            link.click(); // Programmatically click the link to start the download
+
         }
-    },[showreturnorderproduct])
+    }, [showreturnorderproduct])
     if (isLoading || buyingproductloading) {
         return <Spinners setLoading={setIsLoading} />;  // Display loading state while data is being fetched
     };
@@ -35,10 +40,10 @@ const ViewOrderByIdProduct = props => {
             order_id: props.router.params.id
         }
         dispatch(createshipmentorder(payload))
-        
+
     }
-   
-  
+
+
     return (
 
         <Fragment>
@@ -76,21 +81,49 @@ const ViewOrderByIdProduct = props => {
                                     <hr />
                                     <div className="mb-3 d-flex align-items-center">
                                         <h5 className="font-weight-bold me-2 mb-0">Price:</h5>
-                                        <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.order_item?.product?.price ? showbuyingproducts?.products?.order?.order_item?.product?.price : "_"}</p>
+                                        {
+                                            showbuyingproducts?.products?.order?.order_item?.product?.price ?
+                                                <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.order_item?.product?.price}</p>
+
+                                                : "_"
+
+                                        }
+
                                     </div>
 
                                     <div className="mb-3 d-flex align-items-center">
                                         <h5 className="font-weight-bold me-2 mb-0">Sub Total:</h5>
-                                        <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.subtotal ? showbuyingproducts?.products?.order?.subtotal : "_"}</p>
+                                        {
+                                            showbuyingproducts?.products?.order?.subtotal ?
+                                                <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.subtotal}</p>
+
+                                                : "_"
+
+                                        }
+
                                     </div>
                                     <div className="mb-3 d-flex align-items-center">
                                         <h5 className="font-weight-bold me-2 mb-0">Fees:</h5>
-                                        <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.fees ? showbuyingproducts?.products?.order?.fees : "_"}</p>
+                                        {
+                                            showbuyingproducts?.products?.order?.fees ?
+                                                <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.fees}</p>
+
+                                                : "_"
+
+                                        }
+
                                     </div>
                                     <hr />
                                     <div className="mb-3 d-flex align-items-center">
                                         <h5 className="font-weight-bold me-2 mb-0">Total:</h5>
-                                        <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.total ? showbuyingproducts?.products?.order?.total : "_"}</p>
+                                        {
+                                            showbuyingproducts?.products?.order?.total ?
+                                                <p className="mb-0"><i className="bx bx-pound"></i>{showbuyingproducts?.products?.order?.total}</p>
+
+                                                : "_"
+
+                                        }
+
                                     </div>
                                     <hr />
                                     <div className="mb-3 d-flex align-items-center">

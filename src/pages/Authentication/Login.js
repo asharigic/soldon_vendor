@@ -97,7 +97,7 @@ const Login = props => {
       "device_name": "web"
     },
     validationSchema: Yup.object({
-      username: Yup.string().required("Please Enter Username"),
+      username: Yup.string().required("Please Enter User Name"),
       password: Yup.string().required("Please Enter Password"),
     }),
     onSubmit: (values) => {
@@ -256,11 +256,11 @@ const Login = props => {
 
                       {/* Username Field */}
                       <div className="mb-3">
-                        <Label className="form-label">Username</Label>
+                        <Label className="form-label">User Name</Label>
                         <Input
                           name="username"
                           className="form-control"
-                          placeholder="Enter Username"
+                          placeholder="Enter User Name"
                           type="text"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}

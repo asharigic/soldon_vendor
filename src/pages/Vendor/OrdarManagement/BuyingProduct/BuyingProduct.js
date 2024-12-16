@@ -22,10 +22,12 @@ const ProjectStatus = ({ status }) => {
             return <Badge className="bg-success"> Published </Badge>;
         case "expired":
             return <Badge className="badge-soft-secondary"> Expired</Badge>;
-
-
+        case "returned":
+            return <Badge className="bg-warning"> Returned </Badge>;
+        case "completed":
+            return  <Badge className="bg-success">Completed</Badge>
         default:
-            return <Badge className="bg-success"> {status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()} </Badge>;
+            return <Badge className="bg-success"> {status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()}</Badge>;
     }
 };
 const BuyingListPage = () => {
@@ -137,19 +139,10 @@ const BuyingListPage = () => {
                 header: "Order Status",
                 accessorKey: "status",
                 cell: ({ row }) => {
-                    const status = row.status;
-                    const capitalizedStatus = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
 
                     return (
                         <>
-                            {
-                                status === 'pending' ?
-                                    <Link to="#"
-
-                                    >{capitalizedStatus ? <ProjectStatus status={row.status} /> : "_"}</Link >
-                                    :
-                                    <Link to="#" style={{ cursor: 'default' }}>{capitalizedStatus ? <ProjectStatus status={capitalizedStatus} /> : "_"}</Link>
-                            }
+                            <Link to="#" style={{ cursor: 'default' }}>{row?.status ? <ProjectStatus status={row.status} /> : "_"}</Link>
 
                         </>
                     );
