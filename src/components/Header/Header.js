@@ -20,7 +20,13 @@ const Header = () => {
     const toggle1 = () => setModalShow(!ModalShow);
     useEffect(() => {
         if ((unreadnotificationcount && !unreadnotificationcount.length) || markasallreadnotification?.status === true) {
-            dispatch(getUnreadNotificationCount());
+            const intervalId = setInterval(() => {
+                dispatch(getUnreadNotificationCount());
+            }, 1000); // 3000 milliseconds = 3 seconds
+        
+            // Clear interval on component unmount to avoid memory leaks
+            return () => clearInterval(intervalId);
+           
         }
     }, [dispatch, markasallreadnotification]);
     useEffect(() => {
@@ -101,7 +107,7 @@ const Header = () => {
                         {unreadnotificationcount?.count > 0 ? <i className="bx bx-bell bx-tada h5 m-0" /> : <i className="bx bx-bell h5 m-0" />}
                         {unreadnotificationcount?.count > 0 &&
                             <span className="badge bg-danger rounded-pill">{unreadnotificationcount?.count}</span>}
-                        
+
                     </li>
                     <li className='ms-0'>
                         <Dropdown show={isOpen} onToggle={() => setIsOpen(!isOpen)} >
