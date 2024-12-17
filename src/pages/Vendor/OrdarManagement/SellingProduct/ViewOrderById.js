@@ -30,6 +30,7 @@ const ViewOrderByIdProduct = props => {
             link.href = blobUrl;
             link.download =  showbuyingproducts?.products?.order?.uuid+'.pdf'; // You can customize the filename
             link.click(); // Programmatically click the link to start the download
+            window.location.reload();
 
         }
     }, [showreturnorderproduct])
